@@ -114,7 +114,7 @@
                             <img src="Jupyter Lab.jpg" alt="Jupyter Lab Starts" style="width: 40vw; height: 20vw;">
                             <br>
                             <br>
-                            <br>
+
                             <div class="subheading mb-3">Artemis Board Setup</div>
                             <p>After installing ArduinoBLE from the library manager in the Arduino IDE, I loaded and burned the sketch ble_arduino.ino onto the Artemis board from the ble_arduino directory in the codebase, following the instructions provided.</p>
                             <br>
@@ -122,6 +122,7 @@
                             <p>After successfully setting up the Artemis board and starting the Jupyter server, the next step was to connect the Artemis board to the Python code. I first needed to read the MAC address of the Artemis board and replace the default MAC address in the Arduino code. After uploading the provided ble_arduino.ino code file to the Artemis board, the MAC address c0:89:f4:6b:86:4b was returned in the serial monitor, as shown in the figure below.</p>
                             <br>
                             <p>Since the BLEService is used in this lab, in addition to the MAC address, a UUID is also needed to identify the service. This is to differentiate the various types of data sent or received between the Artemis and the computer. Therefore, in the Jupyter Notebook, I ran the following code:
+                               <br>
                                <i>from uuid import uuid4</i>
                                <br>
                                <i>uuid4()</i>
