@@ -71,7 +71,7 @@
                         <div class="flex-grow-1">
                             <h3 class="mb-0">Example: Serial Communication</h3>
                             <p>The example video below demonstrates how to test serial communication. In this example, the user types an input into the serial monitor, and the Artemis Board reads this input and outputs it back to the serial monitor.</p>
-                            <img src="serial.jpg" alt="Serial Communication" style="width: 50vw; height: 30vw;">
+                            <img src="serial.jpg" alt="Serial Communication" style="width: 40vw; height: 20vw;">
                         </div>
                     </div>
                     <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
@@ -110,13 +110,23 @@
                         <div class="flex-grow-1">
                             <h3 class="mb-0">Setup</h3>
                             <div class="subheading mb-3">Start Jupyter Server</div>
-                            <p>Capitalize on low hanging fruit to identify a ballpark value added activity to beta test. Override the digital divide with additional clickthroughs from DevOps. Nanotechnology immersion along the information highway will close the loop on focusing solely on the bottom line.</p>
+                            <p>After activating the virtual Python environment, I started the Jupyter server to use Jupyter notebooks for writing Python code.</p>
+                            <img src="Jupyter Lab.jpg" alt="Jupyter Lab Starts" style="width: 40vw; height: 20vw;">
                             <br>
                             <div class="subheading mb-3">Artemis Board Setup</div>
-                            <p>Podcasting operational change management inside of workflows to establish a framework. Taking seamless key performance indicators offline to maximise the long tail. Keeping your eye on the ball while performing a deep dive on the start-up mentality to derive convergence on cross-platform integration.</p>
+                            <p>After installing ArduinoBLE from the library manager in the Arduino IDE, I loaded and burned the sketch ble_arduino.ino onto the Artemis board from the ble_arduino directory in the codebase, following the instructions provided.</p>
                             <br>
                             <div class="subheading mb-3">Bluetooth Connection</div>
-                            <p>Podcasting operational change management inside of workflows to establish a framework. Taking seamless key performance indicators offline to maximise the long tail. Keeping your eye on the ball while performing a deep dive on the start-up mentality to derive convergence on cross-platform integration.</p>
+                            <p>After successfully setting up the Artemis Board and starting the Jupyter server, the next step was to connect the Artemis Board to the Python code. I first needed to read the MAC address of the Artemis board and replace the default MAC address in the Arduino code. After uploading the provided ble_arduino.ino code file to the Artemis board, the MAC address c0:89:f4:6b:86:4b was returned in the serial monitor, as shown in the figure below.</p>
+                            <br>
+                            <p>Since the BLEService is used in this lab, in addition to the MAC address, a UUID is also needed to identify the service. This is to differentiate the various types of data sent or received between the Artemis and the computer. Therefore, in the Jupyter Notebook, I ran the following code:
+                               <i>from uuid import uuid4</i>
+                               <br>
+                               <i>uuid4()</i>
+                               <br>
+                               This generated a unique UUID, which I then assigned to the BLE service in both the Jupyter notebooks and the Arduino IDE.
+                            </p>
+                            <img src="connection.jpg" alt="BLE connection" style="width: 40vw; height: 20vw;">
                         </div>
                     </div>
                     <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
