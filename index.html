@@ -137,7 +137,7 @@
                             <h3 class="mb-0">Connection</h3>
                             <p>For the connection between the Artemis board and the computer, I first obtained the ArtemisBLEController object and connected to the Artemis Device before conducting any further tests.
                             </p>
-                            <img src="connected.png" alt="BLE connection" style="width: 40vw; height: 20vw;">
+                            <img src="connected.png" alt="BLE connection" style="width: 40vw; height: 15w;">
                         </div>
                     </div>
                     <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
@@ -152,7 +152,7 @@
                     <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
                         <div class="flex-grow-1">
                             <h3 class="mb-0">Example: GET_TIME_MILLIS Command</h3>
-                            <p>The next command, GET_TIME_MILLIS, involved receiving the current time from the Artemis board by using the built-in millis() function in the Arduino IDE language. Following the instr
+                            <p>The next command, GET_TIME_MILLIS, involved receiving the current time from the Artemis board by using the built-in millis() function in the Arduino IDE language. Following the instructions, I converted this value to an integer and sent it as a string to Python.
                             </p>
                             <img src="millis_arduino.png" alt="Get millis in Arduino" style="width: 40vw; height: 20vw;">
                             <img src="millis_python.png" alt="Get millis in Python" style="width: 40vw; height: 20vw;">
@@ -162,7 +162,7 @@
                         <div class="flex-grow-1">
                             <h3 class="mb-0">Notification Handler</h3>
                             <p>Instead of manually sending a command and then receiving the data, a notification handler could be used to monitor the data transfer. It is an asynchronous event handler, which means it would handle the case when the Artemis board is sending data and then receiving the data in Python.
-                            <br>
+                            <br><br>
                             The code below demonstrates how I used a notification handler to asynchronously receive the time data sent from the Artemis board.    
                             </p>
                             <img src="event_handler.png" alt="Event handler" style="width: 40vw; height: 20vw;">
