@@ -145,8 +145,11 @@
                             <h3 class="mb-0">Example: ECHO Command</h3>
                             <p>For testing the connection between the Artemis board and the computer, the ECHO command was utilized. When a new command type is introduced, it should be added to both the Python code and the Arduino IDE to ensure they can communicate correctly under a specific command. This ECHO command involved sending a string value to the Artemis board from the computer, which corresponds to the Python code. Then, the Artemis board sent back the augmented phrase, which had additional words added to the original phrase, as shown below in both the Jupyter notebooks and the Arduino IDE screenshot, to the computer.
                             </p>
-                            <img src="Imgs_lab1/Echo_Arduino.png" alt="Echo command in Arduino" style="width: 40vw; height: 20vw;">
-                            <img src="Imgs_lab1/Echo_python .png" alt="Echo command in Python" style="width: 40vw; height: 20vw;">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <img src="Imgs_lab1/Echo_Arduino.png" alt="Echo command in Arduino" style="width: 30vw; height: 15vw;">
+                                <img src="Imgs_lab1/Echo_python .png" alt="Echo command in Python" style="width: 30vw; height: 15vw;">
+                            </div>
+
                         </div>
                     </div>
                     <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
@@ -167,7 +170,7 @@
                             <br><br>
                             The code below demonstrates how I used a notification handler to asynchronously receive the time data sent from the Artemis board.    
                             </p>
-                            <img src="Imgs_lab1/event_handler.png" alt="Event handler" style="width: 40vw; height: 20vw;">
+                            <img src="Imgs_lab1/event_handler.png" alt="Event handler" style="width: 35vw; height: 15vw;">
                         </div>
                     </div>
                     <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
@@ -216,7 +219,7 @@
                             <h3 class="mb-0">(5000-Level) : Reliability</h3>
                             <p>By modifying the code for the command SEND_TIME_DATA to send 10 unique data points at a high speed without any delay, the reliability of the Artemis was demonstrated. In the screenshot attached below, we can see that the data is reliable by comparing the data sent from the Artemis board and the data received on the laptop.
                             </p>
-                            <img src="Imgs_lab1/reliability.png" alt="reliability" style="width: 40vw; height: 20vw;">
+                            <img src="Imgs_lab1/reliability.png" alt="reliability" style="width: 40vw; height: 16vw;">
                         </div>
                     </div>
 
