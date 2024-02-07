@@ -205,7 +205,7 @@
                     <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
                         <div class="flex-grow-1">
                             <h3 class="mb-0">(5000-Level) : Reliability</h3>
-                            <p>Next, I sent messages from the computer and received replies from the Artemis board. I calculated the data rate for 5-byte replies to be about 103 bytes/s and for 120-byte replies to be 1602 bytes/s. Additionally, to understand the relationship between the number of bytes and the data transfer rate, I tested multiple byte replies at intervals of 5. It was observed that the data rate increases with the amount of bytes sent, as depicted in the graph below. This trend indicates that larger replies reduce overhead. However, as shown on the graph, when the byte replies become too large—specifically, when they exceed 80 bytes—the trend might break, and the rate might drop to a lower rate than expected.      
+                            <p>By modifying the code for the command SEND_TIME_DATA to send 10 unique data points at a high speed without any delay, the reliability of the Artemis was demonstrated. In the screenshot attached below, we can see that the data is reliable by comparing the data sent from the Artemis board and the data received on the laptop.
                             </p>
                         </div>
                     </div>
