@@ -27,6 +27,7 @@
                 <ul class="navbar-nav">
                     <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#about">Home</a></li>
                     <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#labs">The Artemis board and Bluetooth</a></li>
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#labs">IMU</a></li>
                 </ul>
             </div>
         </nav>
@@ -48,7 +49,7 @@
                 </div>
             </section>
             <hr class="m-0" />
-            <!-- Labs-->
+            <!-- Lab 1-->
             <section class="resume-section" id="labs">
                 <div class="resume-section-content">
                     <h2 class="mb-5">LAB1 The Artemis board and Bluetooth</h2>
@@ -237,7 +238,198 @@
 
                 </div>
             </section>
-            <hr class="m-0" />
+            <hr class="m-0"/>
+            <!-- Lab 2 -->
+            <section class="resume-section" id="labs">
+                <div class="resume-section-content">
+                    <h2 class="mb-5">LAB1 The Artemis board and Bluetooth</h2>
+                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                        <div class="flex-grow-1">
+                            <h3 class="mb-0">Part1: Objective</h3>
+                            <p>The goal of this part of the lab is to setup and become familiar with the Arduino IDE and the Artemis board. It covers skills in programming on Arduino IDE, testing board with LED blinks, communication over serial protocol, and the application of the onboard temperature sensor and Pulse Density Microphone.</p>
+                        </div>
+                        <div class="flex-shrink-0"><span class="text-primary">22nd, Jan 2024 - 7th Jan 2024</span></div>
+                    </div>
+                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                        <div class="flex-grow-1">
+                            <h3 class="mb-0">Example: Blink it Up</h3>
+                            <p>After successfully installing the SparkFun Apollo3 support software in the Arduino IDE and connecting the SparkFun RedBoard Artemis Nano to the laptop, I first tested programming the board by making an LED blink. In the example video below, the LED was on for 1 seconds, and then off for 1 second.</p>
+                            <iframe width="auto" height="auto" src="https://www.youtube.com/embed/TP8BOoOqzuM" title="Blink LED up" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+
+                    </div>
+                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                        <div class="flex-grow-1">
+                            <h3 class="mb-0">Example: Serial Communication</h3>
+                            <p>The screenshot below demonstrates how to test serial communication. In this example, the user types an input into the serial monitor, and the Artemis board reads this input and outputs it back to the serial monitor.</p>
+                            <img src="Imgs_lab1/serial.jpg" alt="Serial Communication" style="width: 40vw; height: 20vw;">
+                        </div>
+                    </div>
+                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                        <div class="flex-grow-1">
+                            <h3 class="mb-0">Example: Analog Input Read</h3>
+                            <p>The example video below demonstrates how to use the temperature sensor. The temperature recorded by the sensor on the Artemis board is sent to the serial monitor in Fahrenheit. To illustrate how the sensor responds, I covered the Artemis board with my hand, causing the temperature to increase to above 80°F.</p>
+                            <iframe width="auto" height="auto" src="https://youtube.com/embed/MeKUfqSYkI4" title="Temperature reading" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+
+                    </div>
+                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                        <div class="flex-grow-1">
+                            <h3 class="mb-0">Example: Microphone Usage</h3>
+                            <p>The example video below demonstrates how to use the microphone on the Artemis board to detect the loudest frequency.</p>
+                            <iframe width="auto" height="auto" src="https://youtube.com/embed/gdvG9ffv2rc" title="Microphone reading" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+
+                    </div>
+                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                        <div class="flex-grow-1">
+                            <h3 class="mb-0">(5000-Level) Example: Musical Tuner</h3>
+                            <p>The example video below was used to identify the musical note "A". When the microphone detected an "A", corresponding to a sound frequency of approximately 526 Hz, the LED would turn on. For sounds of other frequencies, the LED remains off.</p>
+                            <iframe width="auto" height="auto" src="https://youtube.com/embed/Ho1qV9jYgtg" title="Microphone reading" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+
+                    </div>
+                    <hr>
+                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                        <div class="flex-grow-1">
+                            <h3 class="mb-0">Part2: Objective</h3>
+                            <p>The goal of part two is to establish Bluetooth communication between the computer and the Artemis board, utilizing Python in a Jupyter notebook and the Arduino programming language. This session aims to create a foundational framework for Bluetooth data transmission, setting the stage for its application in future lab exercises.</p>
+                        </div>
+                        <div class="flex-shrink-0"><span class="text-primary">22nd, Jan 2024 - 7th Jan 2024</span></div>
+                    </div>
+                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                        <div class="flex-grow-1">
+                            <h3 class="mb-0">Setup</h3>
+                            <div class="subheading mb-3">Start Jupyter Server</div>
+                            <p>After activating the virtual Python environment, I started the Jupyter server to use Jupyter notebooks for writing Python code.</p>
+                            <img src="Imgs_lab1/Jupyter Lab.jpg" alt="Jupyter Lab Starts" style="width: 40vw; height: 20vw;">
+                            <br>
+                            <br>
+
+                            <div class="subheading mb-3">Artemis Board Setup</div>
+                            <p>After installing ArduinoBLE from the library manager in the Arduino IDE, I loaded and burned the sketch ble_arduino.ino onto the Artemis board from the ble_arduino directory in the codebase, following the instructions provided.</p>
+                            <br>
+                            <div class="subheading mb-3">Bluetooth Connection</div>
+                            <p>After successfully setting up the Artemis board and starting the Jupyter server, the next step was to connect the Artemis board to the Python code. I first needed to read the MAC address of the Artemis board and replace the default MAC address in the Arduino code. After uploading the provided ble_arduino.ino code file to the Artemis board, the MAC address c0:89:f4:6b:86:4b was returned in the serial monitor, as shown in the figure below.</p>
+                            <br>
+                            <p>Since the BLEService is used in this lab, in addition to the MAC address, a UUID is also needed to identify the service. This is to differentiate the various types of data sent or received between the Artemis and the computer. Therefore, in the Jupyter Notebook, I ran the following code:
+                               <br>
+                               <i>from uuid import uuid4</i>
+                               <br>
+                               <i>uuid4()</i>
+                               <br>
+                               This generated a unique UUID, which I then assigned to the BLE service in both the Arduino IDE and the Jupyter notebooks.
+                            </p>
+                            <img src="Imgs_lab1/connection.jpg" alt="BLE connection" style="width: 40vw; height: 20vw;">
+                        </div>
+                    </div>
+                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                        <div class="flex-grow-1">
+                            <h3 class="mb-0">Connection</h3>
+                            <p>For the connection between the Artemis board and the computer, I first obtained the ArtemisBLEController object and connected to the Artemis Device before conducting any further tests.
+                            </p>
+                            <img src="Imgs_lab1/connected.png" alt="BLE connection" style="width: 40vw; height: 15w;">
+                        </div>
+                    </div>
+                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                        <div class="flex-grow-1">
+                            <h3 class="mb-0">Connection via commands</h3>
+                            <p>For testing the connection between the Artemis board and the computer, some new commands were created and utilized for different tasks. When a new command type is introduced, it should be added to both the Arduino IDE and the Python code to ensure they can communicate correctly under a specific command.                                 
+                            </p>
+
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <img src="Imgs_lab1/cmdtypes_arduino.png" alt="command types in Arduino" style="width: 30vw; height: 15vw;">
+                                <img src="Imgs_lab1/cmdtypes_python.png" alt="command types in Python" style="width: 30vw; height: 15vw;">
+                            </div>
+                        </div>
+                    </div>    
+                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                        <div class="flex-grow-1">
+                            <h3 class="mb-0">Example: ECHO Command</h3>  
+                            <p>This ECHO command involved sending a string value to the Artemis board from the computer, which corresponds to the Python code. Then, the Artemis board sent back the augmented phrase, which had additional words added to the original phrase, as shown below in both the Jupyter notebooks and the Arduino IDE screenshot, to the computer.
+                            </p>
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <img src="Imgs_lab1/Echo_Arduino.png" alt="Echo command in Arduino" style="width: 30vw; height: 15vw;">
+                                <img src="Imgs_lab1/Echo_python .png" alt="Echo command in Python" style="width: 30vw; height: 15vw;">
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                        <div class="flex-grow-1">
+                            <h3 class="mb-0">Example: GET_TIME_MILLIS Command</h3>
+                            <p>The next command, GET_TIME_MILLIS, involved receiving the current time from the Artemis board by using the built-in millis() function in the Arduino IDE language. Following the instructions, I converted this value to an integer and sent it as a string to Python.
+                            </p>
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <img src="Imgs_lab1/millis_arduino.png" alt="Get millis in Arduino" style="width: 30vw; height: 15vw;">
+                                <img src="Imgs_lab1/millis_python.png" alt="Get millis in Python" style="width: 30vw; height: 15vw;">
+                            </div>
+                        </div>
+                    </div>              
+                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                        <div class="flex-grow-1">
+                            <h3 class="mb-0">Notification Handler</h3>
+                            <p>Instead of manually sending a command and then receiving the data, a notification handler could be used to monitor the data transfer. It is an asynchronous event handler, which means it would handle the case when the Artemis board is sending data and then receiving the data in Python.
+                            <br><br>
+                            The code below demonstrates how I used a notification handler to asynchronously receive the time data sent from the Artemis board.    
+                            </p>
+                            <img src="Imgs_lab1/event_handler.png" alt="Event handler" style="width: 40vw; height: 20vw;">
+                        </div>
+                    </div>
+                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                        <div class="flex-grow-1">
+                            <h3 class="mb-0">Example: GET_TIME_MILLIS_3s Command</h3>
+                            <p>The screenshot below demonstrates that I obtained the current time in milliseconds from the Artemis board and then sent it back to the laptop. After collecting these time values for 3 seconds, I was able to calculate an average speed of how fast messages can be sent. The effective data transfer rate of this method was 832 bytes/s.
+                            </p>
+                            <img src="Imgs_lab1/get_3s_time.png" alt="collect and send data for 3 secs" style="width: 40vw; height: 20vw;">
+                        </div>
+                    </div>
+                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                        <div class="flex-grow-1">
+                            <h3 class="mb-0">Example: SEND_TIME_DATA</h3>
+                            <p>Next, a new command, SEND_TIME_DATA, was introduced. In the Arduino IDE, I created a loop that, instead of sending each timestamp to the laptop, stored each timestamp in an integer array named time_stamps. By calling the command SEND_TIME_DATA, the Arduino code looped through the array and sent each data point as a string to the laptop for processing. Additionally, the data transfer rate was calculated, which was 411,000 bytes/s. This rate was in contrast to the previous method, which sent each timestamp immediately instead of storing them in an array.
+                            </p>
+                            <img src="Imgs_lab1/get_3s_time_inArray.png" alt="collect and send data stored in an array which collects 3 secs data" style="width: 40vw; height: 20vw;">
+                        </div>
+                    </div>
+                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                        <div class="flex-grow-1">
+                            <h3 class="mb-0">Example: GET_TEMP_READINGS</h3>
+                            <p>Next, as instructed, I added a second array of the same size as the time stamp array to store temperature readings. As shown in the screenshot below, each element in both arrays corresponded, meaning that the first timestamp was recorded at the same time as the first temperature reading. A command, GET_TEMP_READINGS, was introduced to loop through both arrays concurrently and send the data back to the laptop. I was able to configure the notification handler to manage the event and wrote code in Python to parse these strings, populating the data into two lists.
+                            </p>
+                            <img src="Imgs_lab1/get_timeTemp.png" alt="BLE connection" style="width: 40vw; height: 20vw;">
+                        </div>
+                    </div>
+
+                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                        <div class="flex-grow-1">
+                            <h3 class="mb-0">Example: Discussion about Two methods</h3>
+                            <p>The first method involves the Artemis board sending data immediately as it becomes available, without any buffering. The second approach, on the other hand, has the Artemis board buffering data into a packet before sending it to the computer. This method is faster, as indicated by the results above. The Artemis board is equipped with 384 kB of RAM, and considering that one character (char) is equivalent to 1 byte, it has the capacity to store up to 384,000 characters in its memory for transmission without running out of space.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                        <div class="flex-grow-1">
+                            <h3 class="mb-0">(5000-Level) : Effeefctive Data Rate And Overhead</h3>
+                            <p>Next, I sent messages from the computer and received replies from the Artemis board. I calculated the data rate for 5-byte replies to be about 103 bytes/s and for 120-byte replies to be 1602 bytes/s. Additionally, to understand the relationship between the number of bytes and the data transfer rate, I tested multiple byte replies at intervals of 5. It was observed that the data rate increases with the amount of bytes sent, as depicted in the graph below. This trend indicates that larger replies reduce overhead. However, as shown on the graph, when the byte replies become too large—specifically, when they exceed 80 bytes—the trend might break, and the rate might drop to a lower rate than expected.      
+                            </p>
+                            <img src="Imgs_lab1/effective_rate.png" alt="BLE connection" style="width: 40vw; height: 20vw;">
+                            <img src="Imgs_lab1/effective_rate_graph.png" alt="BLE connection" style="width: 40vw; height: 20vw;">
+                        </div>
+                    </div>
+                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                        <div class="flex-grow-1">
+                            <h3 class="mb-0">(5000-Level) : Reliability</h3>
+                            <p>By modifying the code for the command SEND_TIME_DATA to send 10 unique data points at a high speed without any delay, the reliability of the Artemis was demonstrated. In the screenshot attached below, we can see that the data is reliable by comparing the data sent from the Artemis board and the data received on the laptop.
+                            </p>
+                            <img src="Imgs_lab1/reliability.png" alt="reliability" style="width: 50vw; height: 25vw;">
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+
         </div>
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
