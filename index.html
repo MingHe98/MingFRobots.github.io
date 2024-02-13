@@ -303,6 +303,16 @@
                             However, when a vibration occurs during the collection of accelerometer data, the signal in the frequency domain appears as illustrated in the screenshot below.
                             </p>
                             <img src="Imgs_lab2/vibration_fft.png" alt="vibrated signal in frequency domain" style="width: 50vw; height: 25vw;">
+                            <p>According to the datasheet, a hardware low pass filter is implemented, which explains the relatively clean signal in the FFT diagram when the device is stationary. New signals appearing up to about 30Hz were observed when vibration was introduced. Implementing a low pass filter via software might be beneficial. Based on the diagram, I selected a cut-off frequency of 10Hz.</p>
+                            <br>
+                            <p>The cut-off frequency was set at 10 Hz. Using the formula <p>\(\boldsymbol{f = \frac{1}{2\pi RC}}\)</p>
+                                , where the f is the cut-off frequency, we can solve for the RC constant. Substituting <p>\(\boldsymbol{f = 10}\)</p>
+                               into the equation yields an RC constant of approximately 0.0159155. Consequently, using the formula <p>\(\boldsymbol{\alpha = \frac{T}{T + RC}}\)</p>, where T is the period corresponding to the sample rate (<p>\(\boldsymbol{T = \frac{1}{\text{sample rate}}}\)</p>), and the sample rate is determined by recording a certain number of data points over a specific period of time, which calculates to 294.76787030213706 Hz. This results in 
+                               <p>\(\boldsymbol{T = 0.00339\, \text{seconds}}\)</p>, and therefore, <p>\(\boldsymbol{\alpha}\)</p> is calculated to be approximately 0.1756.
+                            </p>
+                            <br>
+                            <p>After introducing the low pass filter, which effectively reduces the noise to some extent, the data monitoring through the serial plotter is demonstrated in the video below. The video clearly distinguishes between the raw data, represented by the blue line, and the processed data, shown as the orange line, after implementing the low pass filter. It is evident that the low pass filter significantly reduces the noise.</p>
+                            <iframe width="auto" height="auto" src="https://youtube.com/embed/T6WbZIQKHvs" title="Temperature reading" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>                          
                         </div>
 
                     </div>
