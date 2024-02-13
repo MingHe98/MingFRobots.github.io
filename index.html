@@ -268,13 +268,13 @@
                         <div class="flex-grow-1">
                             <h3 class="mb-0">Visualizing the difference between accelerometer and gyroscope data via the Serial Monitor</h3>
                             <p>Based on the data printed out on the serial monitor, the accelerometer data indicates the acceleration of motion around each coordinate axis. Thus, when moving the device along each axis, it is noticeable that the corresponding accelerometer data for that axis changes rapidly. The gyroscope measures the rate of angular rotation around the spatial coordinate axes. When the device is stationary, the data remains relatively small; however, it experiences a slight drift towards larger values.</p>
-                            <img src="Imgs_lab1/serial.jpg" alt="Serial Communication" style="width: 40vw; height: 20vw;">
+                            <iframe width="auto" height="auto" src="https://youtube.com/embed/z9GX2oCY-sw" title="visualize data on better serial plotter" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                         </div>
                     </div>
                     <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
                         <div class="flex-grow-1">
-                            <h3 class="mb-0">Example: Analog Input Read</h3>
-                            <p>The example video below demonstrates how to use the temperature sensor. The temperature recorded by the sensor on the Artemis board is sent to the serial monitor in Fahrenheit. To illustrate how the sensor responds, I covered the Artemis board with my hand, causing the temperature to increase to above 80°F.</p>
+                            <h3 class="mb-0">Accelerometer</h3>
+                            <p>In order to use the accelerometer to determine tilt and roll, we can use the atan2 function, which returns a number in radians within the range [−π,π].</p>
                             <iframe width="auto" height="auto" src="https://youtube.com/embed/MeKUfqSYkI4" title="Temperature reading" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                         </div>
 
