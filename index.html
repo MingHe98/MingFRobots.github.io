@@ -14,6 +14,8 @@
         <link href="https://fonts.googleapis.com/css?family=Muli:400,400i,800,800i" rel="stylesheet" type="text/css" />
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="css/styles.css" rel="stylesheet" />
+        <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+        <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     </head>
     <body id="page-top">
         <!-- Navigation-->
@@ -251,6 +253,7 @@
                             <br>
                             <p>Given that the IMU communicates with the Artemis board using the I2C protocol, knowing the slave address is crucial. The variable AD0_VAL signifies the last bit of the IMU's I2C address, which changes depending on the ADR jumper's connection. Initially, my IMU failed to provide any data, and the connection was unsuccessful because I had AD0_VAL set to 1, whereas it should have been 0 for my device.
                             </p>
+                            <p>This is an equation: \(x = \frac{-b \pm \sqrt{b^2-4ac}}{2a}\)</p>
                         
                             <img src="Imgs_lab2/IMU.jpg" alt="IMU connected" style="width: 40vw; height: 20vw;">
                         </div>
