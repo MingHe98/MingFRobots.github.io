@@ -248,6 +248,10 @@
                             <h3 class="mb-0">Set Up the IMU</h3>
                             <p>The goal of this part of the lab is to set up and become familiar with the IMU. It covers skills in programming on the Arduino IDE, testing the IMU with collecting accelerometer and gyroscope data.
                             </p>
+                            <br>
+                            <p>Given that the IMU communicates with the Artemis board using the I2C protocol, knowing the slave address is crucial. The variable AD0_VAL signifies the last bit of the IMU's I2C address, which changes depending on the ADR jumper's connection. Initially, my IMU failed to provide any data, and the connection was unsuccessful because I had AD0_VAL set to 1, whereas it should have been 0 for my device.
+                            </p>
+                        
                             <img src="Imgs_lab2/IMU.jpg" alt="IMU connected" style="width: 40vw; height: 20vw;">
                         </div>
                         <div class="flex-shrink-0"><span class="text-primary">7th, Feb 2024 - 14th Feb 2024</span></div>
