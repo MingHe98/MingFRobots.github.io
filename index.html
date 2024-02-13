@@ -290,6 +290,19 @@
                             <h4 class="mb-0">Accelerometer Noise</h4>
                             <p>As demonstrated in the video below, when the device is stationary, the signal in the time domain continues to fluctuate, indicating noise that may require attention.</p>
                             <iframe width="auto" height="auto" src="https://youtube.com/embed/5N6rgU3tApM" title="Temperature reading" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <br>
+                            <p>
+                            When inspecting the noise, a fast Fourier transform (FFT)—an algorithm that computes the discrete Fourier transform (DFT) of a sequence—plays a crucial role. It is instrumental in visualizing the data more effectively in the frequency domain
+                            </p>
+                            <br>
+                            <p>
+                            When the device is completely stationary, collecting the data and applying the Fast Fourier Transform (FFT) reveals the signal in the frequency domain, as shown below.
+                            </p>
+                            <img src="Imgs_lab2/stationary_fft.png" alt="stationary signal in frequency domain" style="width: 50vw; height: 25vw;">
+                            <p>
+                            However, when a vibration occurs during the collection of accelerometer data, the signal in the frequency domain appears as illustrated in the screenshot below.
+                            </p>
+                            <img src="Imgs_lab2/vibration_fft.png" alt="vibrated signal in frequency domain" style="width: 50vw; height: 25vw;">
                         </div>
 
                     </div>
