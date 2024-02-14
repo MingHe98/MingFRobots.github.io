@@ -331,6 +331,7 @@
                             <p>The video below demonstrates that the gyroscope data follows the same pattern as the accelerometer data, albeit with an increasing offset over time. This growing offset highlights the drift characteristic of gyroscope data.
                             </p>
                             <iframe width="auto" height="auto" src="https://youtube.com/embed/EG00ankJB1E" title="data comparison between gyro and accelerometer" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <p>Since calculating angles from gyroscope data is heavily dependent on the time difference between each data collection, the sample rate significantly impacts accuracy. After reducing the sample rate by introducing a delay, visualization of the gyro data through the serial plotter showed that updates to the new angles became slower and noticeably less accurate.</p>
                         </div>
                     </div>
                     <hr>
