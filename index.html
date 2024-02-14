@@ -336,8 +336,8 @@
                     </div>
                     <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
                         <div class="flex-grow-1">
-                            <h3 class="mb-0">Sampling Data</h3>
-                            <p>The gyroscope measures the rate of angular change in degrees per second. To calculate the angle, it adds the product of the angular rate and time to the current angle. A key advantage of the gyroscope is its lower noise levels compared to those of the accelerometer. However, a notable drawback is data drift over time. This means that even when the device is stationary on a table and the readings should ideally be zero, the data will gradually accumulate, leading to progressively larger values as time advances.</p>
+                            <h3 class="mb-0">Sample Data</h3>
+                            <p>I increased the speed of IMU data collection by eliminating print statements and opting to store a time value at each iteration of the while loop, and store another time value when myICM.dataReady() returns true. This resulted in an average delay of approximately 0.0005 seconds between collections. However, this delay is expected to increase with the addition of more specific function calls and filter processing. Furthermore, by comparing two arrays that store time values for the main while loop and an inner loop—which merely checks for new IMU data readiness—the pacing between them appeared consistent.</p>
                             <br>
                             <h4 class="mb-0">Data Drift</h4>
                             <p>The video below displays data measured from the gyroscope, clearly showing how the data drifts over time even when the device is stationary.</p>
