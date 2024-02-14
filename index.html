@@ -283,13 +283,13 @@
                             <p>The screenshot provided below demonstrates the implementation of the atan2 function to calculate the angles of pitch and roll in radians, which are then converted to degrees.</p>
                             <img src="Imgs_lab2/acc_data_degree.png" alt="acc_data in degree" style="width: 40vw; height: 20vw;">
                             <p>The video below illustrates the pitch and roll data being printed out. It clearly demonstrates that the system operates effectively within the range of -90 degrees to 90 degrees along both the x and y axes, showcasing the pitch and roll actions.</p>
-                            <iframe width="auto" height="auto" src="https://youtube.com/embed/ZZJBAAaZnvM" title="Temperature reading" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <iframe width="auto" height="auto" src="https://youtube.com/embed/ZZJBAAaZnvM" title="accelerometer data" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                             <br>
                             <h4 class="mb-0">Accelerometer Accuracy</h4>
                             <p>As I record the data for a few seconds at each angle (0, -90, 90) and review the recorded data, it appears to be accurate enough. The teaching assistant instructed that there is no need to calculate the conversion factor.</p>
                             <h4 class="mb-0">Accelerometer Noise</h4>
                             <p>As demonstrated in the video below, when the device is stationary, the signal in the time domain continues to fluctuate, indicating noise that may require attention.</p>
-                            <iframe width="auto" height="auto" src="https://youtube.com/embed/5N6rgU3tApM" title="Temperature reading" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <iframe width="auto" height="auto" src="https://youtube.com/embed/5N6rgU3tApM" title="accelerometer noise" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                             <br>
                             <p>
                             When inspecting the noise, a fast Fourier transform (FFT)—an algorithm that computes the discrete Fourier transform (DFT) of a sequence—plays a crucial role. It is instrumental in visualizing the data more effectively in the frequency domain
@@ -311,7 +311,7 @@
                             </p>
                             <br>
                             <p>After introducing the low pass filter, which effectively reduces the noise to some extent, the data monitoring through the serial plotter is demonstrated in the video below. The video clearly distinguishes between the raw data, represented by the blue line, and the processed data, shown as the orange line, after implementing the low pass filter. It is evident that the low pass filter significantly reduces the noise.</p>
-                            <iframe width="auto" height="auto" src="https://youtube.com/embed/T6WbZIQKHvs" title="Temperature reading" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>                          
+                            <iframe width="auto" height="auto" src="https://youtube.com/embed/T6WbZIQKHvs" title="Low pass filter" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>                          
                         </div>
 
                     </div>
@@ -322,14 +322,15 @@
                             <br>
                             <h4 class="mb-0">Data Drift</h4>
                             <p>The video below displays data measured from the gyroscope, clearly showing how the data drifts over time even when the device is stationary.</p>
-                            <iframe width="auto" height="auto" src="https://youtube.com/embed/XjH4_3PKiMI" title="Temperature reading" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>                                                     
+                            <iframe width="auto" height="auto" src="https://youtube.com/embed/XjH4_3PKiMI" title="data drifts" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>                                                     
                         </div>
                     </div>
                     <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
                         <div class="flex-grow-1">
                             <h4 class="mb-0">Comparison of data output: gyroscope data versus accelerometer data and accelerometer data processed with a Low Pass Filter (LPF)</h4>
-                            <p>The example video below was used to identify the musical note "A". When the microphone detected an "A", corresponding to a sound frequency of approximately 526 Hz, the LED would turn on. For sounds of other frequencies, the LED remains off.</p>
-                            <iframe width="auto" height="auto" src="https://youtube.com/embed/Ho1qV9jYgtg" title="Microphone reading" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <p>The video below demonstrates that the gyroscope data follows the same pattern as the accelerometer data, albeit with an increasing offset over time. This growing offset highlights the drift characteristic of gyroscope data.
+                            </p>
+                            <iframe width="auto" height="auto" src="https://youtube.com/embed/EG00ankJB1E" title="data comparison between gyro and accelerometer" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                         </div>
                     </div>
                     <hr>
