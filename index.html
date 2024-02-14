@@ -305,7 +305,7 @@
                             <img src="Imgs_lab2/vibration_fft.png" alt="vibrated signal in frequency domain" style="width: 50vw; height: 25vw;">
                             <p>According to the datasheet, a hardware low pass filter is implemented, which explains the relatively clean signal in the FFT diagram when the device is stationary. New signals appearing up to about 30Hz were observed when vibration was introduced. Implementing a low pass filter via software might be beneficial. Based on the diagram, I selected a cut-off frequency of 10Hz.</p>
                             <br>
-                            <,>The cut-off frequency was set at 10 Hz. Using the formula \(\boldsymbol{f = \frac{1}{2\pi RC}}\), where the f is the cut-off frequency, we can solve for the RC constant. Substituting \(\boldsymbol{f = 10}\)
+                            <p>The cut-off frequency was set at 10 Hz. Using the formula \(\boldsymbol{f = \frac{1}{2\pi RC}}\), where the f is the cut-off frequency, we can solve for the RC constant. Substituting \(\boldsymbol{f = 10}\)
                                into the equation yields an RC constant of approximately 0.0159155. Consequently, using the formula \(\boldsymbol{\alpha = \frac{T}{T + RC}}\), where T is the period corresponding to the sample rate (\(\boldsymbol{T = \frac{1}{\text{sample rate}}}\)), and the sample rate is determined by recording a certain number of data points over a specific period of time, which calculates to 294.76787030213706 Hz. This results in 
                                \(\boldsymbol{T = 0.00339\, \text{seconds}}\), and therefore, \(\boldsymbol{\alpha}\) is calculated to be approximately 0.1756.
                             </p>
@@ -323,155 +323,39 @@
                             <h4 class="mb-0">Data Drift</h4>
                             <p>The video below displays data measured from the gyroscope, clearly showing how the data drifts over time even when the device is stationary.</p>
                             <iframe width="auto" height="auto" src="https://youtube.com/embed/XjH4_3PKiMI" title="data drifts" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>                                                     
-                        </div>
-                    </div>
-                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
-                        <div class="flex-grow-1">
                             <h4 class="mb-0">Comparison of data output: gyroscope data versus accelerometer data and accelerometer data processed with a Low Pass Filter (LPF)</h4>
                             <p>The video below demonstrates that the gyroscope data follows the same pattern as the accelerometer data, albeit with an increasing offset over time. This growing offset highlights the drift characteristic of gyroscope data.
                             </p>
                             <iframe width="auto" height="auto" src="https://youtube.com/embed/EG00ankJB1E" title="data comparison between gyro and accelerometer" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                             <p>Since calculating angles from gyroscope data is heavily dependent on the time difference between each data collection, the sample rate significantly impacts accuracy. After reducing the sample rate by introducing a delay, visualization of the gyro data through the serial plotter showed that updates to the new angles became slower and noticeably less accurate.</p>
+                            <h4 class="mb-0">Complimentary Filter</h4>
+                            <p>Despite the application recommended by the instructor, which is capable of auto-scaling the data, not functioning on my laptop, it is still evident that after implementing the complementary filter in my system, the vibrations caused no more than a 3-degree difference.</p>
+                            <iframe width="auto" height="auto" src="https://youtube.com/embed/T3YIsY8OFpc" title="Complimentary filter" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <p>Additionally, the working range from -90 degrees to 90 degrees was verified.</p>
                         </div>
-                    </div>
-                    <hr>
-                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
-                        <div class="flex-grow-1">
-                            <h3 class="mb-0">Part2: Objective</h3>
-                            <p>The goal of part two is to establish Bluetooth communication between the computer and the Artemis board, utilizing Python in a Jupyter notebook and the Arduino programming language. This session aims to create a foundational framework for Bluetooth data transmission, setting the stage for its application in future lab exercises.</p>
-                        </div>
-                        <div class="flex-shrink-0"><span class="text-primary">7th, Feb 2024 - 14th Feb 202</span></div>
                     </div>
                     <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
                         <div class="flex-grow-1">
-                            <h3 class="mb-0">Setup</h3>
-                            <div class="subheading mb-3">Start Jupyter Server</div>
-                            <p>After activating the virtual Python environment, I started the Jupyter server to use Jupyter notebooks for writing Python code.</p>
-                            <img src="Imgs_lab1/Jupyter Lab.jpg" alt="Jupyter Lab Starts" style="width: 40vw; height: 20vw;">
+                            <h3 class="mb-0">Sampling Data</h3>
+                            <p>The gyroscope measures the rate of angular change in degrees per second. To calculate the angle, it adds the product of the angular rate and time to the current angle. A key advantage of the gyroscope is its lower noise levels compared to those of the accelerometer. However, a notable drawback is data drift over time. This means that even when the device is stationary on a table and the readings should ideally be zero, the data will gradually accumulate, leading to progressively larger values as time advances.</p>
                             <br>
-                            <br>
-
-                            <div class="subheading mb-3">Artemis Board Setup</div>
-                            <p>After installing ArduinoBLE from the library manager in the Arduino IDE, I loaded and burned the sketch ble_arduino.ino onto the Artemis board from the ble_arduino directory in the codebase, following the instructions provided.</p>
-                            <br>
-                            <div class="subheading mb-3">Bluetooth Connection</div>
-                            <p>After successfully setting up the Artemis board and starting the Jupyter server, the next step was to connect the Artemis board to the Python code. I first needed to read the MAC address of the Artemis board and replace the default MAC address in the Arduino code. After uploading the provided ble_arduino.ino code file to the Artemis board, the MAC address c0:89:f4:6b:86:4b was returned in the serial monitor, as shown in the figure below.</p>
-                            <br>
-                            <p>Since the BLEService is used in this lab, in addition to the MAC address, a UUID is also needed to identify the service. This is to differentiate the various types of data sent or received between the Artemis and the computer. Therefore, in the Jupyter Notebook, I ran the following code:
-                               <br>
-                               <i>from uuid import uuid4</i>
-                               <br>
-                               <i>uuid4()</i>
-                               <br>
-                               This generated a unique UUID, which I then assigned to the BLE service in both the Arduino IDE and the Jupyter notebooks.
+                            <h4 class="mb-0">Data Drift</h4>
+                            <p>The video below displays data measured from the gyroscope, clearly showing how the data drifts over time even when the device is stationary.</p>
+                            <iframe width="auto" height="auto" src="https://youtube.com/embed/XjH4_3PKiMI" title="data drifts" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>                                                     
+                            <h4 class="mb-0">Comparison of data output: gyroscope data versus accelerometer data and accelerometer data processed with a Low Pass Filter (LPF)</h4>
+                            <p>The video below demonstrates that the gyroscope data follows the same pattern as the accelerometer data, albeit with an increasing offset over time. This growing offset highlights the drift characteristic of gyroscope data.
                             </p>
-                            <img src="Imgs_lab1/connection.jpg" alt="BLE connection" style="width: 40vw; height: 20vw;">
-                        </div>
-                    </div>
-                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
-                        <div class="flex-grow-1">
-                            <h3 class="mb-0">Connection</h3>
-                            <p>For the connection between the Artemis board and the computer, I first obtained the ArtemisBLEController object and connected to the Artemis Device before conducting any further tests.
-                            </p>
-                            <img src="Imgs_lab1/connected.png" alt="BLE connection" style="width: 40vw; height: 15w;">
-                        </div>
-                    </div>
-                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
-                        <div class="flex-grow-1">
-                            <h3 class="mb-0">Connection via commands</h3>
-                            <p>For testing the connection between the Artemis board and the computer, some new commands were created and utilized for different tasks. When a new command type is introduced, it should be added to both the Arduino IDE and the Python code to ensure they can communicate correctly under a specific command.                                 
-                            </p>
-
-                            <div style="display: flex; justify-content: space-between; align-items: center;">
-                                <img src="Imgs_lab1/cmdtypes_arduino.png" alt="command types in Arduino" style="width: 30vw; height: 15vw;">
-                                <img src="Imgs_lab1/cmdtypes_python.png" alt="command types in Python" style="width: 30vw; height: 15vw;">
-                            </div>
-                        </div>
-                    </div>    
-                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
-                        <div class="flex-grow-1">
-                            <h3 class="mb-0">Example: ECHO Command</h3>  
-                            <p>This ECHO command involved sending a string value to the Artemis board from the computer, which corresponds to the Python code. Then, the Artemis board sent back the augmented phrase, which had additional words added to the original phrase, as shown below in both the Jupyter notebooks and the Arduino IDE screenshot, to the computer.
-                            </p>
-                            <div style="display: flex; justify-content: space-between; align-items: center;">
-                                <img src="Imgs_lab1/Echo_Arduino.png" alt="Echo command in Arduino" style="width: 30vw; height: 15vw;">
-                                <img src="Imgs_lab1/Echo_python .png" alt="Echo command in Python" style="width: 30vw; height: 15vw;">
-                            </div>
-
-                        </div>
-                    </div>
-                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
-                        <div class="flex-grow-1">
-                            <h3 class="mb-0">Example: GET_TIME_MILLIS Command</h3>
-                            <p>The next command, GET_TIME_MILLIS, involved receiving the current time from the Artemis board by using the built-in millis() function in the Arduino IDE language. Following the instructions, I converted this value to an integer and sent it as a string to Python.
-                            </p>
-                            <div style="display: flex; justify-content: space-between; align-items: center;">
-                                <img src="Imgs_lab1/millis_arduino.png" alt="Get millis in Arduino" style="width: 30vw; height: 15vw;">
-                                <img src="Imgs_lab1/millis_python.png" alt="Get millis in Python" style="width: 30vw; height: 15vw;">
-                            </div>
-                        </div>
-                    </div>              
-                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
-                        <div class="flex-grow-1">
-                            <h3 class="mb-0">Notification Handler</h3>
-                            <p>Instead of manually sending a command and then receiving the data, a notification handler could be used to monitor the data transfer. It is an asynchronous event handler, which means it would handle the case when the Artemis board is sending data and then receiving the data in Python.
-                            <br><br>
-                            The code below demonstrates how I used a notification handler to asynchronously receive the time data sent from the Artemis board.    
-                            </p>
-                            <img src="Imgs_lab1/event_handler.png" alt="Event handler" style="width: 40vw; height: 20vw;">
-                        </div>
-                    </div>
-                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
-                        <div class="flex-grow-1">
-                            <h3 class="mb-0">Example: GET_TIME_MILLIS_3s Command</h3>
-                            <p>The screenshot below demonstrates that I obtained the current time in milliseconds from the Artemis board and then sent it back to the laptop. After collecting these time values for 3 seconds, I was able to calculate an average speed of how fast messages can be sent. The effective data transfer rate of this method was 832 bytes/s.
-                            </p>
-                            <img src="Imgs_lab1/get_3s_time.png" alt="collect and send data for 3 secs" style="width: 40vw; height: 20vw;">
-                        </div>
-                    </div>
-                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
-                        <div class="flex-grow-1">
-                            <h3 class="mb-0">Example: SEND_TIME_DATA</h3>
-                            <p>Next, a new command, SEND_TIME_DATA, was introduced. In the Arduino IDE, I created a loop that, instead of sending each timestamp to the laptop, stored each timestamp in an integer array named time_stamps. By calling the command SEND_TIME_DATA, the Arduino code looped through the array and sent each data point as a string to the laptop for processing. Additionally, the data transfer rate was calculated, which was 411,000 bytes/s. This rate was in contrast to the previous method, which sent each timestamp immediately instead of storing them in an array.
-                            </p>
-                            <img src="Imgs_lab1/get_3s_time_inArray.png" alt="collect and send data stored in an array which collects 3 secs data" style="width: 40vw; height: 20vw;">
-                        </div>
-                    </div>
-                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
-                        <div class="flex-grow-1">
-                            <h3 class="mb-0">Example: GET_TEMP_READINGS</h3>
-                            <p>Next, as instructed, I added a second array of the same size as the time stamp array to store temperature readings. As shown in the screenshot below, each element in both arrays corresponded, meaning that the first timestamp was recorded at the same time as the first temperature reading. A command, GET_TEMP_READINGS, was introduced to loop through both arrays concurrently and send the data back to the laptop. I was able to configure the notification handler to manage the event and wrote code in Python to parse these strings, populating the data into two lists.
-                            </p>
-                            <img src="Imgs_lab1/get_timeTemp.png" alt="BLE connection" style="width: 40vw; height: 20vw;">
+                            <iframe width="auto" height="auto" src="https://youtube.com/embed/EG00ankJB1E" title="data comparison between gyro and accelerometer" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <p>Since calculating angles from gyroscope data is heavily dependent on the time difference between each data collection, the sample rate significantly impacts accuracy. After reducing the sample rate by introducing a delay, visualization of the gyro data through the serial plotter showed that updates to the new angles became slower and noticeably less accurate.</p>
+                            <h4 class="mb-0">Complimentary Filter</h4>
+                            <p>Despite the application recommended by the instructor, which is capable of auto-scaling the data, not functioning on my laptop, it is still evident that after implementing the complementary filter in my system, the vibrations caused no more than a 3-degree difference.</p>
+                            <iframe width="auto" height="auto" src="https://youtube.com/embed/T3YIsY8OFpc" title="Complimentary filter" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <p>Additionally, the working range from -90 degrees to 90 degrees was verified.</p>
                         </div>
                     </div>
 
-                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
-                        <div class="flex-grow-1">
-                            <h3 class="mb-0">Example: Discussion about Two methods</h3>
-                            <p>The first method involves the Artemis board sending data immediately as it becomes available, without any buffering. The second approach, on the other hand, has the Artemis board buffering data into a packet before sending it to the computer. This method is faster, as indicated by the results above. The Artemis board is equipped with 384 kB of RAM, and considering that one character (char) is equivalent to 1 byte, it has the capacity to store up to 384,000 characters in its memory for transmission without running out of space.
-                            </p>
-                        </div>
-                    </div>
-                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
-                        <div class="flex-grow-1">
-                            <h3 class="mb-0">(5000-Level) : Effeefctive Data Rate And Overhead</h3>
-                            <p>Next, I sent messages from the computer and received replies from the Artemis board. I calculated the data rate for 5-byte replies to be about 103 bytes/s and for 120-byte replies to be 1602 bytes/s. Additionally, to understand the relationship between the number of bytes and the data transfer rate, I tested multiple byte replies at intervals of 5. It was observed that the data rate increases with the amount of bytes sent, as depicted in the graph below. This trend indicates that larger replies reduce overhead. However, as shown on the graph, when the byte replies become too large—specifically, when they exceed 80 bytes—the trend might break, and the rate might drop to a lower rate than expected.      
-                            </p>
-                            <img src="Imgs_lab1/effective_rate.png" alt="BLE connection" style="width: 40vw; height: 20vw;">
-                            <img src="Imgs_lab1/effective_rate_graph.png" alt="BLE connection" style="width: 40vw; height: 20vw;">
-                        </div>
-                    </div>
-                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
-                        <div class="flex-grow-1">
-                            <h3 class="mb-0">(5000-Level) : Reliability</h3>
-                            <p>By modifying the code for the command SEND_TIME_DATA to send 10 unique data points at a high speed without any delay, the reliability of the Artemis was demonstrated. In the screenshot attached below, we can see that the data is reliable by comparing the data sent from the Artemis board and the data received on the laptop.
-                            </p>
-                            <img src="Imgs_lab1/reliability.png" alt="reliability" style="width: 50vw; height: 25vw;">
-                        </div>
-                    </div>
 
-                </div>
+
             </section>
 
 
