@@ -339,18 +339,9 @@
                             <h3 class="mb-0">Sample Data</h3>
                             <p>I increased the speed of IMU data collection by eliminating print statements and opting to store a time value at each iteration of the while loop, and store another time value when myICM.dataReady() returns true. This resulted in an average delay of approximately 0.0005 seconds between collections. However, this delay is expected to increase with the addition of more specific function calls and filter processing. Furthermore, by comparing two arrays that store time values for the main while loop and an inner loop—which merely checks for new IMU data readiness—the pacing between them appeared consistent.</p>
                             <br>
-                            <h4 class="mb-0">Data Drift</h4>
-                            <p>The video below displays data measured from the gyroscope, clearly showing how the data drifts over time even when the device is stationary.</p>
-                            <iframe width="auto" height="auto" src="https://youtube.com/embed/XjH4_3PKiMI" title="data drifts" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>                                                     
-                            <h4 class="mb-0">Comparison of data output: gyroscope data versus accelerometer data and accelerometer data processed with a Low Pass Filter (LPF)</h4>
-                            <p>The video below demonstrates that the gyroscope data follows the same pattern as the accelerometer data, albeit with an increasing offset over time. This growing offset highlights the drift characteristic of gyroscope data.
-                            </p>
-                            <iframe width="auto" height="auto" src="https://youtube.com/embed/EG00ankJB1E" title="data comparison between gyro and accelerometer" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                            <p>Since calculating angles from gyroscope data is heavily dependent on the time difference between each data collection, the sample rate significantly impacts accuracy. After reducing the sample rate by introducing a delay, visualization of the gyro data through the serial plotter showed that updates to the new angles became slower and noticeably less accurate.</p>
-                            <h4 class="mb-0">Complimentary Filter</h4>
-                            <p>Despite the application recommended by the instructor, which is capable of auto-scaling the data, not functioning on my laptop, it is still evident that after implementing the complementary filter in my system, the vibrations caused no more than a 3-degree difference.</p>
-                            <iframe width="auto" height="auto" src="https://youtube.com/embed/T3YIsY8OFpc" title="Complimentary filter" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                            <p>Additionally, the working range from -90 degrees to 90 degrees was verified.</p>
+                            <h4 class="mb-0">Discussion</h4>
+                            <h5>Consider if it makes sense to have one big array, or separate arrays for storing ToF, Accelerometer, and Gyroscope data</h5>
+                            <p>Storing data in separate arrays is more logical because each sensor—Time-of-Flight (ToF), Accelerometer, and Gyroscope—generates data with distinct meanings and units. Separate arrays ensure clearer organization, simplifying data processing and analysis. This is particularly important for cases like the Accelerometer, which requires the implementation of a Low Pass Filter, whereas Gyroscope data does not. Thus, processing data from different sensors may necessitate different filters or logic, indicating that using separate arrays can streamline implementation.</p>
                         </div>
                     </div>
 
