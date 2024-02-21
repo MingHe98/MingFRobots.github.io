@@ -441,12 +441,10 @@
 
                     <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
                         <div class="flex-grow-1">
-                            <h3 class="mb-0">How fast each sensor reads data</h3>
-                            <p>I recorded the time stamp for each measurement taken by the sensor and calculated the average sampling rate to be approximately 0.143 seconds. This means the sensor records data at a frequency of about 6.98Hz, or every 0.143 seconds.
+                            <h3 class="mb-0">Bluetooth connection</h3>
+                            <p>I carefully recorded time stamps of ToF data for 3 seconds and then sent the data over Bluetooth to my computer. The screenshot below shows the plot of the distance data over 3 seconds.
                             </p>
-                            <br>
-                            <p>I verified the readiness of the data from both sensors; if ready, the measurements were printed, otherwise, the time was printed by running the while loop in the main loop function. This process revealed that the main loop executes faster than the data collection by the sensors. Given that my current loop runs at approximately 7Hz, which is slower than expected, I reviewed my code in the Arduino IDE and consulted the Time-of-Flight (ToF) sensor's datasheet for insights. I discovered the slowdown was due to an excessive number of conditional checks in my loop, including checks on array length, data storage management, and executing 'stop ranging' in every loop.
-                            </p>
+                            <img src="Imgs_lab3/3sdataToF.jpg" alt="3 seconds of ToF data sent over Bluetooth" style="width: 40vw; height: 20vw;">
                         </div>
                     </div>
 
