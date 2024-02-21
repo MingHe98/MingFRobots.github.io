@@ -376,7 +376,7 @@
                             
                             <p>The video below demonstrates the successful powering of the Artemis board and the use of the 'ECHO' command to send a message to the Artemis board. I received a response from the Artemis board, confirming its operational status without the need for power from a USB C port. This indicates that I successfully got the Artemis board to work wirelessly.
                             </p>
-                            <iframe width="auto" height="auto" src="https://youtube.com/embed/dkHCcvXffO0" title="visualize data on better serial plotter" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <iframe width="auto" height="auto" src="https://youtube.com/embed/dkHCcvXffO0" title="power the artmis board by battery" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                             
                         </div>
                         <div class="flex-shrink-0"><span class="text-primary">14th, Feb 2024 - 21th Feb 2024</span></div>
@@ -397,8 +397,16 @@
                         </div>
                     </div>
                     <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                        <div class="flex-grow-1">
+                            <h3 class="mb-0">Connect two ToF</h3>
+                            <p>In this lab, two ToF sensors are used, which presents the challenge of managing two ToF sensors that have the same I2C address. To address this, I first connected each ToF sensor separately to the Artemis board and identified the I2C address of each device by running the I2C scanner example code. It was discovered that both sensors shared the same slave address. According to the datasheet, the slave address can be changed, and the installed library includes a function to modify the device address until it is reset or powered off. By connecting the shutdown pin on one of the ToF sensors to one of GPIO pin on the Artemis board and disabling it during startup by pulling the corresponding pin low, I was able to change the address of the other sensor to 0x30. After adjusting the address, I reactivated the ToF sensor with the original address of 0x29. Consequently, I successfully connected two ToF sensors to the Artemis board simultaneously, allowing both to function at the same time, as demonstrated in the video below.</p>
+                            <iframe width="auto" height="auto" src="https://youtube.com/embed/kTmSqQkuPjw" title="two ToF are successfully connected" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            
+                        </div>
+                    </div>
+                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
                         <div class="flex-grow-1">               
-                            <h3 class="mb-0">Accelerometer</h3>
+                            <h3 class="mb-0">ToF modes</h3>
                             <p>In order to use the accelerometer to determine tilt and roll, we can use the atan2 function, which returns a number in radians within the range [−π,π].
                                 <br>The functions used here to calculate angles are:</p>
                                 <p>\(\boldsymbol{\theta = \text{atan2}(a_x , a_z )}\)</p>
