@@ -424,18 +424,23 @@
                             <p>
                                 As mentioned in the datasheet for the VL53L1X sensor, the sensor employs FlightSense technology. This ensures that the sensor's performance is largely unaffected by ambient lighting conditions and target characteristics such as color, shape, texture, and reflectivity. This observation aligns with my discoveries from the tests mentioned above. According to the datasheet from Pololu, these external factors may only influence the maximum range of the sensor measurements. However, for the purposes of design and development in this lab, the impact of these external conditions is not deemed significant.
                             </p>
-                           
-                            <br>
-                            <p>The cut-off frequency was set at 10 Hz. Using the formula \(\boldsymbol{f = \frac{1}{2\pi RC}}\), where the f is the cut-off frequency, we can solve for the RC constant. Substituting \(\boldsymbol{f = 10}\)
-                               into the equation yields an RC constant of approximately 0.0159155. Consequently, using the formula \(\boldsymbol{\alpha = \frac{T}{T + RC}}\), where T is the period corresponding to the sample rate (\(\boldsymbol{T = \frac{1}{\text{sample rate}}}\)), and the sample rate is determined by recording a certain number of data points over a specific period of time, which calculates to 294.76787030213706 Hz. This results in 
-                               \(\boldsymbol{T = 0.00339\, \text{seconds}}\), and therefore, \(\boldsymbol{\alpha}\) is calculated to be approximately 0.1756.
+                        </div>
+                    </div>
+                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                        <div class="flex-grow-1">
+                            <h3 class="mb-0">How fast each sensor reads data</h3>
+                            <p>I recorded the time stamp for each measurement taken by the sensor and calculated the average sampling rate to be approximately 0.143 seconds. This means the sensor records data at a frequency of about 6.98Hz, or every 0.143 seconds.
                             </p>
+                            <br>
+                            <p>I verified the readiness of the data from both sensors; if ready, the measurements were printed, otherwise, the time was printed by running the while loop in the main loop function. This process revealed that the main loop executes faster than the data collection by the sensors. Given that my current loop runs at approximately 7Hz, which is slower than expected, I reviewed my code in the Arduino IDE and consulted the Time-of-Flight (ToF) sensor's datasheet for insights. I discovered the slowdown was due to an excessive number of conditional checks in my loop, including checks on array length, data storage management, and executing 'stop ranging' in every loop.
+                            </p>
+                        </div>
+                    </div>
+                            
                             <br>
                             <p>After introducing the low pass filter, which effectively reduces the noise to some extent, the data monitoring through the serial plotter is demonstrated in the video below. The video clearly distinguishes between the raw data, represented by the blue line, and the processed data, shown as the orange line, after implementing the low pass filter. It is evident that the low pass filter significantly reduces the noise.</p>
                             <iframe width="auto" height="auto" src="https://youtube.com/embed/T6WbZIQKHvs" title="Low pass filter" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>                          
-                        </div>
 
-                    </div>
                     <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
                         <div class="flex-grow-1">
                             <h3 class="mb-0">Gyroscope</h3>
