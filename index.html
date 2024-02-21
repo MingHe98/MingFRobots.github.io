@@ -420,12 +420,20 @@
                             <p>
                                 I also conducted tests on the two sensors using targets with different textures. The data previously collected were obtained using the lab floor as the target. I conducted additional tests using a cotton chair as the target; however, the data did not show any significant differences from the results illustrated in the screenshots above.
                             </p>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                        <div class="flex-grow-1">
+                            <h3 class="mb-0">How fast each sensor reads data</h3>
+                            <p>I recorded the time stamp for each measurement taken by the sensor and calculated the average sampling rate to be approximately 0.143 seconds. This means the sensor records data at a frequency of about 6.98Hz, or every 0.143 seconds.
+                            </p>
                             <br>
-                            <p>
-                                As mentioned in the datasheet for the VL53L1X sensor, the sensor employs FlightSense technology. This ensures that the sensor's performance is largely unaffected by ambient lighting conditions and target characteristics such as color, shape, texture, and reflectivity. This observation aligns with my discoveries from the tests mentioned above. According to the datasheet from Pololu, these external factors may only influence the maximum range of the sensor measurements. However, for the purposes of design and development in this lab, the impact of these external conditions is not deemed significant.
+                            <p>I verified the readiness of the data from both sensors; if ready, the measurements were printed, otherwise, the time was printed by running the while loop in the main loop function. This process revealed that the main loop executes faster than the data collection by the sensors. Given that my current loop runs at approximately 7Hz, which is slower than expected, I reviewed my code in the Arduino IDE and consulted the Time-of-Flight (ToF) sensor's datasheet for insights. I discovered the slowdown was due to an excessive number of conditional checks in my loop, including checks on array length, data storage management, and executing 'start ranging and stop ranging' in every loop.
                             </p>
                         </div>
                     </div>
+
+
                     <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
                         <div class="flex-grow-1">
                             <h3 class="mb-0">How fast each sensor reads data</h3>
@@ -436,55 +444,21 @@
                             </p>
                         </div>
                     </div>
-                            
-                            <br>
-                            <p>After introducing the low pass filter, which effectively reduces the noise to some extent, the data monitoring through the serial plotter is demonstrated in the video below. The video clearly distinguishes between the raw data, represented by the blue line, and the processed data, shown as the orange line, after implementing the low pass filter. It is evident that the low pass filter significantly reduces the noise.</p>
-                            <iframe width="auto" height="auto" src="https://youtube.com/embed/T6WbZIQKHvs" title="Low pass filter" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>                          
 
                     <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
                         <div class="flex-grow-1">
-                            <h3 class="mb-0">Gyroscope</h3>
-                            <p>The gyroscope measures the rate of angular change in degrees per second. To calculate the angle, it adds the product of the angular rate and time to the current angle. A key advantage of the gyroscope is its lower noise levels compared to those of the accelerometer. However, a notable drawback is data drift over time. This means that even when the device is stationary on a table and the readings should ideally be zero, the data will gradually accumulate, leading to progressively larger values as time advances.</p>
-                            <br>
-                            <h4 class="mb-0">Data Drift</h4>
-                            <p>The video below displays data measured from the gyroscope, clearly showing how the data drifts over time even when the device is stationary.</p>
-                            <iframe width="auto" height="auto" src="https://youtube.com/embed/XjH4_3PKiMI" title="data drifts" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>                                                     
-                            <h4 class="mb-0">Comparison of data output: gyroscope data versus accelerometer data and accelerometer data processed with a Low Pass Filter (LPF)</h4>
-                            <p>The video below demonstrates that the gyroscope data follows the same pattern as the accelerometer data, albeit with an increasing offset over time. This growing offset highlights the drift characteristic of gyroscope data.
+                            <h3 class="mb-0">5000-level student discussion: </h3>
+                            <h4 class="mb-0">Pros/Cons of other distance sensors are based on infrared trasmission</h4>
+                            <h4 class="mb-0">Sensitivity of ToF sensor VL53L1X to colors and textures</h4>
+                            <p>
+                                I evaluated the sensor's sensitivity to different textures by using the lab floor and a cotton chair as targets. The tests did not reveal any significant differences in the accuracy of the data collected. As mentioned in the datasheet for the VL53L1X sensor, the sensor employs FlightSense technology. This ensures that the sensor's performance is largely unaffected by ambient lighting conditions and target characteristics such as color, shape, texture, and reflectivity. This observation aligns with my discoveries from the tests mentioned above. According to the datasheet from Pololu, these external factors may only influence the maximum range of the sensor measurements. However, for the purposes of design and development in this lab, the impact of these external conditions is not deemed significant.
                             </p>
-                            <iframe width="auto" height="auto" src="https://youtube.com/embed/EG00ankJB1E" title="data comparison between gyro and accelerometer" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                            <p>Since calculating angles from gyroscope data is heavily dependent on the time difference between each data collection, the sample rate significantly impacts accuracy. After reducing the sample rate by introducing a delay, visualization of the gyro data through the serial plotter showed that updates to the new angles became slower and noticeably less accurate.</p>
-                            <h4 class="mb-0">Complimentary Filter</h4>
-                            <p>Despite the application recommended by the instructor, which is capable of auto-scaling the data, not functioning on my laptop, it is still evident that after implementing the complementary filter in my system, the vibrations caused no more than a 3-degree difference.</p>
-                            <iframe width="auto" height="auto" src="https://youtube.com/embed/T3YIsY8OFpc" title="Complimentary filter" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                            <p>Additionally, the working range from -90 degrees to 90 degrees was verified.</p>
                         </div>
                     </div>
-                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
-                        <div class="flex-grow-1">
-                            <h3 class="mb-0">Sample Data</h3>
-                            <p>I increased the speed of IMU data collection by eliminating print statements and opting to store a time value at each iteration of the while loop, and store another time value when myICM.dataReady() returns true. This resulted in an average delay of approximately 0.0005 seconds between collections. However, this delay is expected to increase with the addition of more specific function calls and filter processing. Furthermore, by comparing two arrays that store time values for the main while loop and an inner loop—which merely checks for new IMU data readiness—the pacing between them appeared consistent.</p>
-                            <br>
-                            <h4 class="mb-0">Discussion</h4>
-                            <h5>Consider if it makes sense to have one big array, or separate arrays for storing ToF, Accelerometer, and Gyroscope data</h5>
-                            <p>Storing data in separate arrays is more logical because each sensor—Time-of-Flight (ToF), Accelerometer, and Gyroscope—generates data with distinct meanings and units. Separate arrays ensure clearer organization, simplifying data processing and analysis. This is particularly important for cases like the Accelerometer, which requires the implementation of a Low Pass Filter, whereas Gyroscope data does not. Thus, processing data from different sensors may necessitate different filters or logic, indicating that using separate arrays can streamline implementation.</p>
-                            <h5>Consider the best data type to store your data. Should you use string, floats, double, integers?</h5>
-                            <p>For the Time-of-Flight (ToF) sensor, integers should be sufficient since distances are typically measured in whole numbers of millimeters or centimeters. However, floats are necessary if the application requires more precise distance measurements. For both the gyroscope and accelerometer, which measure different parameters, floats are adequate because they offer a good balance between precision and memory usage.</p>
-                            <h5>Consider the memory of the Artemis; how much memory can you allocate to your arrays? What does that correspond to in seconds?</h5>
-                            <p>Assuming I have three separate arrays for the three sensors—ToF, Gyroscope, and Accelerometer—with each sensor's reading represented as a single float, I would need 12 bytes per set of sensor readings (4 bytes × 3). Assuming the entire 384 KB of RAM is available for data storage and with a sampling rate of 100 readings per second, I can store approximately 32,000 sets of data points. This corresponds to about 320 seconds, which is equivalent to approximately 5 minutes and 20 seconds of data at a sampling rate of 100 Hz.</p>
-                            <h4 class="mb-0">Demonstration of data collection for over 5 seconds</h4>
-                            <p>The image below demonstrates that the board is capable of capturing data for more than 5 seconds and then transmitting it to the computer via Bluetooth.</p>
-                            <img src="Imgs_lab2/5seconds data.png" alt="5s data collection" style="width: 50vw; height: 25vw;">
-                        </div>
-                    </div>
-                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
-                        <div class="flex-grow-1">
-                            <h3 class="mb-0">Stunt Car Record</h3>
-                            <p>The video below showcases the stunt car in action. I've tested its movements forward, backward, turning around, and even flipping. The car is highly sensitive and fast, making it challenging to prevent collisions with walls or to avoid flipping due to its speed.</p>
-                            <iframe width="auto" height="auto" src="https://youtube.com/embed/7lDsMkM2NdQ" title="Stunt Car" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                            <p>As the instructor clarified, there is currently no need to mount the IMU on the car for testing.</p>
-                        </div>
-                    </div>
+                    <br>
+
+                            
+                    
             </section>
 
 
