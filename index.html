@@ -385,15 +385,15 @@
                         <div class="flex-grow-1">
                             <h3 class="mb-0">Set up the ToF sensor</h3>
                             <p>Starting by cutting one end of a QWIIC cable and removing the protective film, I then soldered the other end to the ToF sensor. After successfully installing the SparkFun VL53L1X 4m laser distance sensor library, I tested the ToF sensor by connecting it to the Artemis Board to read data from it. One challenge I encountered during this process was that it was my first time using a QWIIC connection. I needed to identify that the blue cord connected to SDA and the yellow cord connected to SCL before I started soldering the wires.</p>
-                            <iframe width="auto" height="auto" src="https://youtube.com/embed/Arvwtrr1nNU" title="visualize data on better serial plotter" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                         </div>
 
                     </div>
                     <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
                         <div class="flex-grow-1">
-                            <h3 class="mb-0">Visualizing the difference between accelerometer and gyroscope data via Serial Monitor</h3>
-                            <p>Based on the data printed out on the serial monitor, the accelerometer data indicates the acceleration of motion around each coordinate axis. Thus, when moving the device along each axis, it is noticeable that the corresponding accelerometer data for that axis changes rapidly. The gyroscope measures the rate of angular rotation around the spatial coordinate axes. When the device is stationary, the data remains relatively small; however, it experiences a slight drift towards larger values.</p>
-                            <iframe width="auto" height="auto" src="https://youtube.com/embed/z9GX2oCY-sw" title="visualize data on better serial plotter" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <h3 class="mb-0">I2C Address Scanning</h3>
+                            <p>There is an example sketch within the installed library that I used to scan for the I2C address of the device. The device was successfully identified, and its slave address is 0x29, as illustrated in the screenshot below.</p>
+                            <img src="Imgs_lab3/I2C_address.png" alt="I2C address for ToF" style="width: 40vw; height: 20vw;">
+                            <p>The I2C address matched my expectations. According to the datasheet, "The sensor’s 7-bit slave address defaults to 0101001b on power-up." The I2C scanner code returned 0x29, which is accurate because 0101001b is equal to 0x29 in hexadecimal.</p>
                         </div>
                     </div>
                     <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
