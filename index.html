@@ -393,7 +393,7 @@
                             <h3 class="mb-0">I2C Address Scanning</h3>
                             <p>There is an example sketch within the installed library that I used to scan for the I2C address of the device. The device was successfully identified, and its slave address is 0x29, as illustrated in the screenshot below.</p>
                             <img src="Imgs_lab3/I2C_address.png" alt="I2C address for ToF" style="width: 40vw; height: 20vw;">
-                            <p>The I2C address matched my expectations. According to the datasheet, "The sensor’s 7-bit slave address defaults to 0101001b on power-up." The I2C scanner code returned 0x29, which is accurate because 0101001b is equal to 0x29 in hexadecimal.</p>
+                            <p>The I2C address matched my expectations. According to the datasheet, "The sensor's 7-bit slave address defaults to 0101001b on power-up." The I2C scanner code returned 0x29, which is accurate because 0101001b is equal to 0x29 in hexadecimal.</p>
                         </div>
                     </div>
                     <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
@@ -406,31 +406,25 @@
                     <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
                         <div class="flex-grow-1">               
                             <h3 class="mb-0">ToF modes</h3>
-                            <p>The library currently supports two distance measuring modes: setDistanceModeShort and setDistanceModeLong. I successfully configured each sensor with a different mode. By utilizing the getDistanceMode() function provided by the library, I confirmed the individual settings for each sensor, as demonstrated in the screenshot below.</p>
-                           
+                            <p>The library currently supports two distance measuring modes: setDistanceModeShort and setDistanceModeLong. I successfully configured each sensor with a different mode. By utilizing the getDistanceMode() function provided by the library, I confirmed the individual settings for each sensor, as demonstrated in the screenshot below.</p>                           
                             <img src="Imgs_lab3/two_modes.png" alt="two modes read data from two sensors" style="width: 40vw; height: 20vw;">
-                            <p>The video below illustrates the pitch and roll data being printed out. It clearly demonstrates that the system operates effectively within the range of -90 degrees to 90 degrees along both the x and y axes, showcasing the pitch and roll actions.</p>
-                            <iframe width="auto" height="auto" src="https://youtube.com/embed/ZZJBAAaZnvM" title="accelerometer data" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+             
                             <br>
-                            <h4 class="mb-0">Accelerometer Accuracy</h4>
-                            <p>As I record the data for a few seconds at each angle (0, -90, 90) and review the recorded data, it appears to be accurate enough. The teaching assistant instructed that there is no need to calculate the conversion factor.</p>
-                            <h4 class="mb-0">Accelerometer Noise</h4>
-                            <p>As demonstrated in the video below, when the device is stationary, the signal in the time domain continues to fluctuate, indicating noise that may require attention.</p>
-                            <iframe width="auto" height="auto" src="https://youtube.com/embed/5N6rgU3tApM" title="accelerometer noise" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <h4 class="mb-0">Test with two modes</h4>
+                            <p>I tested two sensors using two distinct modes: short mode and long mode, and generated graphs as illustrated in the screenshot below. The data collection occurred under normal lab ambient lighting conditions. Due to space limitations, I did not test distances beyond 1 meter, which falls within the valid range for both modes.it appears to be accurate enough. The teaching assistant instructed that there is no need to calculate the conversion factor.</p>
+                            <img src="Imgs_lab3/floor_light.png" alt="two modes read data under ambient light" style="width: 40vw; height: 20vw;">
+                            <br>
+                            <p>I also tested the two sensors in both short mode and long mode by covering the light, in contrast to the tests conducted under lab ambient lighting conditions (with all other conditions, such as distance measurement, being the same). I plotted the data as illustrated in the screenshot below.</p>
+                            <img src="Imgs_lab3/floor_dark.png" alt="two modes read data by light being covered" style="width: 40vw; height: 20vw;">
                             <br>
                             <p>
-                            When inspecting the noise, a fast Fourier transform (FFT)—an algorithm that computes the discrete Fourier transform (DFT) of a sequence—plays a crucial role. It is instrumental in visualizing the data more effectively in the frequency domain
+                                I also conducted tests on the two sensors using targets with different textures. The data previously collected were obtained using the lab floor as the target. I conducted additional tests using a cotton chair as the target; however, the data did not show any significant differences from the results illustrated in the screenshots above.
                             </p>
                             <br>
                             <p>
-                            When the device is completely stationary, collecting the data and applying the Fast Fourier Transform (FFT) reveals the signal in the frequency domain, as shown below.
+                                As mentioned in the datasheet for the VL53L1X sensor, the sensor employs FlightSense technology. This ensures that the sensor's performance is largely unaffected by ambient lighting conditions and target characteristics such as color, shape, texture, and reflectivity. This observation aligns with my discoveries from the tests mentioned above. According to the datasheet from Pololu, these external factors may only influence the maximum range of the sensor measurements. However, for the purposes of design and development in this lab, the impact of these external conditions is not deemed significant.
                             </p>
-                            <img src="Imgs_lab2/stationary_fft.png" alt="stationary signal in frequency domain" style="width: 50vw; height: 25vw;">
-                            <p>
-                            However, when a vibration occurs during the collection of accelerometer data, the signal in the frequency domain appears as illustrated in the screenshot below.
-                            </p>
-                            <img src="Imgs_lab2/vibration_fft.png" alt="vibrated signal in frequency domain" style="width: 50vw; height: 25vw;">
-                            <p>According to the datasheet, a hardware low pass filter is implemented, which explains the relatively clean signal in the FFT diagram when the device is stationary. New signals appearing up to about 30Hz were observed when vibration was introduced. Implementing a low pass filter via software might be beneficial. Based on the diagram, I selected a cut-off frequency of 10Hz.</p>
+                           
                             <br>
                             <p>The cut-off frequency was set at 10 Hz. Using the formula \(\boldsymbol{f = \frac{1}{2\pi RC}}\), where the f is the cut-off frequency, we can solve for the RC constant. Substituting \(\boldsymbol{f = 10}\)
                                into the equation yields an RC constant of approximately 0.0159155. Consequently, using the formula \(\boldsymbol{\alpha = \frac{T}{T + RC}}\), where T is the period corresponding to the sample rate (\(\boldsymbol{T = \frac{1}{\text{sample rate}}}\)), and the sample rate is determined by recording a certain number of data points over a specific period of time, which calculates to 294.76787030213706 Hz. This results in 
