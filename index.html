@@ -31,6 +31,7 @@
                     <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#lab1">The Artemis board and Bluetooth</a></li>
                     <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#lab2">IMU</a></li>
                     <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#lab3">ToF</a></li>
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#lab4">Motors and Open Loop Control</a></li>
                 </ul>
             </div>
         </nav>
@@ -437,8 +438,6 @@
                             </p>
                         </div>
                     </div>
-
-
                     <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
                         <div class="flex-grow-1">
                             <h3 class="mb-0">Bluetooth connection</h3>
@@ -462,10 +461,103 @@
                         </div>
                     </div>
                     <br>
-
-                            
-                    
             </section>
+
+            <hr class="m-0"/>
+            <!-- Lab 3 -->
+            <section class="resume-section" id="lab4">
+                <div class="resume-section-content">
+                    <h2 class="mb-5"> Motors and Open Loop Control</h2>
+                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                        <div class="flex-grow-1">
+                            <h3 class="mb-0">Introduction</h3>
+                            <p>The objective of this laboratory session is to transition from manual control to automated open-loop control of the vehicle. The vehicle will be capable of performing a sequence of pre-defined maneuvers, utilizing the Artemis board in conjunction with two dual motor drivers.
+                            </p>
+                        </div>
+                        <div class="flex-shrink-0"><span class="text-primary">21th, Feb 2024 - 6th Mar 2024</span></div>
+                    </div>
+                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                        <div class="flex-grow-1">
+                            <h3 class="mb-0">Prelab on setting up</h3>
+                            <p>The connections between the motor drivers, Artemis, and battery are shown as:</p>
+                            <img src="Imgs_lab3/I2C_address.png" alt="I2C address for ToF" style="width: 40vw; height: 20vw;">
+                        </div>
+                    </div>
+                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                        <div class="flex-grow-1">
+                            <h3 class="mb-0">I2C Address Scanning</h3>
+                            <p>There is an example sketch within the installed library that I used to scan for the I2C address of the device. The device was successfully identified, and its slave address is 0x29, as illustrated in the screenshot below.</p>
+                            <img src="Imgs_lab3/I2C_address.png" alt="I2C address for ToF" style="width: 40vw; height: 20vw;">
+                            <p>The I2C address matched my expectations. According to the datasheet, "The sensor's 7-bit slave address defaults to 0101001b on power-up." The I2C scanner code returned 0x29, which is accurate because 0101001b is equal to 0x29 in hexadecimal.</p>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                        <div class="flex-grow-1">
+                            <h3 class="mb-0">Connect two ToF</h3>
+                            <p>In this lab, two ToF sensors are used, which presents the challenge of managing two ToF sensors that have the same I2C address. To address this, I first connected each ToF sensor separately to the Artemis board and identified the I2C address of each device by running the I2C scanner example code. It was discovered that both sensors shared the same slave address. According to the datasheet, the slave address can be changed, and the installed library includes a function to modify the device address until it is reset or powered off. By connecting the shutdown pin on one of the ToF sensors to one of GPIO pin on the Artemis board and disabling it during startup by pulling the corresponding pin low, I was able to change the address of the other sensor to 0x30. 
+                                After adjusting the address, I reactivated the ToF sensor with the original address of 0x29. The connetion schematic is shown below.    
+                            </p>
+                            <img src="Imgs_lab3/wiring.png" alt="Schematic for two ToF" style="width: 40vw; height: 20vw;">
+                            <br>
+                            <p>Consequently, I successfully connected two ToF sensors to the Artemis board simultaneously, allowing both to function at the same time, as demonstrated in the video below.</p> 
+                            <iframe width="auto" height="auto" src="https://youtube.com/embed/kTmSqQkuPjw" title="two ToF are successfully connected" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                        <div class="flex-grow-1">               
+                            <h3 class="mb-0">ToF modes</h3>
+                            <p>The library currently supports two distance measuring modes: setDistanceModeShort and setDistanceModeLong. I successfully configured each sensor with a different mode. By utilizing the getDistanceMode() function provided by the library, I confirmed the individual settings for each sensor, as demonstrated in the screenshot below.</p>                           
+                            <img src="Imgs_lab3/two_modes.png" alt="two modes read data from two sensors" style="width: 40vw; height: 20vw;">
+             
+                            <br>
+                            <h4 class="mb-0">Test with two modes</h4>
+                            <p>I tested two sensors using two distinct modes: short mode and long mode, and generated graphs as illustrated in the screenshot below. The data collection occurred under normal lab ambient lighting conditions. Due to space limitations, I did not test distances beyond 1 meter, which falls within the valid range for both modes.it appears to be accurate enough. The teaching assistant instructed that there is no need to calculate the conversion factor.</p>
+                            <img src="Imgs_lab3/floor_light.png" alt="two modes read data under ambient light" style="width: 40vw; height: 20vw;">
+                            <br>
+                            <p>I also tested the two sensors in both short mode and long mode by covering the light, in contrast to the tests conducted under lab ambient lighting conditions (with all other conditions, such as distance measurement, being the same). I plotted the data as illustrated in the screenshot below.</p>
+                            <img src="Imgs_lab3/floor_dark.png" alt="two modes read data by light being covered" style="width: 40vw; height: 20vw;">
+                            <br>
+                            <p>
+                                I also conducted tests on the two sensors using targets with different textures. The data previously collected were obtained using the lab floor as the target. I conducted additional tests using a cotton chair as the target; however, the data did not show any significant differences from the results illustrated in the screenshots above.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                        <div class="flex-grow-1">
+                            <h3 class="mb-0">How fast each sensor reads data</h3>
+                            <p>I recorded the time stamp for each measurement taken by the sensor and calculated the average sampling rate to be approximately 0.143 seconds. This means the sensor records data at a frequency of about 6.98Hz, or every 0.143 seconds.
+                            </p>
+                            <br>
+                            <p>I verified the readiness of the data from both sensors; if ready, the measurements were printed, otherwise, the time was printed by running the while loop in the main loop function. This process revealed that the main loop executes faster than the data collection by the sensors. Given that my current loop runs at approximately 7Hz, which is slower than expected, I reviewed my code in the Arduino IDE and consulted the Time-of-Flight (ToF) sensor's datasheet for insights. I discovered the slowdown was due to an excessive number of conditional checks in my loop, including checks on array length, data storage management, and executing 'start ranging and stop ranging' in every loop.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                        <div class="flex-grow-1">
+                            <h3 class="mb-0">Bluetooth connection</h3>
+                            <p>I carefully recorded time stamps of ToF data for 3 seconds and then sent the data over Bluetooth to my computer. The screenshot below shows the plot of the distance data over 3 seconds.
+                            </p>
+                            <img src="Imgs_lab3/3sdataToF.jpg" alt="3 seconds of ToF data sent over Bluetooth" style="width: 40vw; height: 20vw;">
+                        </div>
+                    </div>
+
+                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                        <div class="flex-grow-1">
+                            <h3 class="mb-0">5000-level student discussion: </h3>
+                            <h4 class="mb-0">Pros/Cons of other distance sensors are based on infrared trasmission</h4>
+                            <p>The Sharp GP2Y0A02YK0F infrared range sensor operates by emitting an infrared beam to measure distances between 20cm and 150cm. Its main advantages include ease of integration due to its analog output and its cost-effectiveness. However, its utility is limited by a shorter operational range and susceptibility to ambient light and reflectivity of the target. In contrast, the Ultrasonic Sensor HC-SR04, with a range of 2cm to 400cm, is not influenced by the target's color or material and remains affordable. Its accuracy, though, can be compromised by environmental factors like temperature and humidity, and its wider beam angle may reduce precision for specific targets. It also has a slower measurement speed due to the nature of sound wave propagation.
+                                The VL53L1X Time-of-Flight (ToF) sensor, utilizing FlightSense technology, excels in delivering precise and quick distance measurements up to 4 meters, irrespective of target color and ambient light. This makes it ideal for real-time applications requiring reliable data. The primary drawback of the VL53L1X is its higher cost relative to the other sensors discussed.
+                            </p>
+                            <h4 class="mb-0">Sensitivity of ToF sensor VL53L1X to colors and textures</h4>
+                            <p>
+                                I evaluated the sensor's sensitivity to different textures by using the lab floor and a cotton chair as targets. The tests did not reveal any significant differences in the accuracy of the data collected. As mentioned in the datasheet for the VL53L1X sensor, the sensor employs FlightSense technology. This ensures that the sensor's performance is largely unaffected by ambient lighting conditions and target characteristics such as color, shape, texture, and reflectivity. This observation aligns with my discoveries from the tests mentioned above. According to the datasheet from Pololu, these external factors may only influence the maximum range of the sensor measurements. However, for the purposes of design and development in this lab, the impact of these external conditions is not deemed significant.
+                            </p>
+                        </div>
+                    </div>
+                    <br>
+            </section>
+
+
 
 
         </div>
