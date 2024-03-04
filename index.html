@@ -488,10 +488,22 @@
                     </div>
                     <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
                         <div class="flex-grow-1">
-                            <h3 class="mb-0">I2C Address Scanning</h3>
-                            <p>There is an example sketch within the installed library that I used to scan for the I2C address of the device. The device was successfully identified, and its slave address is 0x29, as illustrated in the screenshot below.</p>
+                            <h3 class="mb-0">Complete connections</h3>
+                            <p>Following the schematic provided above for hardware connections, I connected the motor drivers as the image shows below.</p>
                             <img src="Imgs_lab3/I2C_address.png" alt="I2C address for ToF" style="width: 40vw; height: 20vw;">
-                            <p>The I2C address matched my expectations. According to the datasheet, "The sensor's 7-bit slave address defaults to 0101001b on power-up." The I2C scanner code returned 0x29, which is accurate because 0101001b is equal to 0x29 in hexadecimal.</p>
+                            <h3 class="mb-0">PWM signals</h3>
+                            <h4 class="mb-0">DC Power Supply</h4>
+                            <p>Initially, I powered the system using a power supply to perform a sanity check. I set the voltage to 3.7V, as the motor driver (DRV8833 by Pololu) operates within a range of 2.7V to 10.8V. Additionally, I capped the current at 2A, reflecting the peak output current the driver can handle. This measure serves as a precaution to protect the device in the event of a short circuit within the system.
+                            </p>
+                            <h4 class="mb-0">Oscilloscope</h4>
+                            <p>Subsequently, I connected one of the motor driver inputs to Channel A of the oscilloscope to visualize the generated PWM signal and verify my approach.
+                                The image below illustrates the PWM signal generated with approximately a 25% duty cycle, achieved by setting the PWM-related timer to run up to 63 out of a maximum value of 255. By analyzing the signal with an oscilloscope, I confirmed the accuracy of both my connections and my programming-level understanding of its operation. This successful verification has prepared me to advance further.
+                            </p>
+                            <img src="Imgs_lab4/PWM.jpeg" alt="PWM signal" style="width: 40vw; height: 20vw;">
+                            <h4 class="mb-0">Wheels running</h4>
+                            <p>The video below showcases my ability to generate PWM signals and control the motor, which in turn drives the wheels. This system was powered by a DC power supply and was verified with an oscilloscope connected for monitoring.
+                            </p>
+                            <iframe width="auto" height="auto" src="https://youtube.com/embed/R6V4tG-P7oI" title="pwm control wheels running and powered by DC power supply" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                         </div>
                     </div>
                     <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
