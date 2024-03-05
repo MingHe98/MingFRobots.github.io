@@ -501,21 +501,27 @@
                             </p>
                             <img src="Imgs_lab4/PWM.jpeg" alt="PWM signal" style="width: 40vw; height: 20vw;">
                             <h4 class="mb-0">Wheels running</h4>
+                            <p>The code snippet to operate one set of wheels is shown below.</p>
+                            <img src="Imgs_lab4/Onesidewheelrunning.png" alt="code to run one side" style="width: 40vw; height: 20vw;">
                             <p>The video below showcases my ability to generate PWM signals and control the motor, which in turn drives the wheels. This system was powered by a DC power supply and was verified with an oscilloscope connected for monitoring.
                             </p>
                             <iframe width="auto" height="auto" src="https://youtube.com/embed/R6V4tG-P7oI" title="pwm control wheels running and powered by DC power supply" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <p>
+                                The video below demonstrates that both sets of wheels can operate, with the system powered by two batteries: one 850mAh battery powers the Artemis board, and another 850mAh battery powers the motor drivers/motors.
+                            </p>
+                            <iframe width="auto" height="auto" src="https://youtube.com/shorts/JyxlX80o42c" title="pwm control wheels running and powered by DC power supply" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            
                         </div>
                     </div>
                     <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
                         <div class="flex-grow-1">
-                            <h3 class="mb-0">Connect two ToF</h3>
-                            <p>In this lab, two ToF sensors are used, which presents the challenge of managing two ToF sensors that have the same I2C address. To address this, I first connected each ToF sensor separately to the Artemis board and identified the I2C address of each device by running the I2C scanner example code. It was discovered that both sensors shared the same slave address. According to the datasheet, the slave address can be changed, and the installed library includes a function to modify the device address until it is reset or powered off. By connecting the shutdown pin on one of the ToF sensors to one of GPIO pin on the Artemis board and disabling it during startup by pulling the corresponding pin low, I was able to change the address of the other sensor to 0x30. 
-                                After adjusting the address, I reactivated the ToF sensor with the original address of 0x29. The connetion schematic is shown below.    
+                            <h3 class="mb-0">All components on the car</h3>
+                            <p>The figure below displays how all components are connected in the stunt car's system and are labeled for easy identification of each part.  
                             </p>
                             <img src="Imgs_lab3/wiring.png" alt="Schematic for two ToF" style="width: 40vw; height: 20vw;">
                             <br>
-                            <p>Consequently, I successfully connected two ToF sensors to the Artemis board simultaneously, allowing both to function at the same time, as demonstrated in the video below.</p> 
-                            <iframe width="auto" height="auto" src="https://youtube.com/embed/kTmSqQkuPjw" title="two ToF are successfully connected" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <p>The figure below presents the final version of the stunt car, where tapes and zip ties were used to secure all mounted devices, ensuring they remain connected during high-speed tests.</p> 
+                            <img src="Imgs_lab3/wiring.png" alt="Schematic for two ToF" style="width: 40vw; height: 20vw;">
                         </div>
                     </div>
                     <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
