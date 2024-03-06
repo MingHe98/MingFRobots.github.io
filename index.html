@@ -574,7 +574,7 @@
                             <h3 class="mb-0">5000-level student discussion: </h3>
                             <h4 class="mb-0">PWM frequency</h4>
                             <p>Based on the analysis from the oscilloscope image which is shown above, the PWM frequency was approximately 183 Hz. The function analogWrite() is generally running at 500Hz, but the datasheet of the Artemic board does not directly demonstrates the default PWM frequency. In this lab, we are only changing the duty cycle of the PWM signals, but not the frequency. The motor driver typically operates with an internal PWM frequency of around 50 kHz, as indicated in the image below. </p>
-                            <img src="Imgs_lab4/PWMF.png" alt="motor driver pwm frequency" style="width: 40vw; height: 20vw;">
+                            <img src="Imgs_lab4/PWMF.png" alt="motor driver pwm frequency" style="width: 40vw; height: 8vw;">
                             <p>Because we are utilizing a pre-set hardware PWM signal from a PWM pin on the Artemis board, it tends to be more reliable and accurate than a software PWM signal. Adjusting the PWM frequency through programming is possible, but it may cause less accurate behavior due to timing discrepancies. Furthermore, given the current speed and the RPM of the motors, there appears to be no advantage in altering the PWM frequency.</p>
                             <h4 class="mb-0">Lowest PWM value speed (Once in motion)</h4>
                             <p>
