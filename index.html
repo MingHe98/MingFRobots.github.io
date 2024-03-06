@@ -530,9 +530,11 @@
                     <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
                         <div class="flex-grow-1">
                             <h3 class="mb-0">Calibration of two motors</h3>
-                            <p>Initially, when applying PWM signals with identical duty cycles to both motors, the car could not maintain a straight path, as shown in the video below. This suggests the need for a calibration factor to ensure both motors operate at the same speed, allowing the car to move in a straight line.
+                            <p>Initially, when applying PWM signals with identical duty cycles to both motors, the car could not maintain a straight path, as shown in the video below.
                             </p>
                             <iframe width="auto" height="auto" src="https://youtube.com/embed/P6-0Su7MSRs" title="pwm control wheels running and powered by DC power supply" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <p>The code snippet below is used to test how applying the same duty cycle to two different motors affects their operation. This suggests the need for a calibration factor to ensure both motors operate at the same speed, allowing the car to move in a straight line.</p>
+                            <img src="Imgs_lab4/beforecali.png" alt="code snippet for testing straight line" style="width: 40vw; height: 20vw;">
                             <p>Next, I adopted a trial-and-error method to reliably achieve straight-line movement of the car by adjusting the duty cycle of the PWM signal for the right-side motor, while keeping the duty cycle of the PWM signal for the left-side motor unchanged. I documented each pair of duty cycles that enabled the car to maintain a straight path as the picture below shows. 
                                 The criteria for selecting the appropriate duty cycles, to ensure both motors operated at comparable speeds, were based on the car's ability to move in a straight line for a distance greater than 6 feet. Consequently, I collected and recorded the data, which detailed the relative duty cycles of the PWM signals supplied to both motors.</p>
                             <img src="Imgs_lab4/twodcdatapoints.png" alt="data points collected on Excel" style="width: 40vw; height: 20vw;">
