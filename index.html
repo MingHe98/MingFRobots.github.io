@@ -529,6 +529,16 @@
                     </div>
                     <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
                         <div class="flex-grow-1">
+                            <h3 class="mb-0">Lower limit in PWM</h3>
+                            <p>As the video below demonstrates, this was just one of the tests I conducted to explore the value of duty cycle which could have the car start moving.
+                            </p>
+                            <iframe width="auto" height="auto" src="https://youtube.com/embed/RvDU2-VDVBk" title="pwm control wheels running against friction" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <p> I began testing intuitively with a starting PWM signal of 25, but this was insufficient to rotate the wheels. After repeating the process, I eventually discovered that setting both motors to 35, which corresponds to approximately a 14% duty cycle, was enough to get the car start moving, as the video below shows.</p>
+                            <iframe width="auto" height="auto" src="https://youtube.com/embed/Nw7JRzqgBPI" title="just against friction" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                        <div class="flex-grow-1">
                             <h3 class="mb-0">Calibration of two motors</h3>
                             <p>Initially, when applying PWM signals with identical duty cycles to both motors, the car could not maintain a straight path, as shown in the video below.
                             </p>
@@ -543,14 +553,6 @@
                             <img src="Imgs_lab4/twomotorsrelationship.png" alt="data points relationship" style="width: 40vw; height: 20vw;">
                             <p>It is easy to deduce that the relationship is approximately linear based on the line graph analysis. Consequently, I generated a straight line to analyze the linear relationship between the PWM signals sent to the left and right motors. The mathematical function of this line is \(\boldsymbol{y = 0.87x + 15.54}\).</p>
                             <img src="Imgs_lab4/approximatelinearrelashionship.png" alt="data points linear relationship" style="width: 40vw; height: 20vw;">
-                        </div>
-                    </div>
-                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
-                        <div class="flex-grow-1">
-                            <h3 class="mb-0">Lower limit in PWM</h3>
-                            <p>As the video below demonstrates, this was just one of the tests I conducted. I began testing intuitively with a starting PWM signal of 25, but this was insufficient to rotate the wheels. After repeating the process, I eventually discovered that setting both motors to 35, which corresponds to approximately a 14% duty cycle, was enough to get the car start moving.
-                            </p>
-                            <iframe width="auto" height="auto" src="https://youtube.com/shorts/RvDU2-VDVBk" title="pwm control wheels running against friction" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                         </div>
                     </div>
                     <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
