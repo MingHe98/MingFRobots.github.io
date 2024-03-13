@@ -621,21 +621,23 @@
                     <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
                         <div class="flex-grow-1">
                             <h3 class="mb-0">P, I, D corresponding coefficients choice</h3>                         
-                            <h4 class="mb-0">Kp choice</h4>
+                            <h4 class="mb-0">Propotional gain</h4>
                             <p>I began the lab by focusing on the Kp coefficient for proportional control, which uses the product of the error (the difference between the current and target distances) and Kp to estimate a pwm value, as per the equation: error * Kp. With the maximum pwm signal duty cycle set at 255 and the error at 3000 mm, I initially approximated Kp as 255/400 ≈ 0.6375, indicating that adjustments should be along with this scale of magnitude. After fine-tuning, Kp was finalized at 0.3, closely matching the anticipated range. The decrement in Kp value aimed to provide the car with a more gental thrust to move towards the target. With Kp alone integrated, the stunt car's motion, as depicted in the video, was observed.
                             </p>
-                            <iframe width="auto" height="auto" src=" https://youtube.com/embed/XpttTvVY76w" title="now lowest PWM duty cycle" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <iframe width="auto" height="auto" src="https://youtube.com/embed/XpttTvVY76w" title="Kp = 0.3" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                             
-                            <h4 class="mb-0">Ki choice</h4>
+                            <h4 class="mb-0">Integral gain</h4>
                             <p>Following the adjustment of Kp, I incorporated the Ki parameter to address the steady-state error and mitigate the oscillation issue. The integral term consists of the sum of Ki times the product of the distance error and its sampling period, leading to an increasing integrated value over time. I initiated Ki at a significantly lower value than Kp, setting it at 0.02 to cautiously approach the integration effect.
                                 However, through testing, it became apparent that Ki needed to be adjusted to a much higher value of 0.05 to effectively counteract the steady-state error. To prevent the integral term from becoming excessively large, I implemented a clamp on the error accumulator. Recognizing that the robot starts a considerable distance from the equilibrium point, I aimed to prevent excessive error accumulation. Therefore, I set the error accumulator clamp at approximately 1000mm, facilitating a smoother approach to equilibrium and easier correction of the car's trajectory.
                             </p>
-
-                            <h4 class="mb-0">Setup with power supply and oscilloscope</h4>
-                            <p>The video below shows the whole connection with connecting the motors, the Artemis board, oscilloscope, and the power supply.</p>
-                            <iframe width="auto" height="auto" src="https://youtube.com/embed/R6V4tG-P7oI" title="pwm control wheels running and powered by DC power supply" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                            <p> The image below illustrates the PWM signal generated with approximately a 25% duty cycle, achieved by setting the PWM-related timer to run up to 63 out of a maximum value of 255. By analyzing the signal with an oscilloscope, I confirmed the accuracy of both my connections and my programming-level understanding of its operation. This successful verification has prepared me to advance further.</p>
-                            <img src="Imgs_lab4/PWM.jpeg" alt="PWM signal" style="width: 40vw; height: 20vw;">
+                            <iframe width="auto" height="auto" src="https://youtube.com/embed/9khJhyMkpso" title="Ki = 0.05" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            
+                            <h4 class="mb-0">Differential gain</h4>
+                            <p>As demonstrated in the previous video, the stunt car exhibited slight overshooting, prompting the introduction of the Kd parameter. Kd, applied within the derivative term of the PID controller, anticipates future changes in error. When the error decreases rapidly, its derivative becomes significantly negative, leading the derivative term to counteract the proportional and integral terms by reducing motor speed. Kd's application involves it being multiplied by the change rate between consecutive distance measurements.
+                                Initially, I set Kd to 10. However, subsequent observations indicated that this differential gain was insufficient to effectively counterbalance the contributions of the proportional and integral gains, as the car continued to overshoot its target. 
+                                <iframe width="auto" height="auto" src="https://youtube.com/embed/Ol2U3PpHuqc" title="Kd = 10" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <p> To refine the controller's performance, I incrementally adjusted Kd by increments of 10, ultimately finding that a Kd value of 60 enabled the stunt car to move smoothly and stop in alignment with my expectations, effectively minimizing overshoot and enhancing control precision.</p>                   
+                            <iframe width="auto" height="auto" src="https://youtube.com/embed/rz3VzCsjSrs" title="Kd = 60" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                             
                             <h4 class="mb-0">Wheels running</h4>
                             <p>The code snippet to operate one set of wheels is shown below.</p>
