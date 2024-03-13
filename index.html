@@ -32,6 +32,7 @@
                     <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#lab2">Lab 2: IMU</a></li>
                     <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#lab3">Lab 3: ToF</a></li>
                     <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#lab4">Lab 4: Motors and Open Loop Control</a></li>
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#lab4">Lab 5: Linear PID control and Linear interpolation</a></li>
                 </ul>
             </div>
         </nav>
@@ -464,7 +465,8 @@
             </section>
 
             <hr class="m-0"/>
-            <!-- Lab 3 -->
+
+            <!-- Lab 4 -->
             <section class="resume-section" id="lab4">
                 <div class="resume-section-content">
                     <h2 class="mb-5"> LAB4: Motors and Open Loop Control</h2>
@@ -591,6 +593,135 @@
                     <br>
             </section>
 
+            <hr class="m-0"/>
+            <!-- Lab 5 -->
+            <section class="resume-section" id="lab4">
+                <div class="resume-section-content">
+                    <h2 class="mb-5"> LAB5: Linear PID control and Linear interpolation</h2>
+                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                        <div class="flex-grow-1">
+                            <h3 class="mb-0">Introduction</h3>
+                            <p>To initiate the PID controller lab, we set up a data acquisition system from the robot using Bluetooth, capturing operational data in a 2-D array of float values on the Arduino IDE. This PID-relevant data was then sent to a Jupyter Lab notebook on demand, facilitating subsequent analysis with Python.
+                            </p>
+                        </div>
+                        <div class="flex-shrink-0"><span class="text-primary">6th, Feb 2024 - 13th Mar 2024</span></div>
+                    </div>
+                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                        <div class="flex-grow-1">
+                            <h3 class="mb-0">Prelab on data acquisition</h3>
+                            <p>
+                            I started this lab with introducing two new command types in both Python and Arduino IDE to enable the communication via Bluetooth. The command Car_data triggers the car_starts flag, initiating data acquisition from the TOF (Time of Flight) sensor in the main loop. Concurrently, the recordError helper function, as illustrated in the screenshot below, captures the time elapsed between each TOF sensor measurement and calculates the error by comparing the current distance to the target distance. The second command, Send_data, activates the sending_data flag, enabling Python users to request data transmission from the Artemis board.
+                            </p>
+                            <img src="Imgs_lab5/start_record.png" alt="cmd type to get data" style="width: 30vw; height: 40vw;">
+                            <img src="Imgs_lab5/send_data.png" alt="cmd type to send data" style="width: 20vw; height: 5vw;">
+                            <p>Next, I began by establishing new data arrays to record the time taken for each data acquisition by the TOF sensor and the error, defined as the difference between the current and target distances, in this lab.</p>
+                            <img src="Imgs_lab5/array_store_erro.png" alt="error stored in this array" style="width: 40vw; height: 10vw;">
+                        </div>
+                    </div>
+                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                        <div class="flex-grow-1">
+                            <h3 class="mb-0">Setup and Generating PWM signals</h3>                         
+                            <h4 class="mb-0">DC Power Supply</h4>
+                            <p>Initially, I powered the system using a power supply to perform a sanity check. I set the voltage to 3.7V, as the motor driver (DRV8833 by Pololu) operates within a range of 2.7V to 10.8V. Additionally, I capped the current at 2A, reflecting the peak output current the driver can handle. This measure serves as a precaution to protect the device in the event of a short circuit within the system.
+                            </p>
+                            
+                            
+                            <h4 class="mb-0">Oscilloscope</h4>
+                            <p>Subsequently, I connected one of the motor driver inputs to Channel A of the oscilloscope to visualize the generated PWM signal and verify my approach.   
+                            </p>
+
+                            <h4 class="mb-0">Setup with power supply and oscilloscope</h4>
+                            <p>The video below shows the whole connection with connecting the motors, the Artemis board, oscilloscope, and the power supply.</p>
+                            <iframe width="auto" height="auto" src="https://youtube.com/embed/R6V4tG-P7oI" title="pwm control wheels running and powered by DC power supply" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <p> The image below illustrates the PWM signal generated with approximately a 25% duty cycle, achieved by setting the PWM-related timer to run up to 63 out of a maximum value of 255. By analyzing the signal with an oscilloscope, I confirmed the accuracy of both my connections and my programming-level understanding of its operation. This successful verification has prepared me to advance further.</p>
+                            <img src="Imgs_lab4/PWM.jpeg" alt="PWM signal" style="width: 40vw; height: 20vw;">
+                            
+                            <h4 class="mb-0">Wheels running</h4>
+                            <p>The code snippet to operate one set of wheels is shown below.</p>
+                            <img src="Imgs_lab4/Onesidewheelrunning.png" alt="code to run one side" style="width: 40vw; height: 20vw;">
+                            <p>The video below showcases my ability to generate PWM signals and control the motor, which in turn drives the wheels. This system was powered by a DC power supply and was verified with an oscilloscope connected for monitoring.
+                            </p>
+                            <iframe width="auto" height="auto" src="https://youtube.com/embed/R6V4tG-P7oI" title="pwm control wheels running and powered by DC power supply" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <p>
+                                The video below demonstrates that both sets of wheels can operate, with the system powered by two batteries: one 850mAh battery powers the Artemis board, and another 850mAh battery powers the motor drivers/motors.
+                            </p>
+                            <iframe width="auto" height="auto" src="https://youtube.com/embed/JyxlX80o42c" title="pwm control wheels running and powered by DC power supply" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                        <div class="flex-grow-1">
+                            <h3 class="mb-0">Complete connections with all components on the car</h3>
+                            <p>Following the schematic provided above for hardware connections, I connected the motor drivers as the image shows below. The figure below illustrates the connection of all components in the stunt car's system. Two time-of-flight sensors are installed at the front and rear edges of the car. The battery for the Artemis board, along with the board itself, is housed in a small basket. The IMU sensor is attached to a flat area of the axle on the car. Two motor drivers are positioned atop the battery case. The arrangement of the motor drivers and wires, secured with a zip tie, is also visible. Ultimately, the entire setup will be encased in tape to ensure its stability during operation. As depicted in the image, the battery laid out on the table will be inserted into the battery pack from the bottom and secured with tape to prevent it from dislodging during use.
+                            </p>
+                            <img src="Imgs_lab4/car_complet.jpg" alt="complet connections" style="width: 20vw; height: 30vw;">
+                            <br>
+                            <p>The figure below presents the final version of the stunt car, where tapes and zip ties were used to secure all mounted devices, ensuring they remain connected during high-speed tests, and the battery for the motors was inserted from the bottom and secured by being taped.</p> 
+                            <img src="Imgs_lab4/finalcar.jpg" alt="final apperance of the car" style="width: 20vw; height: 30vw;">
+                        </div>
+                    </div>
+                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                        <div class="flex-grow-1">
+                            <h3 class="mb-0">Lower limit in PWM</h3>
+                            <p>As the video below demonstrates, this was just one of the tests I conducted to explore the value of duty cycle which could have the car start moving.
+                            </p>
+                            <iframe width="auto" height="auto" src="https://youtube.com/embed/RvDU2-VDVBk" title="pwm control wheels running against friction" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <p> I began testing intuitively with a starting PWM signal of 25, but this was insufficient to rotate the wheels. After repeating the process, I eventually discovered that setting both motors to 35, which corresponds to approximately a 14% duty cycle, was enough to get the car start moving, as the video below shows.</p>
+                            <iframe width="auto" height="auto" src="https://youtube.com/embed/Nw7JRzqgBPI" title="just against friction" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                        <div class="flex-grow-1">
+                            <h3 class="mb-0">Calibration of two motors</h3>
+                            <p>Initially, when applying PWM signals with identical duty cycles to both motors, the car could not maintain a straight path, as shown in the video below.
+                            </p>
+                            <iframe width="auto" height="auto" src="https://youtube.com/embed/P6-0Su7MSRs" title="pwm control wheels running and powered by DC power supply" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <p>The code snippet below is used to test how applying the same duty cycle to two different motors affects their operation. This suggests the need for a calibration factor to ensure both motors operate at the same speed, allowing the car to move in a straight line.</p>
+                            <img src="Imgs_lab4/beforecali.png" alt="code snippet for testing straight line" style="width: 40vw; height: 20vw;">
+                            <p>Next, I adopted a trial-and-error method to reliably achieve straight-line movement of the car by adjusting the duty cycle of the PWM signal for the right-side motor, while keeping the duty cycle of the PWM signal for the left-side motor unchanged. I documented each pair of duty cycles that enabled the car to maintain a straight path as the picture below shows. 
+                                The criteria for selecting the appropriate duty cycles, to ensure both motors operated at comparable speeds, were based on the car's ability to move in a straight line for a distance greater than 6 feet. Consequently, I collected and recorded the data, which detailed the relative duty cycles of the PWM signals supplied to both motors.</p>
+                            <img src="Imgs_lab4/twodcdatapoints.png" alt="data points collected on Excel" style="width: 40vw; height: 20vw;">
+                            <p>Next, I proceed to plot the relationship between the PWM signals sent to the left and right sets of wheels, as illustrated by the line graph analysis presented below.
+                            </p>
+                            <img src="Imgs_lab4/twomotorsrelationship.png" alt="data points relationship" style="width: 40vw; height: 20vw;">
+                            <p>It is easy to deduce that the relationship is approximately linear based on the line graph analysis. Consequently, I generated a straight line to analyze the linear relationship between the PWM signals sent to the left and right motors. The mathematical function of this line is \(\boldsymbol{y = 0.87x + 15.54}\).</p>
+                            <img src="Imgs_lab4/approximatelinearrelashionship.png" alt="data points linear relationship" style="width: 40vw; height: 20vw;">
+                        </div>
+                    </div>
+                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                        <div class="flex-grow-1">
+                            <h3 class="mb-0">Open Loop Control</h3>
+                            <p>I implemented code that initiates the car's movement in a straight line, followed immediately by a left turn. Next, it halts for a second before turning right. After another brief pause of a second, the car then proceeds to move backwards.
+                            </p>
+                            <img src="Imgs_lab4/openloop.png" alt="open loop control" style="width: 40vw; height: 20vw;">
+                            <p>The detailed implementations of each function prototype are illustrated in the screenshots below.</p>
+                            <img src="Imgs_lab4/turn:backcode.png" alt="code implementation" style="width: 20vw; height: 40vw;">
+                            <img src="Imgs_lab4/straight-stopcode.png" alt="code implementation" style="width: 20vw; height: 40vw;">
+                            <p>The video below demonstrates the successful operation of the implemented code, performing exactly as I anticipated.</p>
+                            <iframe width="auto" height="auto" src="https://youtube.com/embed/RvDU2-VDVBk" title="pwm control wheels running against friction" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                    </div>
+
+                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                        <div class="flex-grow-1">
+                            <h3 class="mb-0">5000-level student discussion: </h3>
+                            <h4 class="mb-0">PWM frequency</h4>
+                            <p>Based on the analysis from the oscilloscope image which is shown above, the PWM frequency was approximately 183 Hz. The function analogWrite() is generally running at 500Hz, but the datasheet of the Artemic board does not directly demonstrates the default PWM frequency. In this lab, we are only changing the duty cycle of the PWM signals, but not the frequency. The motor driver typically operates with an internal PWM frequency of around 50 kHz, as indicated in the image below. </p>
+                            <img src="Imgs_lab4/PWMF.png" alt="motor driver pwm frequency" style="width: 40vw; height: 5vw;">
+                            <p>Because we are utilizing a pre-set hardware PWM signal from a PWM pin on the Artemis board, it tends to be more reliable and accurate than a software PWM signal. Adjusting the PWM frequency through programming is possible, but it may cause less accurate behavior due to timing discrepancies. Furthermore, given the current speed and the RPM of the motors, there appears to be no advantage in altering the PWM frequency.</p>
+                            <h4 class="mb-0">Lowest PWM value speed (Once in motion)</h4>
+                            <p>
+                                The video below demonstrates that a sufficient duty cycle allows the car to start moving, after which it shifts to a lower PWM duty cycle to maintain motion. The reduced duty cycle, at 33, results in the car moving at the lowest speed.
+                            </p>
+                            <iframe width="auto" height="auto" src="https://youtube.com/embed/MYVQKlaDHvc" title="pwm control wheels running at lowest duty cycle" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <p>The code to implement and test this functionality is displayed below. The car begins with a reasonable speed which overcomes the friction, and then the duty cycle is reduced to a level that allows the car to run as slowly as possible, as demonstrated in the video above.</p>
+                            <img src="Imgs_lab4/lowestPWM.png" alt="lowest PWM code" style="width: 20vw; height: 30vw;">
+                            <img src="Imgs_lab4/frictioncode.png" alt="code implementation" style="width: 20vw; height: 40vw;">
+                            <p>I continued to conduct tests to determine the duration the car could maintain its lowest speed. Utilizing a duty cycle capable of overcoming friction, it was revealed that the car nearly comes to a halt after approximately 20 seconds. Ultimately, by setting a lower PWM duty cycle to 40—slightly above the threshold that enables the car to just barely move against friction—I was able to ensure the car maintained a reasonable low speed. This was achieved even though it was not the absolute lowest PWM duty cycle, as demonstrated below.</p>
+                            <iframe width="auto" height="auto" src="https://youtube.com/embed/kmjtuHRQrOE" title="now lowest PWM duty cycle" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                    </div>
+                    <br>
+            </section>
         </div>
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
