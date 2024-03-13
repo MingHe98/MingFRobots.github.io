@@ -620,9 +620,9 @@
                     </div>
                     <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
                         <div class="flex-grow-1">
-                            <h3 class="mb-0">Setup and Generating PWM signals</h3>                         
-                            <h4 class="mb-0">DC Power Supply</h4>
-                            <p>Initially, I powered the system using a power supply to perform a sanity check. I set the voltage to 3.7V, as the motor driver (DRV8833 by Pololu) operates within a range of 2.7V to 10.8V. Additionally, I capped the current at 2A, reflecting the peak output current the driver can handle. This measure serves as a precaution to protect the device in the event of a short circuit within the system.
+                            <h3 class="mb-0">P, I, D corresponding coefficients choice</h3>                         
+                            <h4 class="mb-0">Kp choice</h4>
+                            <p>I began the lab by focusing on the Kp coefficient for proportional control, which uses the product of the error (the difference between the current and target distances) and Kp to estimate a pwm value, as per the equation: error * Kp. With the maximum pwm signal duty cycle set at 255 and the error at 3000 mm, I initially approximated Kp as 255/3000 ≈ 0.085, indicating that adjustments should be along with this scale of magnitude. After fine-tuning, Kp was finalized at 0.09, closely matching the anticipated range. The increase in Kp value aimed to provide the car with more thrust to move towards the target faster. With Kp alone integrated, the stunt car's motion, as depicted in the video, was observed.
                             </p>
                             
                             
