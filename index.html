@@ -627,7 +627,8 @@
                             <iframe width="auto" height="auto" src=" https://youtube.com/embed/XpttTvVY76w" title="now lowest PWM duty cycle" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                             
                             <h4 class="mb-0">Ki choice</h4>
-                            <p>Subsequently, I connected one of the motor driver inputs to Channel A of the oscilloscope to visualize the generated PWM signal and verify my approach.   
+                            <p>Following the adjustment of Kp, I incorporated the Ki parameter to address the steady-state error and mitigate the oscillation issue. The integral term consists of the sum of Ki times the product of the distance error and its sampling period, leading to an increasing integrated value over time. I initiated Ki at a significantly lower value than Kp, setting it at 0.02 to cautiously approach the integration effect.
+                                However, through testing, it became apparent that Ki needed to be adjusted to a much higher value of 0.05 to effectively counteract the steady-state error. To prevent the integral term from becoming excessively large, I implemented a clamp on the error accumulator. Recognizing that the robot starts a considerable distance from the equilibrium point, I aimed to prevent excessive error accumulation. Therefore, I set the error accumulator clamp at approximately 1000mm, facilitating a smoother approach to equilibrium and easier correction of the car's trajectory.
                             </p>
 
                             <h4 class="mb-0">Setup with power supply and oscilloscope</h4>
