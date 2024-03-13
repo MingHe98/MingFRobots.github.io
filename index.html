@@ -612,7 +612,7 @@
                             <p>
                             I started this lab with introducing two new command types in both Python and Arduino IDE to enable the communication via Bluetooth. The command Car_data triggers the car_starts flag, initiating data acquisition from the TOF (Time of Flight) sensor in the main loop. Concurrently, the recordError helper function, as illustrated in the screenshot below, captures the time elapsed between each TOF sensor measurement and calculates the error by comparing the current distance to the target distance. The second command, Send_data, activates the sending_data flag, enabling Python users to request data transmission from the Artemis board.
                             </p>
-                            <img src="Imgs_lab5/start_record.png" alt="cmd type to get data" style="width: 30vw; height: 40vw;">
+                            <img src="Imgs_lab5/start_record.png" alt="cmd type to get data" style="width: 35vw; height: 40vw;">
                             <img src="Imgs_lab5/send_data.png" alt="cmd type to send data" style="width: 20vw; height: 5vw;">
                             <p>Next, I began by establishing new data arrays to record the time taken for each data acquisition by the TOF sensor and the error, defined as the difference between the current and target distances, in this lab.</p>
                             <img src="Imgs_lab5/array_store_erro.png" alt="error stored in this array" style="width: 40vw; height: 10vw;">
@@ -624,7 +624,7 @@
                             <h4 class="mb-0">Kp choice</h4>
                             <p>I began the lab by focusing on the Kp coefficient for proportional control, which uses the product of the error (the difference between the current and target distances) and Kp to estimate a pwm value, as per the equation: error * Kp. With the maximum pwm signal duty cycle set at 255 and the error at 3000 mm, I initially approximated Kp as 255/3000 ≈ 0.085, indicating that adjustments should be along with this scale of magnitude. After fine-tuning, Kp was finalized at 0.09, closely matching the anticipated range. The increase in Kp value aimed to provide the car with more thrust to move towards the target faster. With Kp alone integrated, the stunt car's motion, as depicted in the video, was observed.
                             </p>
-                            
+                            <iframe width="auto" height="auto" src=" https://youtube.com/embed/XpttTvVY76w" title="now lowest PWM duty cycle" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                             
                             <h4 class="mb-0">Oscilloscope</h4>
                             <p>Subsequently, I connected one of the motor driver inputs to Channel A of the oscilloscope to visualize the generated PWM signal and verify my approach.   
