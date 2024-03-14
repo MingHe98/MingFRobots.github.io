@@ -614,6 +614,8 @@
                             </p>
                             <img src="Imgs_lab5/start_record.png" alt="cmd type to get data" style="width: 35vw; height: 40vw;">
                             <img src="Imgs_lab5/send_data.png" alt="cmd type to send data" style="width: 20vw; height: 5vw;">
+                            <p>The codes in Python execute the command in Arduino IDE are shown in the screenshot below.</p>
+                            <img src="Imgs_lab5/python_screenshot.png" alt="code in Python" style="width: 20vw; height: 5vw;">
                             <p>Next, I began by establishing new data arrays to record the time taken for each data acquisition by the TOF sensor and the error, defined as the difference between the current and target distances, in this lab.</p>
                             <img src="Imgs_lab5/array_store_erro.png" alt="error stored in this array" style="width: 40vw; height: 10vw;">
                         </div>
@@ -634,21 +636,17 @@
                             
                             <h4 class="mb-0">Differential gain</h4>
                             <p>As demonstrated in the previous video, the stunt car exhibited slight overshooting, prompting the introduction of the Kd parameter. Kd, applied within the derivative term of the PID controller, anticipates future changes in error. When the error decreases rapidly, its derivative becomes significantly negative, leading the derivative term to counteract the proportional and integral terms by reducing motor speed. Kd's application involves it being multiplied by the change rate between consecutive distance measurements.
-                                Initially, I set Kd to 10. However, subsequent observations indicated that this differential gain was insufficient to effectively counterbalance the contributions of the proportional and integral gains, as the car continued to overshoot its target. 
-                                <iframe width="auto" height="auto" src="https://youtube.com/embed/Ol2U3PpHuqc" title="Kd = 10" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                Initially, I set Kd to 10. However, subsequent observations indicated that this differential gain was insufficient to effectively counterbalance the contributions of the proportional and integral gains, as the car continued to overshoot its target. </p>
+                            <iframe width="auto" height="auto" src="https://youtube.com/embed/Ol2U3PpHuqc" title="Kd = 10" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                             <p> To refine the controller's performance, I incrementally adjusted Kd by increments of 10, ultimately finding that a Kd value of 60 enabled the stunt car to move smoothly and stop in alignment with my expectations, effectively minimizing overshoot and enhancing control precision.</p>                   
                             <iframe width="auto" height="auto" src="https://youtube.com/embed/rz3VzCsjSrs" title="Kd = 60" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                             
-                            <h4 class="mb-0">Wheels running</h4>
-                            <p>The code snippet to operate one set of wheels is shown below.</p>
+                            <h4 class="mb-0">Sampling Time for PID control sending PWM signal</h4>
+                            <p>The screenshot below displays the time difference measured at each iteration of the main loop. The average execution time of the main loop is 0.003 seconds.</p>
                             <img src="Imgs_lab4/Onesidewheelrunning.png" alt="code to run one side" style="width: 40vw; height: 20vw;">
-                            <p>The video below showcases my ability to generate PWM signals and control the motor, which in turn drives the wheels. This system was powered by a DC power supply and was verified with an oscilloscope connected for monitoring.
-                            </p>
-                            <iframe width="auto" height="auto" src="https://youtube.com/embed/R6V4tG-P7oI" title="pwm control wheels running and powered by DC power supply" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                            <p>
-                                The video below demonstrates that both sets of wheels can operate, with the system powered by two batteries: one 850mAh battery powers the Artemis board, and another 850mAh battery powers the motor drivers/motors.
-                            </p>
-                            <iframe width="auto" height="auto" src="https://youtube.com/embed/JyxlX80o42c" title="pwm control wheels running and powered by DC power supply" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            
+                            <p>The screenshot below shows the time period each time the TOF sensor measures a new distance. The average time it takes for the TOF sensor to collect data is 0.003 seconds.</p>
+                            <img src="Imgs_lab4/Onesidewheelrunning.png" alt="code to run one side" style="width: 40vw; height: 20vw;">
                         </div>
                     </div>
                     <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
