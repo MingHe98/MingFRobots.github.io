@@ -634,8 +634,11 @@
                             </p>
                             <iframe width="auto" height="auto" src="https://youtube.com/embed/9khJhyMkpso" title="Ki = 0.05" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                             <h4 class="mb-0">Integrator wind-up</h4>
-                            <p></p>
-                            
+                            <p>When the car remains stationary and the error is non-zero, the integral term will persistently accumulate. This causes the integral term's contribution to the PWM signal to increase until the motor reaches saturation. Beyond this point, the integral term continues to grow, surpassing the saturation level of the motor. It will start to decrease only when the car moves past the set point or the target distance. </p>
+                            <br>
+                            <p>These are the conditions under which I prevent the integrator from accumulating further value:
+                                First, I halt the increase of the integral term or stop its accumulation when the controller output is saturated, which I set max 40 duty cycles from itegral part, to prevent the integral term from increasing further.
+                                Second, as observed from the graph "All data over time" above, the integral part (represented by the orange line), which is the product of the integral gain (Ki) and the accumulated distance error in this lab, continues to increase until the error becomes negative. Therefore, I prevent the integrator from accumulating when the controller output's sign matches the error's sign. In other words, as soon as the error changes sign, I release the clamp on the integrator term, allowing it to decrease immediately. This approach helps to limit overshoot.</p>
                             <h4 class="mb-0">Differential gain</h4>
                             <p>As demonstrated in the previous video, the stunt car exhibited slight overshooting, prompting the introduction of the Kd parameter. Kd, applied within the derivative term of the PID controller, anticipates future changes in error. When the error decreases rapidly, its derivative becomes significantly negative, leading the derivative term to counteract the proportional and integral terms by reducing motor speed. Kd's application involves it being multiplied by the change rate between consecutive distance measurements.
                                 Initially, I set Kd to 10. However, subsequent observations indicated that this differential gain was insufficient to effectively counterbalance the contributions of the proportional and integral gains, as the car continued to overshoot its target. </p>
@@ -668,15 +671,14 @@
                             <p>Therefore, I selected two data points obtained earlier and used them to calculate the subsequent distance error. This error is then used to adjust the Proportional, Integral, and Derivative (PID) terms, affecting the PWM duty cycle. Subsequently, this adjustment influences the car's speed and its distance to the target.</p>
                             <p>The code implemented for the logic is as the pseudocode described below: </p>
                             <div>
-                            <pre style="border-left-width: 2vw;"><code>
-                            if(distanceSensor.checkForDataReady()){
-                                intermediate_distance = distanceSensor.getDistance();
-                                data_obtained_time = millis();
-                            }
-                            else {
-                                intermediate_distance = intermediate_distance + (current_time - data_obtained_time) * speed;
-                            }
-                            </code></pre>
+                                <pre style="border-right-width: 2vw; border-left-width: 0; padding-left: 1em; padding-right: 1em;"><code>
+                                    if (distanceSensor.checkForDataReady()) {
+                                        intermediate_distance = distanceSensor.getDistance();
+                                        data_obtained_time = millis();
+                                    } else {
+                                        intermediate_distance = intermediate_distance + (current_time - data_obtained_time) * speed;
+                                    }
+                                    </code></pre>
                             </div>
                             <p>As shown in the screenshot below, after extrapolation predicts the unknown data points while the TOF sensor's data is not ready, the distance error updates much more frequently, and the PWM signals used to control the car become more accurate.</p>
                             <img src="Imgs_lab5/extrapolation.png" alt="data points after extrapolation" style="width: 40vw; height: 20vw;">
