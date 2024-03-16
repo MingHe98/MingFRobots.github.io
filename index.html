@@ -666,7 +666,7 @@
                             <p>Therefore, I selected two data points obtained earlier and used them to calculate the subsequent distance error. This error is then used to adjust the Proportional, Integral, and Derivative (PID) terms, affecting the PWM duty cycle. Subsequently, this adjustment influences the car's speed and its distance to the target.</p>
                             <p>The code implemented for the logic is as the pseudocode described below: </p>
                             <div>
-                            <code>
+                            <pre><code>
                             if(distanceSensor.checkForDataReady()){
                                 intermediate_distance = distanceSensor.getDistance();
                                 data_obtained_time = millis();
@@ -674,7 +674,7 @@
                             else {
                                 intermediate_distance = intermediate_distance + (current_time - data_obtained_time) * speed;
                             }
-                            </code>
+                            </code></pre>
                             </div>
                             <p>As shown in the screenshot below, after extrapolation predicts the unknown data points while the TOF sensor's data is not ready, the distance error updates much more frequently, and the PWM signals used to control the car become more accurate.</p>
                             <img src="Imgs_lab5/extrapolation.png" alt="data points after extrapolation" style="width: 40vw; height: 20vw;">
