@@ -673,10 +673,11 @@
                   
                             <code>
                                 if (distanceSensor.checkForDataReady()) {<br>
-                                    intermediate_distance = distanceSensor.getDistance();<br>
-                                    data_obtained_time = millis();<br>
-                                } else {<br>
-                                    intermediate_distance = intermediate_distance + (current_time - data_obtained_time) * speed;<br>
+                                <p>    </p>    intermediate_distance = distanceSensor.getDistance();<br>
+                                <p>    </p>     data_obtained_time = millis();<br>
+                                } <br>
+                                else {<br>
+                                <p>    </p>    intermediate_distance = intermediate_distance + (current_time - data_obtained_time) * speed;<br>
                                 }<br>
                             </code>
                      
