@@ -633,6 +633,8 @@
                                 However, through testing, it became apparent that Ki needed to be adjusted to a much higher value of 0.05 to effectively counteract the steady-state error. To prevent the integral term from becoming excessively large, I implemented a clamp on the error accumulator. Recognizing that the robot starts a considerable distance from the equilibrium point, I aimed to prevent excessive error accumulation. Therefore, I set the error accumulator clamp at approximately 1000mm, facilitating a smoother approach to equilibrium and easier correction of the car's trajectory.
                             </p>
                             <iframe width="auto" height="auto" src="https://youtube.com/embed/9khJhyMkpso" title="Ki = 0.05" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <h4 class="mb-0">Integrator wind-up</h4>
+                            <p></p>
                             
                             <h4 class="mb-0">Differential gain</h4>
                             <p>As demonstrated in the previous video, the stunt car exhibited slight overshooting, prompting the introduction of the Kd parameter. Kd, applied within the derivative term of the PID controller, anticipates future changes in error. When the error decreases rapidly, its derivative becomes significantly negative, leading the derivative term to counteract the proportional and integral terms by reducing motor speed. Kd's application involves it being multiplied by the change rate between consecutive distance measurements.
@@ -666,7 +668,7 @@
                             <p>Therefore, I selected two data points obtained earlier and used them to calculate the subsequent distance error. This error is then used to adjust the Proportional, Integral, and Derivative (PID) terms, affecting the PWM duty cycle. Subsequently, this adjustment influences the car's speed and its distance to the target.</p>
                             <p>The code implemented for the logic is as the pseudocode described below: </p>
                             <div>
-                            <pre style="left: auto;"><code>
+                            <pre style="border-left-width: 2vw;"><code>
                             if(distanceSensor.checkForDataReady()){
                                 intermediate_distance = distanceSensor.getDistance();
                                 data_obtained_time = millis();
