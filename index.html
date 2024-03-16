@@ -666,7 +666,7 @@
                             <p>Therefore, I selected two data points obtained earlier and used them to calculate the subsequent distance error. This error is then used to adjust the Proportional, Integral, and Derivative (PID) terms, affecting the PWM duty cycle. Subsequently, this adjustment influences the car's speed and its distance to the target.</p>
                             <p>The code implemented for the logic is as the pseudocode described below: </p>
                             <div>
-                            <pre><code>
+                            <pre style="left: auto;"><code>
                             if(distanceSensor.checkForDataReady()){
                                 intermediate_distance = distanceSensor.getDistance();
                                 data_obtained_time = millis();
