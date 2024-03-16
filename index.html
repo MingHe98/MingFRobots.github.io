@@ -660,9 +660,48 @@
                             <h3 class="mb-0">Extrapolation</h3>
                             <p>As illustrated by the error graph below, it is evident that the error updates slowly. This delay is primarily because the TOF sensor takes longer to collect a new data measurement. As discussed in the sampling time section above, the TOF sensor processing the measurement takes longer than the PID controller takes to update the PWM duty cycle. Consequently, given that a moving car might collide with an obstacle before receiving an updated error measurement from the TOF sensor, extrapolation could prove to be very beneficial.</p>
                             <img src="Imgs_lab5/error.png" alt="errors being stalled" style="width: 20vw; height: 30vw;">
-                            <br>
-                            <p>The figure below presents the final version of the stunt car, where tapes and zip ties were used to secure all mounted devices, ensuring they remain connected during high-speed tests, and the battery for the motors was inserted from the bottom and secured by being taped.</p> 
-                            <img src="Imgs_lab4/finalcar.jpg" alt="final apperance of the car" style="width: 20vw; height: 30vw;">
+                     
+                            <p>Using the linear interpolation mathematical equation below, the data for a point on the graph can be obtained by calculating from two known data points.</p>
+                            <img src="Imgs_lab5/interpolation_fomula.png" alt="linear intrapolation formula" style="width: 20vw; height: 30vw;">
+                            <p>Therefore, I selected two data points obtained earlier and used them to calculate the subsequent distance error. This error is then used to adjust the Proportional, Integral, and Derivative (PID) terms, affecting the PWM duty cycle. Subsequently, this adjustment influences the car's speed and its distance to the target.</p>
+                            <!-- <p>The code implemented for the log described is shown below:</p> -->
+                            <script>
+                                // Simulate distanceSensor object
+                                // You would replace this with your actual distance sensor integration
+                                var distanceSensor = {
+                                    checkForDataReady: function() {
+                                        // Simulated check for data readiness
+                                        return Math.random() > 0.5; // Randomly returns true or false
+                                    },
+                                    getDistance: function() {
+                                        // Simulated distance retrieval
+                                        return Math.floor(Math.random() * 100); // Returns a random distance
+                                    }
+                                };
+                        
+                                var intermediate_distance = 0;
+                                var data_obtained_time = 0;
+                                var speed = 5; // Example speed value, adjust as necessary
+                        
+                                function updateDistance() {
+                                    var current_time = Date.now(); // Get current time in milliseconds
+                        
+                                    if (distanceSensor.checkForDataReady()) {
+                                        intermediate_distance = distanceSensor.getDistance();
+                                        data_obtained_time = current_time;
+                                    } else {
+                                        if (data_obtained_time > 0) { // Ensure data_obtained_time has been set
+                                            intermediate_distance += (current_time - data_obtained_time) / 1000 * speed; // Convert time from ms to seconds
+                                        }
+                                    }
+                        
+                                    // Display the intermediate distance in the HTML page
+                                    document.getElementById('distanceDisplay').innerText = 'Intermediate Distance: ' + intermediate_distance.toFixed(2) + ' units';
+                                }
+                        
+                                // Update distance every second
+                                setInterval(updateDistance, 1000);
+                            </script>
                         </div>
                     </div>
                     <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
