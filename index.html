@@ -804,6 +804,13 @@
                             <br>
                             <p>Also, after conducting FFT analysis on the derivative term multiple times, it appears that implementing a low-pass filter is not necessary.</p>
                             <img src="Imgs_lab6/noneedfor_lowpass.png" alt="no need for lpf" style="width: 40vw; height: 30vw;"> 
+                       
+                            <h4 class="mb-0">This is essential for being able to tune the PID gains/Set points quickly.</h4>
+                            <h4 class="mb-0">Will you need to be able to update the setpoint in real time?</h4>
+                            <p>In my setup, I've configured the case statement in the Arduino IDE to accept commands from the Jupyter Notebook. This setup enables the separate transmission of PID parameters and the setting of the target angle. As a result, my implementation allows for easy adjustments to the set angle by sending commands from the Jupyter Notebook to the robot via Bluetooth in real-time, as well as the modification of PID parameters on-the-fly.</p>
+                            
+                            <h4 class="mb-0">Can you control the orientation while the robot is driving forward or backward?</h4>
+                            <p>I've realized that the stunt car can only rotate to a set angle and stops once the error—the difference between the set angle and the current angle—falls within an acceptable range of +/- 5 degrees, in this lab. To enhance this functionality, I could introduce a base duty cycle for the PWM signals sent to the motors. This would enable the car to continuously move forward or backward. At the same time, it could adjust the direction by controlling one specific motor. By adding extra duty cycle to the motor controlling one side of the wheels, for example, adding controls to the right side of wheels while the car is moving forward would allow the car to turn left.</p>
                         </div>
                     </div>
 
