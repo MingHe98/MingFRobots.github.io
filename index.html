@@ -32,7 +32,8 @@
                     <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#lab2">Lab 2: IMU</a></li>
                     <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#lab3">Lab 3: ToF</a></li>
                     <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#lab4">Lab 4: Motors and Open Loop Control</a></li>
-                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#lab4">Lab 5: Linear PID control and Linear interpolation</a></li>
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#lab5">Lab 5: Linear PID control and Linear interpolation</a></li>
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#lab6">Lab 6: Orientation PID control</a></li>
                 </ul>
             </div>
         </nav>
@@ -686,6 +687,103 @@
                         </div>
                     </div>
             </section>
+
+            <hr class="m-0"/>
+            <!-- Lab 6 -->
+            <section class="resume-section" id="lab4">
+                <div class="resume-section-content">
+                    <h2 class="mb-5"> LAB6: Orientation PID control</h2>
+                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                        <div class="flex-grow-1">
+                            <h3 class="mb-0">Introduction</h3>
+                            <p>This lab is designed to provide experience with orientation PID control using the IMU. Specifically, the objective of this lab is to control the yaw of a robotic car using the IMU by implementing PID controls on PWM signals sent to two motors. This will eventually enable the car to turn to a set angle by receiving commands via Bluetooth.
+                            </p>
+                        </div>
+                        <div class="flex-shrink-0"><span class="text-primary">6th, Feb 2024 - 13th Mar 2024</span></div>
+                    </div>
+                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                        <div class="flex-grow-1">
+                            <h3 class="mb-0">Prelab on data acquisition</h3>
+                            <p>
+                            I started this lab with introducing two new command types in both Python and Arduino IDE to enable the communication via Bluetooth. The command Car_data triggers the car_starts flag, initiating data acquisition from the TOF (Time of Flight) sensor in the main loop. Concurrently, the recordError helper function, as illustrated in the screenshot below, captures the time elapsed between each TOF sensor measurement and calculates the error by comparing the current distance to the target distance. The second command, Send_data, activates the sending_data flag, enabling Python users to request data transmission from the Artemis board.
+                            </p>
+                            <img src="Imgs_lab5/start_record.png" alt="cmd type to get data" style="width: 35vw; height: 40vw;">
+                            <img src="Imgs_lab5/send_data.png" alt="cmd type to send data" style="width: 20vw; height: 5vw;">
+                            <p>The codes in Python execute the command in Arduino IDE are shown in the screenshot below.</p>
+                            <img src="Imgs_lab5/python_screenshot.png" alt="code in Python" style="width: 40vw; height: 20vw;">
+                            <p>Next, I began by establishing new data arrays to record the time taken for each data acquisition by the TOF sensor and the error, defined as the difference between the current and target distances, in this lab.</p>
+                            <img src="Imgs_lab5/array_store_erro.png" alt="error stored in this array" style="width: 40vw; height: 10vw;">
+                        </div>
+                    </div>
+                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                        <div class="flex-grow-1">
+                            <h3 class="mb-0">P, I, D corresponding coefficients choice</h3>                         
+                            <h4 class="mb-0">Propotional gain</h4>
+                            <p>I began the lab by focusing on the Kp coefficient for proportional control, which uses the product of the error (the difference between the current and target distances) and Kp to estimate a pwm value, as per the equation: error * Kp. With the maximum pwm signal duty cycle set at 255 and the error at 3000 mm, I initially approximated Kp as 255/400 ≈ 0.6375, indicating that adjustments should be along with this scale of magnitude. After fine-tuning, Kp was finalized at 0.3, closely matching the anticipated range. The decrement in Kp value aimed to provide the car with a more gental thrust to move towards the target. With Kp alone integrated, the stunt car's motion, as depicted in the video, was observed.
+                            </p>
+                            <iframe width="auto" height="auto" src="https://youtube.com/embed/XpttTvVY76w" title="Kp = 0.3" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            
+                            <h4 class="mb-0">Integral gain</h4>
+                            <p>Following the adjustment of Kp, I incorporated the Ki parameter to address the steady-state error and mitigate the oscillation issue. The integral term consists of the sum of Ki times the product of the distance error and its sampling period, leading to an increasing integrated value over time. I initiated Ki at a significantly lower value than Kp, setting it at 0.02 to cautiously approach the integration effect.
+                                However, through testing, it became apparent that Ki needed to be adjusted to a much higher value of 0.05 to effectively counteract the steady-state error. To prevent the integral term from becoming excessively large, I implemented a clamp on the error accumulator. Recognizing that the robot starts a considerable distance from the equilibrium point, I aimed to prevent excessive error accumulation. Therefore, I set the error accumulator clamp at approximately 1000mm, facilitating a smoother approach to equilibrium and easier correction of the car's trajectory.
+                            </p>
+                            <iframe width="auto" height="auto" src="https://youtube.com/embed/9khJhyMkpso" title="Ki = 0.05" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <h4 class="mb-0">Integrator wind-up</h4>
+                            <p>When the car remains stationary and the error is non-zero, the integral term will persistently accumulate. This causes the integral term's contribution to the PWM signal to increase until the motor reaches saturation. Beyond this point, the integral term continues to grow, surpassing the saturation level of the motor. It will start to decrease only when the car moves past the set point or the target distance. </p>
+                            <br>
+                            <p>These are the conditions under which I prevent the integrator from accumulating further value:
+                                First, I halt the increase of the integral term or stop its accumulation when the controller output is saturated, which I set max 40 duty cycles from itegral part, to prevent the integral term from increasing further.
+                                Second, as observed from the graph "All data over time" above, the integral part (represented by the orange line), which is the product of the integral gain (Ki) and the accumulated distance error in this lab, continues to increase until the error becomes negative. Therefore, I prevent the integrator from accumulating when the controller output's sign matches the error's sign. In other words, as soon as the error changes sign, I release the clamp on the integrator term, allowing it to decrease immediately. This approach helps to limit overshoot.</p>
+                            <h4 class="mb-0">Differential gain</h4>
+                            <p>As demonstrated in the previous video, the stunt car exhibited slight overshooting, prompting the introduction of the Kd parameter. Kd, applied within the derivative term of the PID controller, anticipates future changes in error. When the error decreases rapidly, its derivative becomes significantly negative, leading the derivative term to counteract the proportional and integral terms by reducing motor speed. Kd's application involves it being multiplied by the change rate between consecutive distance measurements.
+                                Initially, I set Kd to 10. However, subsequent observations indicated that this differential gain was insufficient to effectively counterbalance the contributions of the proportional and integral gains, as the car continued to overshoot its target. </p>
+                            <iframe width="auto" height="auto" src="https://youtube.com/embed/Ol2U3PpHuqc" title="Kd = 10" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <p> To refine the controller's performance, I incrementally adjusted Kd by increments of 10, ultimately finding that a Kd value of 60 enabled the stunt car to move smoothly and stop in alignment with my expectations, effectively minimizing overshoot and enhancing control precision.</p>                   
+                            <iframe width="auto" height="auto" src="https://youtube.com/embed/rz3VzCsjSrs" title="Kd = 60" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <p>However, the car was slightly jittering while it was running and even after it stopped. The differential term is relatively challenging to handle, so I started to graphing the contributions from P, I, D terms to the PWM duty cycles control.  The entire differential term was calculated based on the error difference, which involves subtracting the previous error from the current distance error and then dividing by the elapsed time. The screenshot below illustrates how the PWM duty cycle changes as the PID controller contributes. The spike data results from the contribution of the D term. </p>
+                            <img src="Imgs_lab5/nearby_two_erros.png" alt="two nearby errors monitored from D terms" style="width: 40vw; height: 20vw;">
+                            <p>I suspected there could be a sudden change in the error, causing the D term to approach infinity due to division which is shown as spike. To address this, I began debugging by calculating the slope or the rate of error change. This was done by taking two sets of error data spaced at two different time points and dividing by the total amount of time elapsed.</p>
+                            <img src="Imgs_lab5/data_furtheraway.png" alt="two errors further away monitored from D terms" style="width: 40vw; height: 20vw;">
+                            <p>As shown in the screenshot, the spike problem has been mitigated, though it still exists. I adjusted the Kd parameter to 1 and conducted multiple tests, incrementally increasing Kd by 1 each time. When Kd reached 3, the resulting graph, as shown below, suggests that the issue I encountered earlier was due to an improper Kd parameter setting.</p>
+                            <img src="Imgs_lab5/way_smaller_d.png" alt="with relatively nicer d" style="width: 40vw; height: 20vw;">
+                            
+                            <h4 class="mb-0">Sampling Time for PID control sending PWM signal</h4>
+                            <p>The screenshot below displays the time difference measured at each iteration of the main loop. The average execution time of the main loop is 0.03 seconds.</p>
+                            <img src="Imgs_lab5/PID_time.png" alt="code to run one side" style="width: 40vw; height: 20vw;">
+                            
+                            <p>The screenshot below shows the time period each time the TOF sensor measures a new distance. The average time it takes for the TOF sensor to collect data is 0.1 seconds.</p>
+                            <img src="Imgs_lab5/TOF_time.png" alt="code to run one side" style="width: 40vw; height: 20vw;">
+                        </div>
+                    </div>
+                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                        <div class="flex-grow-1">
+                            <h3 class="mb-0">Extrapolation</h3>
+                            <p>As illustrated by the error graph below, it is evident that the error updates slowly. This delay is primarily because the TOF sensor takes longer to collect a new data measurement. As discussed in the sampling time section above, the TOF sensor processing the measurement takes longer than the PID controller takes to update the PWM duty cycle. Consequently, given that a moving car might collide with an obstacle before receiving an updated error measurement from the TOF sensor, extrapolation could prove to be very beneficial.</p>
+                            <img src="Imgs_lab5/error.png" alt="errors being stalled" style="width: 40vw; height: 20vw;">
+                     
+                            <p>Using the linear interpolation mathematical equation below, the data for a point on the graph can be obtained by calculating from two known data points.</p>
+                            <img src="Imgs_lab5/interpolation_fomula.png" alt="linear intrapolation formula" style="width: 40vw; height: 20vw;">
+                            <p>Therefore, I selected two data points obtained earlier and used them to calculate the subsequent distance error. This error is then used to adjust the Proportional, Integral, and Derivative (PID) terms, affecting the PWM duty cycle. Subsequently, this adjustment influences the car's speed and its distance to the target.</p>
+                            <p>The code implemented for the logic is as the pseudocode described below: </p>
+                  
+                            <code>
+                                <p> if (distanceSensor.checkForDataReady()) {</p>
+                                <p style="margin-left: 2vw;">    intermediate_distance = distanceSensor.getDistance();</p>
+                                <p style="margin-left: 2vw;">       data_obtained_time = millis();</p>
+                                <p>}</p>
+                                <p>else {</p>
+                                <p style="margin-left: 2vw;">intermediate_distance = intermediate_distance + (current_time - data_obtained_time) * speed;</p>
+                                <p>}</p>
+                            </code>
+                     
+                            <p>As shown in the screenshot below, after extrapolation predicts the unknown data points while the TOF sensor's data is not ready, the distance error updates much more frequently, and the PWM signals used to control the car become more accurate.</p>
+                            <img src="Imgs_lab5/extrapolation.png" alt="data points after extrapolation" style="width: 40vw; height: 20vw;">
+                        </div>
+                    </div>
+            </section>
+
+
+
         </div>
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
