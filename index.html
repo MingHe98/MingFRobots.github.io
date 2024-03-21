@@ -707,12 +707,13 @@
                             <p>
                             I began this lab by creating a 2D array used to record the relevant data from the robot, as shown in the image below.
                             </p>
-                            <img src="Imgs_lab6/array_declaratioon.png" alt="array declare" style="width: 40vw; height: 10vw;">
-                            <img src="Imgs_lab5/send_data.png" alt="cmd type to send data" style="width: 20vw; height: 5vw;">
-                            <p>The codes in Python execute the command in Arduino IDE are shown in the screenshot below.</p>
-                            <img src="Imgs_lab5/python_screenshot.png" alt="code in Python" style="width: 40vw; height: 20vw;">
-                            <p>Next, I began by establishing new data arrays to record the time taken for each data acquisition by the TOF sensor and the error, defined as the difference between the current and target distances, in this lab.</p>
-                            <img src="Imgs_lab5/array_store_erro.png" alt="error stored in this array" style="width: 40vw; height: 10vw;">
+                            <img src="Imgs_lab6/array_declaratioon.png" alt="array declare" style="width: 40vw; height: 5vw;">
+                            <p>To implement PID control for orientation, multiple types of data are required. Additionally, I included other values such as the value of the entire P term, which is the product of Kp and the angle error (the difference between the set angle and the current angle), as well as the values of the I and D terms, for further analysis, such as conducting graph analysis on the data sent from the robot to the Jupyter notebook.</p>
+                            <img src="Imgs_lab6/data_recording.png" alt="cmd type to send data" style="width: 20vw; height: 5vw;">
+                            
+                            <p>To capture data recorded during its rotation on the floor and transmitted from the robot to the Jupyter notebook, as well as to remotely control the car's orientation by sending commands from my laptop via bluetooth, three types of commands are implemented.</p>
+                            <img src="Imgs_lab6/Start_case.png" alt="case of Start" style="width: 10vw; height: 40vw;">
+                            <img src="Imgs_lab6/other_twocase.png" alt="case of Stop and Record data" style="width: 40vw; height: 20vw;">
                         </div>
                     </div>
                     <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
