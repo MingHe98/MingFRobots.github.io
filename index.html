@@ -699,15 +699,15 @@
                             <p>This lab is designed to provide experience with orientation PID control using the IMU. Specifically, the objective of this lab is to control the yaw of a robotic car using the IMU by implementing PID controls on PWM signals sent to two motors. This will eventually enable the car to turn to a set angle by receiving commands via Bluetooth.
                             </p>
                         </div>
-                        <div class="flex-shrink-0"><span class="text-primary">6th, Feb 2024 - 13th Mar 2024</span></div>
+                        <div class="flex-shrink-0"><span class="text-primary">13th, Feb 2024 - 20th Mar 2024</span></div>
                     </div>
                     <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
                         <div class="flex-grow-1">
                             <h3 class="mb-0">Prelab on data acquisition</h3>
                             <p>
-                            I started this lab with introducing two new command types in both Python and Arduino IDE to enable the communication via Bluetooth. The command Car_data triggers the car_starts flag, initiating data acquisition from the TOF (Time of Flight) sensor in the main loop. Concurrently, the recordError helper function, as illustrated in the screenshot below, captures the time elapsed between each TOF sensor measurement and calculates the error by comparing the current distance to the target distance. The second command, Send_data, activates the sending_data flag, enabling Python users to request data transmission from the Artemis board.
+                            I began this lab by creating a 2D array used to record the relevant data from the robot, as shown in the image below.
                             </p>
-                            <img src="Imgs_lab5/start_record.png" alt="cmd type to get data" style="width: 35vw; height: 40vw;">
+                            <img src="Imgs_lab6/array_declaratioon.png" alt="array declare" style="width: 40vw; height: 10vw;">
                             <img src="Imgs_lab5/send_data.png" alt="cmd type to send data" style="width: 20vw; height: 5vw;">
                             <p>The codes in Python execute the command in Arduino IDE are shown in the screenshot below.</p>
                             <img src="Imgs_lab5/python_screenshot.png" alt="code in Python" style="width: 40vw; height: 20vw;">
