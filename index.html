@@ -780,6 +780,18 @@
                             <h4 class="mb-0">Does your sensor have any bias, and are there ways to fix this?</h4>
                             <p>As is widely known, gyroscope sensors are prone to data drifting. I visualized this data drift by measuring the angle while keeping the car stationary.</p>
                             <img src="Imgs_lab6/data_drift.png" alt="data drifts on angel measurement" style="width: 40vw; height: 30vw;">
+                            <p>There are several methods to mitigate data drifting. My approach involved accumulating 30 data points of the yaw value while the car was stationary, just before it began to move. I then calculated the average value of this noise. By subtracting this average noise value from subsequent yaw data measurements, I was able to significantly reduce the impact of data drift.</p>
+                            <img src="Imgs_lab6/calculate_avg_noise.png" alt="calculate average data drifting noise" style="width: 40vw; height: 30vw;">
+                        
+                            <h4 class="mb-0">Are there limitations on the sensor itself to be aware of?</h4>
+                            <p>As demonstrated in the screenshot below, by default, the gyroscope (referred to as myFSS.g) of this IMU is limited to sensing angle changes at a maximum rate of 250 degrees per second.</p>
+                            <img src="Imgs_lab6/calculate_avg_noise.png" alt="calculate average data drifting noise" style="width: 40vw; height: 30vw;">
+                            <p>I verified that my car reached this limitation by practically rotating the car on the floor, capturing the yaw data (myICM.gyrZ()), and graphing the results using Python, as displayed below.</p>
+                            <img src="Imgs_lab6/250_limitation.png" alt="the car reached limimation" style="width: 40vw; height: 30vw;">  
+                            <p>After increasing the speed limitation to 500 degrees per second, I repeated the graphing of the yaw data to ensure that the limitation was not exceeded.</p>
+                            <img src="Imgs_lab6/500.png" alt="the car limimation changes to 500" style="width: 40vw; height: 30vw;">
+                            <img src="Imgs_lab6/speed_500.png" alt="the car does not reach the limitation anymore" style="width: 40vw; height: 30vw;"> 
+                            <p> The issue with the previous limitation was that the sensor's maximum sensing speed was reached, so ,for example, even though the car actually rotated 120 degrees, the sensor could only register a 90-degree rotation. This discrepancy was the cause of the observed overshooting.</p>
                         </div>
                     </div>
 
