@@ -796,10 +796,30 @@
                             <h4 class="mb-0">Does it make sense to take the derivative of a signal that is the integral of another signal?</h4>
                             <p>In this orientation control lab, the angle signal is derived from the integral of yaw rotation velocity. The derivative term in a PID controller is applied to the error signal, which is the difference between the desired angle (setpoint) and the current angle. This term is important for predicting future errors and counteracting changes in error. Although the angle signal results from integrating rotational velocity, applying the derivative to the angle error effectively yields a measure related to the error's rate of change. This is useful for predicting and correcting future errors, helping to dampen oscillations and enhance system stability.
                             </p>
+                        
+                            <h4 class="mb-0">Does changing your setpoint while the robot is running cause problems with your implementation of the PID controller?</h4>
+                            <p>In this experiment, potential issues from sudden error changes are mitigated by two factors. First, the motor used responds too slowly to react immediately to abrupt changes in error. Second, there's a limitation on the maximum rotational velocity that further reduces the impact of any rapid error fluctuations.</p>
+                            <h4 class="mb-0">Is a lowpass filter needed before your derivative term?</h4>
+                            <p>First, as demonstrated by all the screenshots above, the contribution of the derivative term to the PWM duty cycles does not result in significant spikes.</p>
+                            <br>
+                            <p>Also, after conducting FFT analysis on the derivative term multiple times, it appears that implementing a low-pass filter is not necessary.</p>
+                            <img src="Imgs_lab6/noneedfor_lowpass.png" alt="no need for lpf" style="width: 40vw; height: 30vw;"> 
                         </div>
                     </div>
 
+                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                        <div class="flex-grow-1">
+                            <h3 class="mb-0">Result</h3>
+                            <p>
+                                <iframe width="auto" height="auto" src="https://youtube.com/embed/MYfkNFFGW4A" title="Only Kp introduced, Kp = 0.3" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            </p>
+                            <iframe width="auto" height="auto" src="https://youtube.com/embed/4wYemjrCr6w" title="Only Kp introduced, Kp = 0.3" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <img src="Imgs_lab6/perfect.png" alt="final analysis" style="width: 40vw; height: 5vw;">
+                            
+                        </div>
+                    </div>
 
+                
 
             </section>
 
