@@ -721,11 +721,19 @@
                     </div>
                     <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
                         <div class="flex-grow-1">
-                            <h3 class="mb-0">P, I, D corresponding coefficients choice</h3>                         
+                            <h3 class="mb-0">PID Input Signal</h3>                         
                             <h4 class="mb-0">Propotional gain</h4>
-                            <p>I began the lab by focusing on the Kp coefficient for proportional control, which uses the product of the error (the difference between the current and target distances) and Kp to estimate a pwm value, as per the equation: error * Kp. With the maximum pwm signal duty cycle set at 255 and the error at 3000 mm, I initially approximated Kp as 255/400 ≈ 0.6375, indicating that adjustments should be along with this scale of magnitude. After fine-tuning, Kp was finalized at 0.3, closely matching the anticipated range. The decrement in Kp value aimed to provide the car with a more gental thrust to move towards the target. With Kp alone integrated, the stunt car's motion, as depicted in the video, was observed.
+                            <p>
+                                I began the lab by focusing on the Kp coefficient for proportional control, which calculates a PWM value by multiplying the error (the difference between the current and target angles) with Kp, as shown by the equation: error_angle * Kp. Initially, I used the same Kp value of 0.3 that was used in a previous lab for distance PID control with TOF sensors. However, this value proved too small for orientation control, as the potential error, such as 90 degrees in this lab, is significantly less than the errors encountered in the previous lab, which could be as large as 4000mm. Consequently, I experimented with a Kp value of 3. As indicated by the graph below, the robot exhibited slight overshooting.
                             </p>
-                            <iframe width="auto" height="auto" src="https://youtube.com/embed/XpttTvVY76w" title="Kp = 0.3" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <img src="Imgs_lab6/OnlyKp=3.png" alt="only has Kp (3)" style="width: 40vw; height: 30vw;">
+                            <iframe width="auto" height="auto" src="https://youtube.com/embed/f9IDrcqePfA" title="Only Kp introduced, Kp = 0.3" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            
+                            <p>
+                                I also tested a Kp value of 5 to observe any changes. According to the screenshot and video, there were no significant differences. Therefore, to address the issue of overshooting, I introduced the derivative term. This term counteracts the rate of error change and is calculated by multiplying the change in error by the derivative coefficient, Kd.
+                            </p>
+                            <img src="Imgs_lab6/Kp=5.png" alt="only has Kp (5)" style="width: 40vw; height: 30vw;">
+                            <iframe width="auto" height="auto" src="https://youtube.com/embed/MYfkNFFGW4A" title="Only Kp introduced, Kp = 0.3" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                             
                             <h4 class="mb-0">Integral gain</h4>
                             <p>Following the adjustment of Kp, I incorporated the Ki parameter to address the steady-state error and mitigate the oscillation issue. The integral term consists of the sum of Ki times the product of the distance error and its sampling period, leading to an increasing integrated value over time. I initiated Ki at a significantly lower value than Kp, setting it at 0.02 to cautiously approach the integration effect.
