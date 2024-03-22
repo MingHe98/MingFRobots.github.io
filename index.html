@@ -733,7 +733,7 @@
                                 I also tested a Kp value of 5 to observe any changes. According to the screenshot and video, there were no significant differences. Therefore, to address the issue of overshooting, I introduced the derivative term. This term counteracts the rate of error change and is calculated by multiplying the change in error by the derivative coefficient, Kd.
                             </p>
                             <img src="Imgs_lab6/Kp=5.png" alt="only has Kp (5)" style="width: 40vw; height: 30vw;">
-                            <iframe width="auto" height="auto" src="https://youtube.com/embed/MYfkNFFGW4A" title="Only Kp introduced, Kp = 0.3" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <iframe width="600vw" height="450vw" src="https://youtube.com/embed/MYfkNFFGW4A" title="Only Kp introduced, Kp = 0.5" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                             
                             <h4 class="mb-0">Differential gain</h4>
                             <p>As demonstrated in the previous video, the stunt car exhibited slight overshooting, prompting the introduction of the Kd parameter. Kd, applied within the derivative term of the PID controller, anticipates future changes in error. When the error decreases rapidly, its derivative becomes significantly negative, leading the derivative term to counteract the proportional and integral terms by reducing motor speed. Kd's application involves it being multiplied by the change rate between consecutive distance measurements.
@@ -756,9 +756,9 @@
                             <img src="Imgs_lab6/3|0.1|0.25.png" alt="kp = 3, ki = 0.1, kd = 0.25" style="width: 40vw; height: 30vw;">
                             <p>As illustrated in the screenshot above, the system performs well, and the error remains within an acceptable range. I implemented the PID control so that when the error angle falls within +/- 5 degrees of the set angle, the motors receive a 0 duty cycle. According to the graph analysis, the car behaved as expected.</p>
                             <p>For further testing, I experimented with another set of parameters: Kp set to 5, Ki set to 0.1, and Kd set to 0.25. The graph obtained during the test, while the car was rotating on the floor, indicates that the system still performed as expected.</p>
-                            <img src="Imgs_lab6/5|0.1|0.25|90.0.png" alt="kp = 3, ki = 0.1, kd = 0.25" style="width: 40vw; height: 30vw;">
+                            <img src="Imgs_lab6/5|0.1|0.25|90.0.png" alt="kp = 5, ki = 0.1, kd = 0.25" style="width: 40vw; height: 30vw;">
                             <p>Based on the graph, the increase in orientation change speed is evident. Consequently, I also increased Kd, which was set to 0.5. However, as Kd became more dominant, the steady error became more noticeable. Therefore, I eventually decided to stick with the set of parameters: Kp = 3, Ki = 0.1, and Kd = 0.25.</p>
-                            <img src="Imgs_lab6/5|0.1|0.5|90.0.png" alt="kp = 3, ki = 0.1, kd = 0.25" style="width: 40vw; height: 30vw;">
+                            <img src="Imgs_lab6/5|0.1|0.5|90.0.png" alt="kp = 3, ki = 0.1, kd = 0.5" style="width: 40vw; height: 30vw;">
         
                         </div>
                     </div>
@@ -821,9 +821,9 @@
                         <div class="flex-grow-1">
                             <h3 class="mb-0">Result</h3>
                             <p>
-                                <iframe width="auto" height="auto" src="https://youtube.com/embed/MYfkNFFGW4A" title="Only Kp introduced, Kp = 0.3" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                After fining a set of parameters for PID terms with Kp = 3, Ki = 0.3, Kd = 0.5, the car behaved as expected as shown in the video below. The screenshot shows the data about how the PID controls applies on controlling the car's orientation. 
                             </p>
-                            <iframe width="auto" height="auto" src="https://youtube.com/embed/4wYemjrCr6w" title="Only Kp introduced, Kp = 0.3" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <iframe width="600vw" height="450vw" src="https://youtube.com/embed/4wYemjrCr6w" title="oreintation control" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                             <img src="Imgs_lab6/perfect.png" alt="final analysis" style="width: 40vw; height: 30vw;">
                             
                         </div>
