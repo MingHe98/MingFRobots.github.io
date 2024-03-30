@@ -864,7 +864,11 @@
                             <p> According to the lab handout, determining the value of 'd' (drag) requires finding the steady-state speed, and 'u' represents the input percentage, which is set to 1 (100% of input) during the implementation of the state space model.</p>
                             <img src="Imgs_lab7/findingd.png" alt="how to find d" style="width: 40vw; height: 20vw;">
                            
-                            <p>To acquire the steady speed data for the robot in motion, I set the motor's duty cycle to 160 (out of 255) and directed the robot toward a wall. The TOF sensor recorded the measurements, which were transmitted to the Jupyter notebook via Bluetooth. I then plotted both distance and velocity against time, as demonstrated in the following illustration.</p>
+                            <p>To acquire the steady speed data for the robot in motion, I set the motor's duty cycle to 160 (out of 255) and directed the robot toward a wall. </p>
+                            <iframe width="600vw" height="450vw" src="https://youtube.com/embed/hgDYtEtb5TU" title="running the car with 160" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <p>
+                                The TOF sensor recorded the measurements, which were transmitted to the Jupyter notebook via Bluetooth. I then plotted both distance and velocity against time, as demonstrated in the following illustration.
+                             </p>
                             <img src="Imgs_lab7/steadt_speed.png" alt="steady speed" style="width: 40vw; height: 30vw;">
 
                             <p>Based on the calculated steady speed of 3206.07 mm/s, I was able to calculate 'd' (drag coefficient) as 0.000311. Next, I needed to calculate 'm' (mass) using the value of 'd' (drag) and the time required for the robot to reach 90% of its steady speed. The equation used for calculating 'm' is presented below.</p>
@@ -902,44 +906,29 @@
                             <img src="Imgs_lab7/sigmaz_sigmau.png" alt="sigma z and sigma u" style="width: 40vw; height: 30vw;">
                             
                             <p>Based on the provided standard deviations for position and speed, which are 20 mm and 20 mm/s respectively, these values were used in calculating the noise and uncertainty matrices.</p>
-                            <img src="Imgs_lab7/matrixesinitialization.png" alt="sigma and sigma z and sigma u initialization" style="width: 40vw; height: 30vw;">m
+                            <img src="Imgs_lab7/matrixesinitialization.png" alt="sigma and sigma z and sigma u initialization" style="width: 40vw; height: 30vw;">
 
-                            <p>Following the adjustment of Kp and Kd, I incorporated the Ki parameter to address the steady-state error. The integral term consists of the sum of Ki times the product of the error, which is the difference between the set angle and the current angle, and its sampling period, leading to an increasing integrated value over time. I initiated Ki at a significantly lower value than Kp, setting it at 0.1 to cautiously approach the integration effect.
-                            </p>
-                            <img src="Imgs_lab6/3|0.1|0.25.png" alt="kp = 3, ki = 0.1, kd = 0.25" style="width: 40vw; height: 30vw;">
-                            <p>As illustrated in the screenshot above, the system performs well, and the error remains within an acceptable range. I implemented the PID control so that when the error angle falls within +/- 5 degrees of the set angle, the motors receive a 0 duty cycle. According to the graph analysis, the car behaved as expected.</p>
-                            <p>For further testing, I experimented with another set of parameters: Kp set to 5, Ki set to 0.1, and Kd set to 0.25. The graph obtained during the test, while the car was rotating on the floor, indicates that the system still performed as expected.</p>
-                            <img src="Imgs_lab6/5|0.1|0.25|90.0.png" alt="kp = 5, ki = 0.1, kd = 0.25" style="width: 40vw; height: 30vw;">
-                            <p>Based on the graph, the increase in orientation change speed is evident. Consequently, I also increased Kd, which was set to 0.5. However, as Kd became more dominant, the steady error became more noticeable. Therefore, I eventually decided to stick with the set of parameters: Kp = 3, Ki = 0.1, and Kd = 0.25.</p>
-                            <img src="Imgs_lab6/5|0.1|0.5|90.0.png" alt="kp = 3, ki = 0.1, kd = 0.5" style="width: 40vw; height: 30vw;">
-        
                         </div>
                     </div>
 
                     <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
                         <div class="flex-grow-1">
-                            <h3 class="mb-0">Discussion</h3>
-                            <h4 class="mb-0">Are there any problems that digital integration might lead to over time? Are there ways to minimize these problems?</h4>
+                            <h3 class="mb-0">Implement and test your Kalman Filter in Jupyter (Python)</h3>
+                            <h4 class="mb-0">Implementation of Kalman Filter</h4>
                             <p>
-                                In digital integration, especially within the Integral component of a PID controller, there's a potential for what's called "integral windup." This occurs when the integral term accumulates a significant error over time, especially during periods when the actuator is saturated (cannot increase output further). This can lead to the system overshooting its target and exhibiting oscillatory behavior, which can be slow to correct.
+                                The implementation of the Kalman filter was given as depicted in the screenshot below.
                             </p>
-                            <br> 
-                            <h4 class="mb-0">Integrator wind-up</h4>
-                            <p>When the car remains stationary and the error is non-zero, the integral term will persistently accumulate. This causes the integral term's contribution to the PWM signal to increase until the motor reaches saturation. Beyond this point, the integral term continues to grow, surpassing the saturation level of the motor. It will start to decrease only when the car moves past the set angle which when the error changes the sign, as how the orange line draws on the screenshot above. </p>
-                            <br>
-                            <p>These are the conditions under which I prevent the integrator from accumulating further value:
-                                First, I halt the increase of the integral term or stop its accumulation when the controller output is saturated, which I set max 60 duty cycles from itegral part, to prevent the integral term from increasing further.
-                                Second, as observed from the graph "All data over time" above, the integral part (represented by the orange line), which is the product of the integral gain (Ki) and the accumulated distance error in this lab, continues to increase until the error becomes negative. Therefore, I prevent the integrator from accumulating when the controller output's sign matches the error's sign. In other words, as soon as the error changes sign, I release the clamp on the integrator term, allowing it to decrease immediately. This approach helps to limit overshoot.</p>
-                            <br>    
-                            <h4 class="mb-0">Does your sensor have any bias, and are there ways to fix this?</h4>
-                            <p>As is widely known, gyroscope sensors are prone to data drifting. I visualized this data drift by measuring the angle while keeping the car stationary.</p>
-                            <img src="Imgs_lab6/data_drift.png" alt="data drifts on angel measurement" style="width: 40vw; height: 30vw;">
-                            <p>There are several methods to mitigate data drifting. My approach involved accumulating 30 data points of the yaw value while the car was stationary, just before it began to move. I then calculated the average value of this noise. By subtracting this average noise value from subsequent yaw data measurements, I was able to significantly reduce the impact of data drift.</p>
-                            <img src="Imgs_lab6/calculate_avg_noise.png" alt="calculate average data drifting noise" style="width: 40vw; height: 30vw;">
-                            <br> 
-                            <h4 class="mb-0">Are there limitations on the sensor itself to be aware of?</h4>
-                            <p>As demonstrated in the screenshot below, by default, the gyroscope (referred to as myFSS.g) of this IMU is limited to sensing angle changes at a maximum rate of 250 degrees per second.</p>
-                            <img src="Imgs_lab6/calculate_avg_noise.png" alt="calculate average data drifting noise" style="width: 40vw; height: 30vw;">
+                            <img src="Imgs_lab7/KFwasgiven.png" alt="given KF implementation" style="width: 40vw; height: 30vw;">
+
+                            <p>Following the provided code snippet, I implemented the Kalman Filter using Python.</p>
+                            <img src="Imgs_lab7/KFimplementation.png" alt="I implemented the KF using Python" style="width: 40vw; height: 30vw;">
+                            
+                            <p>To gain a deeper understanding of the Kalman Filter, I initially disabled its prediction functionality. I input only the actual TOF sensor measurements into the model and recorded the distances updated by the Kalman Filter, as implemented in the code snippet below.</p>
+                            <img src="Imgs_lab7/noprediction.png" alt="only update distance" style="width: 40vw; height: 30vw;">
+
+                            <p>Subsequently, I compared these real distance measurements with the data filtered by the Kalman Filter, as illustrated in the accompanying screenshot.</p>
+                            <img src="Imgs_lab7/onlyupdatedataplot.png" alt="only update data no prediction" style="width: 40vw; height: 30vw;">
+                            
                             <p>I verified that my car reached this limitation by practically rotating the car on the floor, capturing the yaw data (myICM.gyrZ()), and graphing the results using Python, as displayed below.</p>
                             <img src="Imgs_lab6/250_limitation.png" alt="the car reached limimation" style="width: 40vw; height: 20vw;">  
                             <p>After increasing the speed limitation to 500 degrees per second, I repeated the graphing of the yaw data to ensure that the limitation was not exceeded.</p>
