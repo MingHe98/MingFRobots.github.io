@@ -856,14 +856,16 @@
                                 Since the TOF sensor measures distance relatively slowly in comparison to its speed, a Kalman filter will be implemented in this lab to predict the robot's position using a state space model when the TOF sensor's data is unavailable.
                             </p>
                             <img src="Imgs_lab7/kalmanfilter.png" alt="kalman filter content" style="width: 40vw; height: 30vw;">
-                            <p>To implement PID control for orientation, multiple types of data are required. Additionally, I included other values such as the value of the entire P term, which is the product of Kp and the angle error (the difference between the set angle and the current angle), as well as the values of the I and D terms, for further analysis, such as conducting graph analysis on the data sent from the robot to the Jupyter notebook.</p>
-                            <img src="Imgs_lab6/data_recording.png" alt="cmd type to send data" style="width: 30vw; height: 10w;">
-                            
-                            <p>To capture data recorded during its rotation on the floor and transmitted from the robot to the Jupyter notebook, as well as to remotely control the car's orientation by sending commands from my laptop via bluetooth, three types of commands are implemented.</p>
-                            <img src="Imgs_lab6/Start_case.png" alt="case of Start" style="width: 20vw; height: 40vw;">
-                            <img src="Imgs_lab6/other_twocase.png" alt="case of Stop and Record data" style="width: 40vw; height: 20vw;">
-                            <p>Command sending was implemented in the Jupyter Notebook, as illustrated below. Three specific cases—Start, Stop, and Send_data—were implemented for distinct purposes. The Start command allows the user to define three PID control parameters, offering a more convenient means to employ a trial-and-error strategy for identifying the optimal parameter pair for orientation control. It also facilitates setting different target angles to streamline subsequent testing. The Stop command sets the duty cycles of the PWM to zero for both motors, thereby stopping the car. The Send_data command prompts the robot to transmit all recorded data to Python, where a notification handler receives and stores the data in a list named 'data' for further analysis.</p>
-                            <img src="Imgs_lab6/start_stop_py.png" alt="start stop py" style="width: 40vw; height: 10vw;">
+                            <p>
+                                To determine the values of all coefficients required for the Kalman filter implementation, I began by calculating 'd' (drag) and 'm' (mass), which are utilized in the state prediction equation, as illustrated in the figure below.
+                            </p>
+                            <img src="Imgs_lab7/statespaceequa.png" alt="state space equation" style="width: 40vw; height: 30w;">
+                           
+                            <p> According to the lab handout, determining the value of 'd' (drag) requires finding the steady-state speed, and 'u' represents the input percentage, which is set to 1 (100% of input) during the implementation of the state space model.</p>
+                            <img src="Imgs_lab7/findingd.png" alt="how to find d" style="width: 40vw; height: 20vw;">
+                           
+                            <p>To acquire the steady speed data for the robot in motion, I set the motor's duty cycle to 160 (out of 255) and directed the robot toward a wall. The TOF sensor recorded the measurements, which were transmitted to the Jupyter notebook via Bluetooth. I then plotted both distance and velocity against time, as demonstrated in the following illustration.</p>
+                            <img src="Imgs_lab7/steadt_speed.png" alt="steady speed" style="width: 40vw; height: 30vw;">
                             <img src="Imgs_lab6/send_data.png" alt="send data cmd in py" style="width: 35vw; height: 40vw;">
                         </div>
                     </div>
