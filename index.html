@@ -888,22 +888,22 @@
                             </p>
                             <img src="Imgs_lab7/discretizeAB.png" alt="discretize A B in python" style="width: 40vw; height: 10vw;">
                             
-                            <h4 class="mb-0">Differential gain</h4>
-                            <p>As demonstrated in the previous video, the stunt car exhibited slight overshooting, prompting the introduction of the Kd parameter. Kd, applied within the derivative term of the PID controller, anticipates future changes in error. When the error decreases rapidly, its derivative becomes significantly negative, leading the derivative term to counteract the proportional and integral terms by reducing motor speed. Kd's application involves it being multiplied by the change rate between consecutive distance measurements.
-                                Initially, I set Kd to 0.25. However, subsequent observations indicated that this differential gain was insufficient to effectively counterbalance the contributions of the proportional gains, as the car continued to overshoot its target. The graph analysis is shown below.</p>
-                            <img src="Imgs_lab6/3|0|0.25.png" alt="Kp (3), Kd (0.25)" style="width: 40vw; height: 30vw;">
+                            <p>The code snippet in the screenshot below demonstrates that I changed the TOF sensor's sampling rate from the default 100 ms to 20 ms. Consequently, the sampling rate used for calculating the A and B matrices was adjusted to 20 ms (0.02s).</p>
+                            <img src="Imgs_lab7/changeSamplingrate.png" alt="change TOF sampling rate" style="width: 40vw; height: 10vw;">
                             
-                            <p> To refine the controller's performance, I incrementally adjusted Kd by doubling it to 0.5, but it made no significant difference and it shows that Kd = 0.25 was sufficient for the orientation control.</p>                   
-                            <img src="Imgs_lab6/3|0|0.5.png" alt="Kp (3), Kd (0.5)" style="width: 40vw; height: 30vw;">
+                            <p> The C matrix was given, highlighting that only the matrix entry corresponding to distance is needed for the calculations. Given that the car is moving towards the wall, this is represented with a negative sign in the matrix.
+                            </p>
+                            <img src="Imgs_lab7/ABC.png" alt="ABC matrix" style="width: 40vw; height: 30vw;">
 
-                            <p>As the screenshot above demonstrates, after introducing the Kd term, the overshooting issue was mitigated, and the error stabilized at a positive value. Interpreting the graph suggests that the overshooting was significantly reduced by the derivative gain's counteraction to the change in error. Consequently, the derivative gain had a more dominant effect than the contribution from the proportional term.</p>
-                            <p>Moreover, to ensure that any future increases in derivative gain do not lead to sudden spikes in the derivative term—and consequently, spikes in the PWM duty cycle signal—I implemented FFT (Fast Fourier Transform) analysis on the derivative term, as illustrated by the screenshots below.</p>
-                            <img src="Imgs_lab6/d_term_signal.png" alt="d term signal" style="width: 40vw; height: 30vw;">
-                            <img src="Imgs_lab6/fft_d_term_signal.png" alt="d term signal after FFT" style="width: 40vw; height: 30vw;">
+                            <p>There are two matrices corresponding to noise that need to be accounted for in the implementation: 
+                                sigma_z(\texttt{sig_z} in the screenshot below), which corresponds to measurement noise, and
+                                sigma_u(\texttt{sig_u} in the screenshot below), which refers to process noise.
+                            </p>
+                            <img src="Imgs_lab7/sigmaz_sigmau.png" alt="sigma z and sigma u" style="width: 40vw; height: 30vw;">
                             
-                            <p>It appears that there is no significant high-frequency noise, so there is no need to worry about implementing a digital low-pass filter to address potential spikes caused by the derivative term. Currently, with Kp set to 3 and Kd set to 0.25, a steady error is observed as the screenshot above demonstrates, and the PD control is unable to self-correct. Therefore, the integral gain has been introduced.</p>
-                            
-                            <h4 class="mb-0">Integral gain</h4>
+                            <p>Based on the provided standard deviations for position and speed, which are 20 mm and 20 mm/s respectively, these values were used in calculating the noise and uncertainty matrices.</p>
+                            <img src="Imgs_lab7/matrixesinitialization.png" alt="sigma and sigma z and sigma u initialization" style="width: 40vw; height: 30vw;">m
+
                             <p>Following the adjustment of Kp and Kd, I incorporated the Ki parameter to address the steady-state error. The integral term consists of the sum of Ki times the product of the error, which is the difference between the set angle and the current angle, and its sampling period, leading to an increasing integrated value over time. I initiated Ki at a significantly lower value than Kp, setting it at 0.1 to cautiously approach the integration effect.
                             </p>
                             <img src="Imgs_lab6/3|0.1|0.25.png" alt="kp = 3, ki = 0.1, kd = 0.25" style="width: 40vw; height: 30vw;">
