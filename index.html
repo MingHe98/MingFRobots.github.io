@@ -934,35 +934,27 @@
                             <p>To visualize the impact of measurement and process noise on the Kalman filter model, I initially increased the measurement noise (sigma z) from 400 to 1000. The results, as shown below, are logical; a higher measurement noise suggests less confidence in the TOF sensor data, leading to readings that are far away from their actual values. Consequently, the Kalman Filter compensates by producing output values that are lower than the TOF data plot.</p>
                             <img src="Imgs_lab7/sigmaz100.png" alt="sigma z 1000" style="width: 40vw; height: 30vw;">  
                             
-                            <p>Next, I increased the process noise (for both entries in sigma u ) from 400 to 1000. The results, as illustrated below, logically follow: a higher process noise implies greater trust in the model’s ability to filter, resulting in readings that are very close to their actual values. Consequently, the Kalman Filter's output values almost overlap with the TOF data plot.</p>
+                            <p>Next, I increased the process noise (for both entries in sigma u ) from 400 to 1000. The results, as illustrated below, logically follow: a higher process noise implies greater trust in the model's ability to filter, resulting in readings that are very close to their actual values. Consequently, the Kalman Filter's output values almost overlap with the TOF data plot.</p>
                             <img src="Imgs_lab7/Sigmau100100.png" alt="trust the model more" style="width: 40vw; height: 30vw;">
                             
-                            <p> The issue with the previous limitation was that the sensor's maximum sensing speed was reached, so ,for example, even though the car actually rotated 120 degrees, the sensor could only register a 90-degree rotation. This discrepancy was the cause of the observed overshooting.</p>
-                            <br> 
-                            <h4 class="mb-0">Does it make sense to take the derivative of a signal that is the integral of another signal?</h4>
+                            <h4 class="mb-0">Implemented Kalman Filter on linear PID control and interpolation (5000-level)</h4>
                             <p>
-                                In this orientation control lab, the angle signal is obtained from the integral of the yaw rotation velocity. The derivative term in a PID controller is utilized to compute the derivative of the error signal, which represents the discrepancy between the desired angle (setpoint) and the current angle. This term plays a crucial role in forecasting future errors and mitigating changes in the error. Given that the angle signal in this lab is derived by integrating rotational velocity, applying the derivative to the accumulated angle—which would yield the error's rate of change—might seem redundant. This is because the derivative term can be directly obtained from reading the gyro rotational velocity along with Z axis. Overall, the derivative term remains valuable for anticipating and correcting future errors, thereby reducing oscillations and improving the stability of the system.
+                                Initially, I operated the car towards the wall using PID control to halt at a predetermined point, without employing the Kalman Filter. I then collected the TOF measurement data, which was transmitted to the Jupyter notebook via Bluetooth.
                             </p>
-                            <br> 
-                            <h4 class="mb-0">Does changing your setpoint while the robot is running cause problems with your implementation of the PID controller?</h4>
-                            <p>In this experiment, potential issues from sudden error changes are mitigated by two factors. First, the motor used responds too slowly to react immediately to abrupt changes in error. Second, there's a limitation on the maximum rotational velocity that further reduces the impact of any rapid error fluctuations.</p>
-                            <br> 
-                            <h4 class="mb-0">Is a lowpass filter needed before your derivative term?</h4>
-                            <p>First, as demonstrated by all the screenshots above, the contribution of the derivative term to the PWM duty cycles does not result in significant spikes.</p>
-                            <br>
-                            <p>Also, after conducting FFT analysis on the derivative term multiple times, it appears that implementing a low-pass filter is not necessary.</p>
-                            <img src="Imgs_lab6/noneedfor_lowpass.png" alt="no need for lpf" style="width: 40vw; height: 30vw;"> 
-                            <br> 
-                            <h4 class="mb-0">This is essential for being able to tune the PID gains/Set points quickly.</h4>
-                            <h4 class="mb-0">Will you need to be able to update the setpoint in real time?</h4>
-                            <p>In my setup, I've configured the case statement in the Arduino IDE to accept commands from the Jupyter Notebook. This setup enables the separate transmission of PID parameters and the setting of the target angle. As a result, my implementation allows for easy adjustments to the set angle by sending commands from the Jupyter Notebook to the robot via Bluetooth in real-time, as well as the modification of PID parameters on-the-fly.</p>
-                            <br> 
-                            <h4 class="mb-0">Can you control the orientation while the robot is driving forward or backward?</h4>
-                            <p>I've realized that the stunt car can only rotate to a set angle and stops once the error—the difference between the set angle and the current angle—falls within an acceptable range of +/- 5 degrees, in this lab. To enhance this functionality, I could introduce a base duty cycle for the PWM signals sent to the motors. This would enable the car to continuously move forward or backward. At the same time, it could adjust the direction by controlling one specific motor. By adding extra duty cycle to the motor controlling one side of the wheels, for example, adding controls to the right side of wheels while the car is moving forward would allow the car to turn left.</p>
+                            <iframe width="600vw" height="450vw" src="https://youtube.com/embed/Xz6Jd519tXg" title="running the car towards the wall using PID control" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+                            <p>With a setpoint of 400mm from the wall, I collected data on the PWM duty cycle, which was implemented with integrator wind-up and derivative kick PID control, along with the distance measurements, as detailed below.</p>
+                            <img src="Imgs_lab7/setpoint400.png" alt="set point 400" style="width: 40vw; height: 30vw;"> 
+
+                            <p>Despite manually adjusting the TOF sensor's sampling rate from 100ms to 20ms, it remained insufficiently fast compared to the main loop, which controls the motor's PWM duty cycle. Therefore, I employed the Kalman filter to predict the car's position. The code snippet below illustrates how I manually inserted 5 data points, predicted by the Kalman Filter, recorded for later plotting.</p>
+                            <img src="Imgs_lab7/updatepluspredi.png" alt="predict position when TOF data is not there" style="width: 40vw; height: 30vw;"> 
+                            
+                            <p>Plotting the KF estimated distance using Python is shown below. As can be seen, the red plot represents the KF estimate, which behaves as expected. Specifically, around the 20-second mark, the KF model predicts a lower distance, whereas the actual TOF sensor measurement increases. Consequently, the KF model quickly adjusts itself.</p>
+                            <img src="Imgs_lab7/KFposPredict.png" alt="predict position when TOF data is not there" style="width: 40vw; height: 30vw;"> 
                         </div>
                     </div>
 
-                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                    <!-- <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
                         <div class="flex-grow-1">
                             <h3 class="mb-0">Result</h3>
                             <p>
@@ -972,7 +964,7 @@
                             <img src="Imgs_lab6/perfect.png" alt="final analysis" style="width: 40vw; height: 30vw;">
                             
                         </div>
-                    </div>
+                    </div> -->
 
                 
 
