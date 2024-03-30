@@ -866,24 +866,27 @@
                            
                             <p>To acquire the steady speed data for the robot in motion, I set the motor's duty cycle to 160 (out of 255) and directed the robot toward a wall. The TOF sensor recorded the measurements, which were transmitted to the Jupyter notebook via Bluetooth. I then plotted both distance and velocity against time, as demonstrated in the following illustration.</p>
                             <img src="Imgs_lab7/steadt_speed.png" alt="steady speed" style="width: 40vw; height: 30vw;">
-                            <img src="Imgs_lab6/send_data.png" alt="send data cmd in py" style="width: 35vw; height: 40vw;">
+
+                            <p>Based on the calculated steady speed of 3206.07 mm/s, I was able to calculate 'd' (drag coefficient) as 0.000311. Next, I needed to calculate 'm' (mass) using the value of 'd' (drag) and the time required for the robot to reach 90% of its steady speed. The equation used for calculating 'm' is presented below.</p>
+                            <img src="Imgs_lab7/findingm.png" alt="finding m value" style="width: 40vw; height: 30vw;">
+                            <p>
+                                From the graph, I selected the point corresponding to approximately 90% of the steady speed, which is around 2600 mm/s. The time to reach 90% of the steady speed (t90%) is 1.16 seconds. Thus, after analyzing the data and applying the relevant equations, the mass 'm' is calculated to be 0.000157.
+                            </p>
                         </div>
                     </div>
                     <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
                         <div class="flex-grow-1">
-                            <h3 class="mb-0">PID Input Signal</h3>                         
-                            <h4 class="mb-0">Propotional gain</h4>
+                            <h3 class="mb-0">Initialize KF (Python)</h3>                         
+                            <h4 class="mb-0">Compute the A, B, and C matrix</h4>
                             <p>
-                                I began the lab by focusing on the Kp coefficient for proportional control, which calculates a PWM value by multiplying the error (the difference between the current and target angles) with Kp, as shown by the equation: error_angle * Kp. Initially, I used the same Kp value of 0.3 that was used in a previous lab for distance PID control with TOF sensors. However, this value proved too small for orientation control, as the potential error, such as 90 degrees in this lab, is significantly less than the errors encountered in the previous lab, which could be as large as 4000mm. Consequently, I experimented with a Kp value of 3. As indicated by the graph below, the robot exhibited slight overshooting.
+                                To implement the Kalman Filter effectively, it was necessary to discretize both the A and B matrices using the functions outlined below. This step ensures that the continuous-time model is accurately translated into a form suitable for digital computation.
                             </p>
-                            <img src="Imgs_lab6/OnlyKp=3.png" alt="only has Kp (3)" style="width: 40vw; height: 30vw;">
-                            <iframe width="600vw" height="450vw" src="https://youtube.com/embed/f9IDrcqePfA" title="Only Kp introduced, Kp = 0.3" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                        
+                            <img src="Imgs_lab7/ABmatrix.png" alt="Discretize A B matrixes" style="width: 40vw; height: 30vw;">
+                            
                             <p>
-                                I also tested a Kp value of 5 to observe any changes. According to the screenshot and video, there were no significant differences. Therefore, to address the issue of overshooting, I introduced the derivative term. This term counteracts the rate of error change and is calculated by multiplying the change in error by the derivative coefficient, Kd.
+                                The function presented below utilizes Python to discretize the A and B matrices. This approach ensures the matrices are adapted for use in the discrete-time version of the Kalman Filter algorithm.
                             </p>
-                            <img src="Imgs_lab6/Kp=5.png" alt="only has Kp (5)" style="width: 40vw; height: 30vw;">
-                            <iframe width="600vw" height="450vw" src="https://youtube.com/embed/MYfkNFFGW4A" title="Only Kp introduced, Kp = 0.5" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <img src="Imgs_lab7/discretizeAB.png" alt="discretize A B in python" style="width: 40vw; height: 10vw;">
                             
                             <h4 class="mb-0">Differential gain</h4>
                             <p>As demonstrated in the previous video, the stunt car exhibited slight overshooting, prompting the introduction of the Kd parameter. Kd, applied within the derivative term of the PID controller, anticipates future changes in error. When the error decreases rapidly, its derivative becomes significantly negative, leading the derivative term to counteract the proportional and integral terms by reducing motor speed. Kd's application involves it being multiplied by the change rate between consecutive distance measurements.
