@@ -929,11 +929,14 @@
                             <p>Subsequently, I compared these real distance measurements with the data filtered by the Kalman Filter, as illustrated in the accompanying screenshot.</p>
                             <img src="Imgs_lab7/onlyupdatedataplot.png" alt="only update data no prediction" style="width: 40vw; height: 30vw;">
                             
-                            <p>I verified that my car reached this limitation by practically rotating the car on the floor, capturing the yaw data (myICM.gyrZ()), and graphing the results using Python, as displayed below.</p>
-                            <img src="Imgs_lab6/250_limitation.png" alt="the car reached limimation" style="width: 40vw; height: 20vw;">  
-                            <p>After increasing the speed limitation to 500 degrees per second, I repeated the graphing of the yaw data to ensure that the limitation was not exceeded.</p>
-                            <img src="Imgs_lab6/500.png" alt="the car limimation changes to 500" style="width: 40vw; height: 20vw;">
-                            <img src="Imgs_lab6/speed_500.png" alt="the car does not reach the limitation anymore" style="width: 40vw; height: 30vw;"> 
+                            <h4 class="mb-0">Parameters Discussion</h4>
+
+                            <p>To visualize the impact of measurement and process noise on the Kalman filter model, I initially increased the measurement noise (sigma z) from 400 to 1000. The results, as shown below, are logical; a higher measurement noise suggests less confidence in the TOF sensor data, leading to readings that are far away from their actual values. Consequently, the Kalman Filter compensates by producing output values that are lower than the TOF data plot.</p>
+                            <img src="Imgs_lab7/sigmaz100.png" alt="sigma z 1000" style="width: 40vw; height: 30vw;">  
+                            
+                            <p>Next, I increased the process noise (for both entries in sigma u ) from 400 to 1000. The results, as illustrated below, logically follow: a higher process noise implies greater trust in the model’s ability to filter, resulting in readings that are very close to their actual values. Consequently, the Kalman Filter's output values almost overlap with the TOF data plot.</p>
+                            <img src="Imgs_lab7/Sigmau100100.png" alt="trust the model more" style="width: 40vw; height: 30vw;">
+                            
                             <p> The issue with the previous limitation was that the sensor's maximum sensing speed was reached, so ,for example, even though the car actually rotated 120 degrees, the sensor could only register a 90-degree rotation. This discrepancy was the cause of the observed overshooting.</p>
                             <br> 
                             <h4 class="mb-0">Does it make sense to take the derivative of a signal that is the integral of another signal?</h4>
