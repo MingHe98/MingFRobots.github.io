@@ -35,6 +35,7 @@
                     <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#lab5">Lab 5: Linear PID control and Linear interpolation</a></li>
                     <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#lab6">Lab 6: Orientation PID control</a></li>
                     <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#lab7">Lab 7: Kalman Filter</a></li>
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#lab8">Lab 8: Stunts!</a></li>
                 </ul>
             </div>
         </nav>
@@ -984,6 +985,143 @@
 
             </section>
 
+            <hr class="m-0"/>
+            <!-- Lab 8 -->
+            <section class="resume-section" id="lab8">
+                <div class="resume-section-content">
+                    <h2 class="mb-5"> LAB8: Stunts!</h2>
+                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                        <div class="flex-grow-1">
+                            <h3 class="mb-0">Introduction</h3>
+                            <p>
+                                So far in this course, we have built a robot and connected it to our computer for quick testing and analysis. We have created a PID controller and added a Kalman filter to the robot to enhance its performance. This lab builds upon the previous labs to complete a fast-paced stunt. For this lab, I chose task 2, which involves implementing orientation control for the stunt.
+                            </p>
+                        </div>
+                        <div class="flex-shrink-0"><span class="text-primary">27th, Feb 2024 - 3th Apr 2024</span></div>
+                    </div>
+                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                        <div class="flex-grow-1">
+                            <h3 class="mb-0">Task 2: Orientation Control</h3>
+                            <p>
+                                The goal of this lab is for the robot to start at a distance less than 4 meters from the wall, quickly drive forward, and, when it is within 3 feet (equivalent to 914mm or 3 floor tiles in the lab) from the wall, initiate a 180-degree turn.    
+                            </p>
+                            <h4 class="mb-0">Success 1</h4>
+                            <iframe width="600vw" height="450vw" src="https://youtube.com/embed/ylssTc5pOmk" title="sucess 1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <p>
+                                This is the first successful attempt, but as shown in the video, the car did not execute a rapid 180-degree turn. This suggests to me that the proportional term of the PID controller is not sufficiently larger than the derivative term, which is necessary for initiating and completing a fast turn.
+                            </p>
+                            <h4 class="mb-0">Success 2</h4>
+                            <iframe width="600vw" height="450vw" src="https://youtube.com/embed/ylssTc5pOmk" title="sucess 1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <h4 class="mb-0">Success 3</h4>
+                            <iframe width="600vw" height="450vw" src="https://youtube.com/embed/USe1OcBBr8k" title="sucess 1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            
+                        </div>
+                    </div>
+                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                        <div class="flex-grow-1">
+                            <h3 class="mb-0">Initialize KF (Python)</h3>                         
+                            <h4 class="mb-0">Compute the A, B, and C matrix</h4>
+                            <p>
+                                To implement the Kalman Filter effectively, it was necessary to discretize both the A and B matrices using the functions outlined below. This step ensures that the continuous-time model is accurately translated into a form suitable for digital computation.
+                            </p>
+                            <img src="Imgs_lab7/ABmatrix.png" alt="Discretize A B matrixes" style="width: 40vw; height: 30vw;">
+                            
+                            <p>
+                                The function presented below utilizes Python to discretize the A and B matrices. This approach ensures the matrices are adapted for use in the discrete-time version of the Kalman Filter algorithm.
+                            </p>
+                            <img src="Imgs_lab7/discretizeAB.png" alt="discretize A B in python" style="width: 30vw; height: 10vw;">
+                            
+                            <p>The code snippet in the screenshot below demonstrates that I changed the TOF sensor's sampling rate from the default 100 ms to 20 ms. Consequently, the sampling rate used for calculating the A and B matrices was adjusted to 20 ms (0.02s).</p>
+                            <img src="Imgs_lab7/changeSamplingrate.png" alt="change TOF sampling rate" style="width: 30vw; height: 10vw;">
+                            
+                            <p> The C matrix was given, highlighting that only the matrix entry corresponding to distance is needed for the calculations. Given that the car is moving towards the wall, this is represented with a negative sign in the matrix.
+                            </p>
+                            <img src="Imgs_lab7/ABC.png" alt="ABC matrix" style="width: 40vw; height: 30vw;">
+
+                            <p>There are two matrices corresponding to noise that need to be accounted for in the implementation: 
+                                sigma_z(\texttt{sig_z} in the screenshot below), which corresponds to measurement noise, and
+                                sigma_u(\texttt{sig_u} in the screenshot below), which refers to process noise.
+                            </p>
+                            <img src="Imgs_lab7/sigmaz_sigmau.png" alt="sigma z and sigma u" style="width: 40vw; height: 8vw;">
+                            
+                            <p>Based on the provided standard deviations for position and speed, which are 20 mm and 20 mm/s respectively, these values were used in calculating the noise and uncertainty matrices.</p>
+                            <img src="Imgs_lab7/matrixesinitialization.png" alt="sigma and sigma z and sigma u initialization" style="width: 40vw; height: 10vw;">
+
+                        </div>
+                    </div>
+
+                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                        <div class="flex-grow-1">
+                            <h3 class="mb-0">Implement and test your Kalman Filter in Jupyter (Python)</h3>
+                            <h4 class="mb-0">Implementation of Kalman Filter</h4>
+                            <p>
+                                The implementation of the Kalman filter was given as depicted in the screenshot below.
+                            </p>
+                            <img src="Imgs_lab7/KFwasgiven.png" alt="given KF implementation" style="width: 40vw; height: 30vw;">
+
+                            <p>Following the provided code snippet, I implemented the Kalman Filter using Python.</p>
+                            <img src="Imgs_lab7/KFimplementation.png" alt="I implemented the KF using Python" style="width: 40vw; height: 30vw;">
+                            
+                            <p>To gain a deeper understanding of the Kalman Filter, I initially disabled its prediction functionality. I input only the actual TOF sensor measurements into the model and recorded the distances updated by the Kalman Filter, as implemented in the code snippet below.</p>
+                            <img src="Imgs_lab7/noprediction.png" alt="only update distance" style="width: 40vw; height: 30vw;">
+
+                            <p>Subsequently, I compared these real distance measurements with the data filtered by the Kalman Filter, as illustrated in the accompanying screenshot.</p>
+                            <img src="Imgs_lab7/onlyupdatedataplot.png" alt="only update data no prediction" style="width: 40vw; height: 30vw;">
+                            
+                            <h4 class="mb-0">Parameters Discussion</h4>
+
+                            <p>To visualize the impact of measurement and process noise on the Kalman filter model, I initially increased the measurement noise (sigma z) from 400 to 1000. The results, as shown below, are logical; a higher measurement noise suggests less confidence in the TOF sensor data, leading to readings that are far away from their actual values. Consequently, the Kalman Filter compensates by producing output values that are lower than the TOF data plot.</p>
+                            <img src="Imgs_lab7/sigmaz100.png" alt="sigma z 1000" style="width: 40vw; height: 30vw;">  
+                            
+                            <p>Next, I increased the process noise (for both entries in sigma u ) from 400 to 1000. The results, as illustrated below, logically follow: a higher process noise implies greater trust in the model's ability to filter, resulting in readings that are very close to their actual values. Consequently, the Kalman Filter's output values almost overlap with the TOF data plot.</p>
+                            <img src="Imgs_lab7/Sigmau100100.png" alt="trust the model more" style="width: 40vw; height: 30vw;">
+                            
+                            <h4 class="mb-0">Implemented Kalman Filter on linear PID control and interpolation (5000-level)</h4>
+                            <p>
+                                Initially, I operated the car towards the wall using PID control to halt at a predetermined point, without employing the Kalman Filter. I then collected the TOF measurement data, which was transmitted to the Jupyter notebook via Bluetooth.
+                            </p>
+                            <iframe width="600vw" height="450vw" src="https://youtube.com/embed/Xz6Jd519tXg" title="running the car towards the wall using PID control" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+                            <p>With a setpoint of 400mm from the wall, I collected data on the PWM duty cycle, which was implemented with integrator wind-up and derivative kick PID control, along with the distance measurements, as detailed below.</p>
+                            <img src="Imgs_lab7/setpoint400.png" alt="set point 400" style="width: 40vw; height: 30vw;"> 
+
+                            <p>Despite manually adjusting the TOF sensor's sampling rate from 100ms to 20ms, it remained insufficiently fast compared to the main loop, which controls the motor's PWM duty cycle. Therefore, I employed the Kalman filter to predict the car's position. The code snippet below illustrates how I manually inserted 5 data points, predicted by the Kalman Filter, recorded for later plotting.</p>
+                            <img src="Imgs_lab7/updatepluspredi.png" alt="predict position when TOF data is not there" style="width: 40vw; height: 30vw;"> 
+                            
+                            <p>Plotting the KF estimated distance using Python is shown below. As can be seen, the red plot represents the KF estimate, which behaves as expected. Specifically, around the 20-second mark, the KF model predicts a lower distance, whereas the actual TOF sensor measurement increases. Consequently, the KF model quickly adjusts itself.</p>
+                            <img src="Imgs_lab7/KFposPredict.png" alt="predict position when TOF data is not there" style="width: 40vw; height: 30vw;"> 
+                        </div>
+                    </div>
+
+                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                        <div class="flex-grow-1">
+                            <h3 class="mb-0">Implement the Kalman Filter on the Robo</h3>
+                            <p>
+                                Now, since I have already understood and built the Kalman Filter model using Python, I've moved on to implementing the Kalman Filter on my robot. I started programming the matrices needed for the Kalman Filter in the Arduino IDE.    
+                            </p>
+                            <img src="Imgs_lab7/KFcoef.png" alt="matrixes and coefficients needed for KF" style="width: 35vw; height: 40vw;">
+                            
+                            <p>
+                                Subsequently, I implemented the function 'KF' to update and predict a pair of data: the state (mu) and the uncertainty (sigma).
+                            </p>
+                            <img src="Imgs_lab7/KFfunc.png" alt="KF function in Arduino" style="width: 35vw; height: 40vw;">
+                            <p>
+                                Regarding the use of the Kalman Filter, the TOF sensor processes distance data relatively slowly. There are two scenarios: Firstly, when the TOF sensor data is available, we input the distance measurement into the Kalman Filter model to process the state (mu) and the uncertainty (sigma). The component of the state output corresponding to distance is then utilized to calculate the duty cycle via PID control, which drives the motor. Secondly, in the absence of TOF sensor data, we rely on the Kalman Filter for predictions. Subsequently, the PID control receives the distance error based on the predicted distance to calculate the PWM duty cycle, ensuring that the PID controller continues to control the vehicle even in the absence of actual TOF sensor data.
+                            </p>
+                            <img src="Imgs_lab7/useKF.png" alt="Use KF function in Arduino" style="width: 35vw; height: 40vw;">
+                            <h4 class="mb-0">Result</h4>
+                            <p>
+                                Lastly, I operated the car towards the wall with the Kalman Filter applied, alongside the PID controller.
+                            </p>
+                            <iframe width="600vw" height="450vw" src="https://youtube.com/embed/SEVXws3wmDs" title="running the car with 160" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <p>
+                                The data recorded and transmitted from the robot is plotted in the figure below. This plot confirms that the Kalman Filter is operational on the Artemis. It is observed that at approximately 23.7 seconds, the Kalman Filter predicts the position of the robot to be lower than its actual position, but it adjusts itself at a relatively fast pace.
+                            </p>
+                            <img src="Imgs_lab7/KFuse.png" alt="plot KF processed data" style="width: 40vw; height: 30vw;">
+                        </div>
+                    </div> 
+
+            </section>
 
 
         </div>
