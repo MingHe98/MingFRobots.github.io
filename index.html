@@ -1017,10 +1017,23 @@
                             <p>
                                 This is the first successful attempt, but as shown in the video, the car did not execute a rapid 180-degree turn. This suggests to me that the proportional term of the PID controller is not sufficiently larger than the derivative term, which is necessary for initiating and completing a fast turn.
                             </p>
+                            <p>
+                                The distance is calculated by combining the TOF sensor measurements with the Kalman filter predictions implemented in the previous lab. The analysis plot below shows that, as the PWM duty cycle and its corresponding angle change, the car attempts to self-adjust its angle, a process that takes approximately 2 seconds.
+                            </p>
+                            <img src="Imgs_lab8/sucess_1.png" alt="all data from first sucess" style="width: 40vw; height: 30vw;">
+                            <img src="Imgs_lab8/succss1.png" alt="detailed data from first success" style="width: 40vw; height: 30vw;">
+                            <p>
+                                Based on the analysis, the distance detection was what I expected. Thus, I only increased the propotional term in PID controller to make the turn complete faster. 
+                            </p>
                             <h4 class="mb-0">Success 2</h4>
-                            <iframe width="600vw" height="450vw" src="https://youtube.com/embed/ylssTc5pOmk" title="sucess 1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <iframe width="600vw" height="450vw" src="https://youtube.com/embed/ajmYNKHNpwk" title="sucess 1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            
                             <h4 class="mb-0">Success 3</h4>
                             <iframe width="600vw" height="450vw" src="https://youtube.com/embed/USe1OcBBr8k" title="sucess 1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <p>
+                                After the PID control was adjusted, the car could eventually complete the turn in less than half a second. The accompanying screenshot demonstrates that by using the wall as a bumping force and then accelerating, the car is able to reach the target angle more quickly, and the error also decreases at a faster rate. This effect is particularly noticeable in the change observed between 11 and 11.1 seconds.
+                            </p>
+                            <img src="Imgs_lab8/bumping.png" alt="bumping on the wall" style="width: 40vw; height: 30vw;">bum
                         </div>
                     </div>
 
