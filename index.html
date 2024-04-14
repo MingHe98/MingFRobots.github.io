@@ -36,6 +36,7 @@
                     <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#lab6">Lab 6: Orientation PID control</a></li>
                     <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#lab7">Lab 7: Kalman Filter</a></li>
                     <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#lab8">Lab 8: Stunts!</a></li>
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#lab9">Lab 9: Mapping</a></li>
                 </ul>
             </div>
         </nav>
@@ -1004,6 +1005,106 @@
                             <h3 class="mb-0">Task 2: Orientation Control</h3>
                             <p>
                                 The goal of this lab is for the robot to start at a distance less than 4 meters from the wall, quickly drive forward, and, when it is within 3 feet (equivalent to 914mm or 3 floor tiles in the lab) from the wall, initiate a 180-degree turn.    
+                            </p>
+                        </div>
+                    </div>
+
+
+                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                        <div class="flex-grow-1">
+                            <h3 class="mb-0">Successes</h3>
+                            <h4 class="mb-0">Success 1</h4>
+                            <iframe width="600vw" height="450vw" src="https://youtube.com/embed/ylssTc5pOmk" title="sucess 1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <p>
+                                This is the first successful attempt, but as shown in the video, the car did not execute a rapid 180-degree turn. This suggests to me that the proportional term of the PID controller is not sufficiently larger than the derivative term, which is necessary for initiating and completing a fast turn.
+                            </p>
+                            <p>
+                                The distance is calculated by combining the TOF sensor measurements with the Kalman filter predictions implemented in the previous lab. The analysis plot below shows that, as the PWM duty cycle and its corresponding angle change, the car attempts to self-adjust its angle, a process that takes approximately 2 seconds.
+                            </p>
+                            <img src="Imgs_lab8/sucess_1.png" alt="all data from first sucess" style="width: 40vw; height: 30vw;">
+                            <img src="Imgs_lab8/succss1.png" alt="detailed data from first success" style="width: 40vw; height: 30vw;">
+                            <p>
+                                Based on the analysis, the distance detection was what I expected. Thus, I only increased the propotional term in PID controller to make the turn complete faster. 
+                            </p>
+                            <h4 class="mb-0">Success 2</h4>
+                            <iframe width="600vw" height="450vw" src="https://youtube.com/embed/ajmYNKHNpwk" title="sucess 1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            
+                            <h4 class="mb-0">Success 3</h4>
+                            <iframe width="600vw" height="450vw" src="https://youtube.com/embed/USe1OcBBr8k" title="sucess 1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <p>
+                                After the PID control was adjusted, the car could eventually complete the turn in less than half a second. The accompanying screenshot demonstrates that by using the wall as a bumping force and then accelerating, the car is able to reach the target angle more quickly, and the error also decreases at a faster rate. This effect is particularly noticeable in the change observed between 11 and 11.1 seconds.
+                            </p>
+                            <img src="Imgs_lab8/bumping.png" alt="bumping on the wall" style="width: 40vw; height: 30vw;">
+                        </div>
+                    </div>
+
+                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                        <div class="flex-grow-1">
+                            <h3 class="mb-0">Slow Motions</h3>
+                            <h4 class="mb-0">Slow Motion 1</h4>
+                            <iframe width="600vw" height="450vw" src="https://youtube.com/embed/rMs6n6d021Q" title="sucess 1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <p>
+                                As indicated by the first slow-motion video, the car successfully initiated a 180-degree turn within the span of 3 floor tiles. Personally, I enjoy bumper cars in real life, where utilizing external forces always plays a significant role in car racing. Therefore, I adjusted the distance at which the car begins its turn initiation for another test, as shown below.
+                            </p>
+                            <iframe width="600vw" height="450vw" src="https://youtube.com/embed/BRz-a1t_yVs" title="sucess 1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                    </div>
+
+                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                        <div class="flex-grow-1">
+                            <h3 class="mb-0">The bloopers</h3>
+                            <p>
+                                Regarding the bloopers, when the PID controller was not optimally tuned, the car exhibited some interesting behaviors. For instance, when the integral term was not large enough to self-adjust, the car would end up on the black mat, mimicking a 'turn and park' maneuver.
+                            </p>
+                            <h4 class="mb-0">Turn and Park</h4>
+                            <iframe width="600vw" height="450vw" src="https://youtube.com/embed/RjFw9wuYkEI" title="sucess 1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <h4 class="mb-0">Dizzy and Lost</h4>
+                            <p>
+                                The video below presents a blooper where, due to the proportional term being relatively larger, the car appeared lost and dizzy.
+                            </p>
+                            <iframe width="600vw" height="450vw" src="https://youtube.com/embed/BRz-a1t_yVs" title="sucess 1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                    </div>
+
+                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                        <div class="flex-grow-1">
+                            <h3 class="mb-0">Task 1 (Not Required)</h3>                         
+                            <p>
+                                Moreover, I find Task 1, focusing on position control, to be a really interesting challenge as well. Had I been afforded more time, I would have completed it. Nevertheless, I did dedicate some effort to this task. Initially, I managed to have it approach the wall, and then swiftly reverse its direction of movement, as demonstrated in the video below.
+                            </p>
+                            <iframe width="600vw" height="450vw" src="https://youtube.com/embed/tAHmfjKjPag" title="failed 1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                
+                            <p>
+                                Of course, there were instances when it did flip, though not in the manner I had anticipated.
+                            </p>
+                            <iframe width="600vw" height="450vw" src="https://youtube.com/embed/1LVoeACgGaY" title="failed 2" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+                        </div>
+                    </div>
+
+            </section>
+
+            <hr class="m-0"/>
+            <!-- Lab 9 -->
+            <section class="resume-section" id="lab8">
+                <div class="resume-section-content">
+                    <h2 class="mb-5"> LAB9: Mapping</h2>
+                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                        <div class="flex-grow-1">
+                            <h3 class="mb-0">Introduction</h3>
+                            <p>
+                                The goal of this lab is to map out a static room, specifically the front room of the lab. Throughout the entire experiment, a robot will be placed at several marked locations around the lab. It will rotate around its axis while collecting Time-of-Flight (ToF) readings. These readings will then be plotted in Python, showing Y-axis distance measurements against X-axis distance measurements to create a rough map of the room.
+                                The map, which includes the front room of the lab and five marked locations, is shown in the image below.
+                            </p>
+                            <img src="Imgs_lab9/map.jpg" alt="front room map" style="width: 40vw; height: 30vw;">
+                        </div>
+                        <div class="flex-shrink-0"><span class="text-primary">10th, Feb 2024 - 17th Apr 2024</span></div>
+                    </div>
+                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                        <div class="flex-grow-1">
+                            <h3 class="mb-0">Orientation Control</h3>
+                            <p>
+                                For this lab, I selected orientation control and adapted the PID controller from a previous experiment (specifically, Task B orientation control in Lab 8). I tuned the Proportional, Integral, and Derivative parameters to enable the robot to perform on-axis turns in small, precise increments. It collects distance measurements along the X and Y axes using two Time-of-Flight (ToF) sensors.
                             </p>
                         </div>
                     </div>
