@@ -1107,7 +1107,10 @@
                                 For this lab, I selected orientation control and adapted the PID controller from a previous experiment (specifically, Task B orientation control in Lab 8). I tuned the Proportional, Integral, and Derivative parameters to enable the robot to perform on-axis turns in small, precise increments. It collects distance measurements along the X and Y axes using two Time-of-Flight (ToF) sensors.
                             </p>
                             <p>
-                                I implemented a function named 'rotate' to rotate the car by 20 degrees each time, with an error tolerance of absolutely 0.3 degrees. It also records the current angle after every rotation in relation to the original starting position.
+                                Since the robot needs to complete a 360-degree rotation to map out the entire surrounding environment, the accuracy of the map increases with the number of data points the Time-of-Flight (ToF) sensor can measure around the turning axis. Therefore, I designed the robot to rotate 18 times per full circle, equating to 20 degrees per rotation. This approach allows for more detailed sensing and, consequently, a more accurate map.
+                            </p>
+                            <p>
+                                Next, I implemented a function named 'rotate' to rotate the car by 20 degrees each time, with an error tolerance of absolutely 0.3 degrees. It also records the current angle after every rotation in relation to the original starting position.
                             </p>
                             <code style="display: block; white-space: pre-wrap; overflow: auto; max-height: 400px;">
                                 void rotate(){
