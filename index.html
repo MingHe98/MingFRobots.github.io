@@ -1086,7 +1086,7 @@
 
             <hr class="m-0"/>
             <!-- Lab 9 -->
-            <section class="resume-section" id="lab8">
+            <section class="resume-section" id="lab9">
                 <div class="resume-section-content">
                     <h2 class="mb-5"> LAB9: Mapping</h2>
                     <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
@@ -1120,7 +1120,7 @@
                                     while(car_rotating){
                                       if (myICM.dataReady()) {
                                         myICM.getAGMT(); // Update the sensor data
-                                        gyroZ = myICM.gyrZ()-avg_angle_noise; // Assuming gyroZ gives rotation rate in degrees/s     
+                                        gyroZ = myICM.gyrZ()-avg_angle_noise;     
                                   
                                         curr_time_IMU = (float)millis();
                                         // PID calculations
@@ -1138,7 +1138,7 @@
                                           integral_IMU = -1200.0;
                                         }
                                   
-                                        derivative_IMU = (error_angle - lastError_IMU) / dt; // Calculate derivative
+                                        derivative_IMU = (error_angle - lastError_IMU) / dt;
                                   
                                         P_calc = Kp_IMU * error_angle;
                                         I_calc = Ki_IMU * integral_IMU;
@@ -1161,12 +1161,14 @@
                                         }
                                         else {
                                           if ((int)pidOutput_IMU > 0){
-                                            pwmSignal_IMU = constrain((int)pidOutput_IMU, 35, 245); // Ensure PWM is within valid range
+                                            // Ensure PWM is within valid range
+                                            pwmSignal_IMU = constrain((int)pidOutput_IMU, 35, 245);
                                             record_PWM_IMU = pwmSignal_IMU;
                                             left_turn(pwmSignal_IMU);
                                           }
                                           else {
-                                            pwmSignal_IMU = constrain(-(int)pidOutput_IMU, 35, 245); // Ensure PWM is within valid range
+                                            // Ensure PWM is within valid range
+                                            pwmSignal_IMU = constrain(-(int)pidOutput_IMU, 35, 245);
                                             record_PWM_IMU = -pwmSignal_IMU;
                                             right_turn(pwmSignal_IMU);
                                           }
@@ -1174,7 +1176,7 @@
                                       }
                                     }
                                   }
-                            </codestyle>
+                            </code>
 
 
                         </div>
