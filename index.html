@@ -1106,6 +1106,77 @@
                             <p>
                                 For this lab, I selected orientation control and adapted the PID controller from a previous experiment (specifically, Task B orientation control in Lab 8). I tuned the Proportional, Integral, and Derivative parameters to enable the robot to perform on-axis turns in small, precise increments. It collects distance measurements along the X and Y axes using two Time-of-Flight (ToF) sensors.
                             </p>
+                            <p>
+                                I implemented a function named 'rotate' to rotate the car by 20 degrees each time, with an error tolerance of absolutely 0.3 degrees. It also records the current angle after every rotation in relation to the original starting position.
+                            </p>
+                            <code style="display: block; white-space: pre-wrap; overflow: auto; max-height: 400px;">
+                                void rotate(){
+                                    angle = 0;
+                                    car_rotating = 1;
+                                    lastTime_IMU = (float)millis();
+                                    init_time = (float)millis();
+                                    integral_IMU = 0;
+                                    lastError_IMU = setpoint_IMU - angle;
+                                    while(car_rotating){
+                                      if (myICM.dataReady()) {
+                                        myICM.getAGMT(); // Update the sensor data
+                                        gyroZ = myICM.gyrZ()-avg_angle_noise; // Assuming gyroZ gives rotation rate in degrees/s     
+                                  
+                                        curr_time_IMU = (float)millis();
+                                        // PID calculations
+                                        dt = (curr_time_IMU - lastTime_IMU) / 1000.0; // Delta time in seconds
+                                        lastTime_IMU = curr_time_IMU; // Update last time
+                                        angle += (gyroZ * dt); // Angle estimation
+                                        error_angle = setpoint_IMU - angle; // Calculate error
+                                  
+                                        integral_IMU += error_angle * dt; // Calculate integral
+                                        // Integral wind-up
+                                        if (integral_IMU > 1200.0){
+                                          integral_IMU = 1200.0;
+                                        }
+                                        else if (integral_IMU < -1200.0){
+                                          integral_IMU = -1200.0;
+                                        }
+                                  
+                                        derivative_IMU = (error_angle - lastError_IMU) / dt; // Calculate derivative
+                                  
+                                        P_calc = Kp_IMU * error_angle;
+                                        I_calc = Ki_IMU * integral_IMU;
+                                        D_calc = Kd_IMU * derivative_IMU;
+                                  
+                                  
+                                        pidOutput_IMU = P_calc + I_calc + D_calc; // Calculate PID output
+                                        lastError_IMU = error_angle; // Update last error for next cycle
+                                  
+                                        if (abs(error_angle) < 0.3 || (float)millis() - init_time > 30000) {
+                                          stop_car();
+                                          overall_angle += angle;
+                                          // Logging data
+                                          if (itr_IMU < 3000) {
+                                              data_buffer_IMU[itr_IMU][0] = overall_angle;
+                                              itr_IMU++;
+                                          }
+                                  
+                                          car_rotating = 0;
+                                        }
+                                        else {
+                                          if ((int)pidOutput_IMU > 0){
+                                            pwmSignal_IMU = constrain((int)pidOutput_IMU, 35, 245); // Ensure PWM is within valid range
+                                            record_PWM_IMU = pwmSignal_IMU;
+                                            left_turn(pwmSignal_IMU);
+                                          }
+                                          else {
+                                            pwmSignal_IMU = constrain(-(int)pidOutput_IMU, 35, 245); // Ensure PWM is within valid range
+                                            record_PWM_IMU = -pwmSignal_IMU;
+                                            right_turn(pwmSignal_IMU);
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                            </codestyle>
+
+
                         </div>
                     </div>
 
