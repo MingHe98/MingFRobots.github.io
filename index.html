@@ -1194,7 +1194,16 @@
                                 As demonstrated in the video below, the car rotates 360 degrees at one of the marked locations, and two TOF sensors collect distance measurements 18 times. The processes at the remaining four locations are repetitive.Moreover, I find Task 1, focusing on position control, to be a really interesting challenge as well. Had I been afforded more time, I would have completed it. Nevertheless, I did dedicate some effort to this task. Initially, I managed to have it approach the wall, and then swiftly reverse its direction of movement, as demonstrated in the video below.
                             </p>
                             <iframe width="600vw" height="450vw" src="https://youtube.com/embed/QFrJWnFjGSg" title="Rotate at one location" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                
+                        </div>
+                    </div>
+
+                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                        <div class="flex-grow-1">
+                            <h3 class="mb-0">Data Collection (at one marked location)</h3>                         
+                            <p>
+                                After collecting the measurement data from the two Time of Flight (TOF) sensors, along with the corresponding angles at which each measurement was taken, a Homogeneous Transformation Matrix is used to map the surrounding environment. This matrix helps correlate the local coordinate frame, which refers to the car itself. In this frame, the direction along the wheels represents the local X-axis, the Y-axis is perpendicular to it, and the origin is at the center of the car body. The transformation matrix involves both rotation and translation components. The rotation matrix is implemented in Python, as shown in the code snippet below.
+                            </p>
+                            <img src="Imgs_lab9/rotationMatrix.png" alt="rotation matrix" style="width: 40vw; height: 15vw;">
                         </div>
                     </div>
                 
