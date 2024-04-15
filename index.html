@@ -1199,11 +1199,19 @@
 
                     <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
                         <div class="flex-grow-1">
-                            <h3 class="mb-0">Data Collection (at one marked location)</h3>                         
+                            <h3 class="mb-0">Data Processing</h3>                         
                             <p>
                                 After collecting the measurement data from the two Time of Flight (TOF) sensors, along with the corresponding angles at which each measurement was taken, a Homogeneous Transformation Matrix is used to map the surrounding environment. This matrix helps correlate the local coordinate frame, which refers to the car itself. In this frame, the direction along the wheels represents the local X-axis, the Y-axis is perpendicular to it, and the origin is at the center of the car body. The transformation matrix involves both rotation and translation components. The rotation matrix is implemented in Python, as shown in the code snippet below.
                             </p>
                             <img src="Imgs_lab9/rotationMatrix.png" alt="rotation matrix" style="width: 40vw; height: 15vw;">
+                            <p>
+                                The rotation matrix is then multiplied by a 2x1 direction matrix, which includes two entries. For the front sensor, the first entry of the direction matrix corresponds to the local X-axis and contains the distance measured by the front TOF sensor, while the Y-axis value is zero. For the side sensor, the first index in the direction matrix refers to the X-axis value, which is zero relative to the side sensor. The second index refers to the Y-axis and includes the distance measured by the side TOF sensor. This matrix multiplication projects the measurements from the local frame to the global frame, effectively mapping the data onto the global map.
+                            </p>
+                            <img src="Imgs_lab9/rotation_translation.png" alt="rotation matrix multiplication and plus the tranlation" style="width: 40vw; height: 25vw;">
+                            <p>
+                                Translation was also considered because the front sensor is located at the front end of the car, and the side sensor is positioned at the edge of the car's side, while the car itself rotates around its center. As depicted in the image above, the dimensions of the car are factored into the translation calculations after rotation mapping onto the global map. The car dimensions value are demonstrated in the image below.
+                            </p>
+                            <img src="Imgs_lab9/translations.png" alt="tranlation dimensions" style="width: 35vw; height: 40vw;">
                         </div>
                     </div>
                 
