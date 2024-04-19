@@ -1297,9 +1297,41 @@
                             </p>
                             <h4 class="mb-0">Odometry Motion Model</h4>
                             <p>
-                                The compute_control function is designed to extract control information, represented in the code as input u, which follows the format of first rotation, translation, and second rotation, [rot1,trans,rot2] with units specified in degrees and meters [degrees,meters,degrees]. This function calculates the control based on a given previous pose at time (t-1) and updates to the current pose (at time t) of the robot.
-                                The code snippet is attached below.
+                                In the odometry motion model, three inputs are required: cur_pose, prev_pose, and u, which represent the current position, previous position, and the actual control input u (rot1, trans, rot2), respectively. The control input u is calculated during the prediction step, based on the current and previous positions as provided by the odometry readings. After determining the actual u, the probability of having a required control input u for a given pair of possible previous and current poses of the robot can be calculated by invoking the Gaussian function.
                             </p>
+                            <p style="display: block; white-space: pre-wrap; overflow: auto; max-height: 400px;">
+                                def odom_motion_model(cur_pose, prev_pose, u):
+                                    """ Odometry Motion Model
+
+                                    Args:
+                                        cur_pose  ([Pose]): Current Pose
+                                        prev_pose ([Pose]): Previous Pose
+                                        (rot1, trans, rot2) (float, float, float): A tuple with control data in the format 
+                                                                                format (rot1, trans, rot2) with units (degrees, meters, degrees)
+
+                                    Returns:
+                                        prob [float]: Probability p(x'|x, u)
+                                    """
+                                    
+                                    # calculated input control matrix
+                                    normalized_rot_1, trans, normalized_rot_2 = compute_control(cur_pose, prev_pose) 
+
+                                    normalized_given_rot1 = mapper.normalize_angle(u[0])
+                                    given_trans = u[1]
+                                    normalized_given_rot2 = mapper.normalize_angle(u[2])
+
+
+                                    rot1_prob = loc.gaussian(normalized_given_rot1, normalized_rot_1, loc.odom_rot_sigma)
+                                    tans_prob = loc.gaussian(given_trans, trans, loc.odom_trans_sigma)
+                                    rot2_prob = loc.gaussian(normalized_given_rot2, normalized_rot_2, loc.odom_rot_sigma)
+
+                                    return rot1_prob*tans_prob*rot2_prob
+                            </p>
+                            <h4 class="mb-0">Sensor Model</h4>
+                            <p>
+                                
+                            </p>
+
                         </div>
                     </div>
 
