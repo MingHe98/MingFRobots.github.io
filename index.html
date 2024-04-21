@@ -1329,56 +1329,85 @@
                             </p>
                             <h4 class="mb-0">Sensor Model</h4>
                             <p>
+                                The sensor model function accepts a 1D array as input, which contains the precached observations associated with a specific robot pose on the map. Each observation consists of 18 individual measurements recorded at equidistant angular positions during the robot's anticlockwise rotation. These 18 true measurement values are captured at the same equidistant angular positions for each grid cell (state) and can be accessed through the BaseLocalization class by calling the loc.obs_range_data function. Therefore, for the 18 measurements at a given state, the likelihood of each true individual measurement relative to the expected measurement is calculated and returned by the sensor model function.
+                            </p>
+
+                            <p style="display: block; white-space: pre-wrap; overflow: auto; max-height: 400px;">
+                                def sensor_model(obs):
+                                """ This is the equivalent of p(z|x).
+                            
+                                Args:
+                                    obs ([ndarray]): A 1D array consisting of the precached observations for a specific robot pose in the map 
+                            
+                                Returns:
+                                    [ndarray]: Returns a 1D array of size 18 (=loc.OBS_PER_CELL) with the likelihoods of each individual sensor measurement
+                                """
+                            
+                                data_len = mapper.OBS_PER_CELL # default is 18
+                                prob_array = np.zeros(data_len) 
+                            
+                                
+                                for itr,real_o, expect_o in zip(range(data_len), loc.obs_range_data, obs):
+                                    prob_array[itr] = loc.gaussian(real_o[0], expect_o, loc.sensor_sigma)
+                            
+                                return prob_array
+                            </p>
+                        </div>
+                    </div>
+                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                        <div class="flex-grow-1">
+                            <h3 class="mb-0">Bayes Filter Algorithm</h3>
+                            <p>
+                                Essentially, every iteration of the Bayes filter has two steps: prediction step and update step. 
+                                A prediction step incorporates the control input (movement) data.
+                                An update step incorporates the observation (measurement) data.
+                                The prediction step increases uncertainty in the belief, while the update step decreases it. The belief calculated after the prediction step is often referred to as the prior belief.
+                            </p>
+                            <h4 class="mb-0">Prediction Step</h4>
+                            <p>
+                                In the prediction step, the probability of transitioning from the previous time step to the current time step is calculated using the previous and current odometry data. This is done by calling the odom_motion_model function, which multiplies the loc.bel. The result is then updated in bel_bar.
+                            </p>
+
+                            <p style="display: block; white-space: pre-wrap; overflow: auto; max-height: 400px;">
+                                def update_step():
+                                """ Update step of the Bayes Filter.
+                                Update the probabilities in loc.bel based on loc.bel_bar and the sensor model.
+                                """
+                                bel = loc.bel
+                                x_s, y_s, a_s = (mapper.MAX_CELLS_X,mapper.MAX_CELLS_Y,mapper.MAX_CELLS_A)
+                                
+                                for x_cur in range(x_s):
+                                    for y_cur in range(y_s):
+                                        for a_cur in range(a_s):
+                                            prob_sensor_model = np.prod(sensor_model(mapper.get_views(x_cur, y_cur, a_cur)))
+                                            bel[x_cur][y_cur][a_cur] = prob_sensor_model * loc.bel_bar[x_cur][y_cur][a_cur]
+                                loc.bel = np.true_divide(bel,np.sum(bel))
+                            </p>
+
+                            <h4 class="mb-0">Update Step</h4>
+                            <p>
                                 
                             </p>
 
+                            <p style="display: block; white-space: pre-wrap; overflow: auto; max-height: 400px;">
+                                def update_step():
+                                """ Update step of the Bayes Filter.
+                                Update the probabilities in loc.bel based on loc.bel_bar and the sensor model.
+                                """
+                                bel = loc.bel
+                                x_s, y_s, a_s = (mapper.MAX_CELLS_X,mapper.MAX_CELLS_Y,mapper.MAX_CELLS_A)
+                                
+                                for x_cur in range(x_s):
+                                    for y_cur in range(y_s):
+                                        for a_cur in range(a_s):
+                                            prob_sensor_model = np.prod(sensor_model(mapper.get_views(x_cur, y_cur, a_cur)))
+                                            bel[x_cur][y_cur][a_cur] = prob_sensor_model * loc.bel_bar[x_cur][y_cur][a_cur]
+                                loc.bel = np.true_divide(bel,np.sum(bel))
+                            </p>
                         </div>
                     </div>
 
 
-                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
-                        <div class="flex-grow-1">
-                            <h3 class="mb-0">Slow Motions</h3>
-                            <h4 class="mb-0">Slow Motion 1</h4>
-                            <iframe width="600vw" height="450vw" src="https://youtube.com/embed/rMs6n6d021Q" title="sucess 1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                            <p>
-                                As indicated by the first slow-motion video, the car successfully initiated a 180-degree turn within the span of 3 floor tiles. Personally, I enjoy bumper cars in real life, where utilizing external forces always plays a significant role in car racing. Therefore, I adjusted the distance at which the car begins its turn initiation for another test, as shown below.
-                            </p>
-                            <iframe width="600vw" height="450vw" src="https://youtube.com/embed/BRz-a1t_yVs" title="sucess 1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                        </div>
-                    </div>
-
-                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
-                        <div class="flex-grow-1">
-                            <h3 class="mb-0">The bloopers</h3>
-                            <p>
-                                Regarding the bloopers, when the PID controller was not optimally tuned, the car exhibited some interesting behaviors. For instance, when the integral term was not large enough to self-adjust, the car would end up on the black mat, mimicking a 'turn and park' maneuver.
-                            </p>
-                            <h4 class="mb-0">Turn and Park</h4>
-                            <iframe width="600vw" height="450vw" src="https://youtube.com/embed/RjFw9wuYkEI" title="sucess 1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                            <h4 class="mb-0">Dizzy and Lost</h4>
-                            <p>
-                                The video below presents a blooper where, due to the proportional term being relatively larger, the car appeared lost and dizzy.
-                            </p>
-                            <iframe width="600vw" height="450vw" src="https://youtube.com/embed/BRz-a1t_yVs" title="sucess 1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                        </div>
-                    </div>
-
-                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
-                        <div class="flex-grow-1">
-                            <h3 class="mb-0">Task 1 (Not Required)</h3>                         
-                            <p>
-                                Moreover, I find Task 1, focusing on position control, to be a really interesting challenge as well. Had I been afforded more time, I would have completed it. Nevertheless, I did dedicate some effort to this task. Initially, I managed to have it approach the wall, and then swiftly reverse its direction of movement, as demonstrated in the video below.
-                            </p>
-                            <iframe width="600vw" height="450vw" src="https://youtube.com/embed/tAHmfjKjPag" title="failed 1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                
-                            <p>
-                                Of course, there were instances when it did flip, though not in the manner I had anticipated.
-                            </p>
-                            <iframe width="600vw" height="450vw" src="https://youtube.com/embed/1LVoeACgGaY" title="failed 2" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
-                        </div>
-                    </div>
 
             </section>
 
