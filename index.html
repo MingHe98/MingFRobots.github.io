@@ -1366,7 +1366,8 @@
                             </p>
                             <h4 class="mb-0">Prediction Step</h4>
                             <p>
-                                In the prediction step, the probability of transitioning from the previous time step to the current time step is calculated using the previous and current odometry data. This is done by calling the odom_motion_model function, which multiplies the loc.bel. The result is then updated in bel_bar.
+                                In the prediction step, the probability of transitioning from the previous time step to the current time step is calculated using the previous and current odometry data. This is done by calling the odom_motion_model function, which multiplies the loc.bel. The result is then updated in bel_bar. 
+                                As seen in the code implementation, a grid cell is only used to calculate and update the probability for the next potential grid cell in the inner loops of the Bayes filter's prediction step if its probability exceeds 0.0001. This is because any value multiplied by zero results in zero. Therefore, if a state has a probability less than 0.0001, we can skip these states since they contribute minimally to the belief, thus significantly reducing computation time.
                             </p>
 
                             <p style="display: block; white-space: pre-wrap; overflow: auto; max-height: 400px;">
