@@ -1463,7 +1463,10 @@
                                 <div class="flex-grow-1">
                                     <h3 class="mb-0">Grid Localization using Bayes Filter (Real)</h3>
                                     <p>
-                                        To use the update step in the Bayes filter to determine the robot's location, the TOF sensor needs to measure distances, and this data must be sent to the laptop via Bluetooth. To achieve this, I controlled the robot to rotate between 0 degrees and 340 degrees (inclusive), making 17 rotations in total. I recorded the distance data 18 times and transmitted it to the laptop, as demonstrated in the approach below.
+                                        To use the update step in the Bayes filter to determine the robot's location, the TOF sensor needs to measure distances, and this data must be sent to the laptop via Bluetooth. To achieve this, I controlled the robot to rotate between 0 degrees and 340 degrees (inclusive) and 20 degrees per rotation via a PID controlled implemented in previous labs, making 17 rotations in total. I recorded the distance data 18 times and transmitted it to the laptop when 18 measurements are received by the laptop, as demonstrated in the approach below.
+                                    </p>
+                                    <p>
+                                        In order for the event handler to receive the data sent from the robot in real time, a coroutine—specifically, the asyncio sleep coroutine—is called directly by executing asyncio.run(asyncio.sleep(3)) within a while loop. This allows the system to listen for data while simultaneously waiting for the process to complete.
                                     </p>
                                     <p style="display: block; white-space: pre-wrap; overflow: auto; max-height: 400px;">
                                         def perform_observation_loop(self, rot_vel=120):
@@ -1510,15 +1513,17 @@
                             </div>
                             <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
                                 <div class="flex-grow-1">
-                                    <h3 class="mb-0">Results</h3>
+                                    <h3 class="mb-0">Marked Poses</h3>
+                                    <img src="Imgs_lab11/map.jpg" alt="the global x-y frame" style="width: 40vw; height: 30vw;">
+                                    <h4 class="mb-0">(0 ft, 3 ft)</h4>
                                     <p>
-                                        Here is a photo showing the output of the Bayes Filter when running these methods in the simulator. The red path indicates the odometry, the green path represents the real car trajectory, and the blue path refers to the predicted trajectory.
+                                        The localization for the waypoint at (0, 3)—which corresponds to the 0th tile on the global x-axis and the 3rd tile on the global y-axis—is displayed in the plot below, with the origin represented by the position of the robot car in the image. The global x-y coordinate frame is illustrated above.
                                     </p>
-                                    <img src="Imgs_lab10/Trajectory_plotter.png" alt="simulate trajectory graphs" style="width: 40vw; height: 35vw;">
+                                    <br>
                                     <p>
-                                        The video below demonstrates how the car moves along the green trajectory path. The red path, representing the odometry, is inaccurate and not utilized in our lab. The blue path shows the predicted locations and the path between each movement. As observed, the Bayes filter generally remains close to the robot's position, although there are instances where they are relatively far away from each other; however, adjustments are made quickly. As the robot begins to make larger, continuous movements throughout the run, the filter increasingly gets close the robot’s path. Nevertheless, near the end a quick turn causes the filter to deviate from the course.
+                                        
                                     </p>
-                                    <iframe width="600vw" height="450vw" src="https://youtube.com/embed/2IFmm7yRSVk" title="Trajectory Record" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                    <img src="Imgs_lab11/0ft-3ft.png" alt="0ft, 3ft point" style="width: 40vw; height: 30vw;">
                                 </div>
                             </div>
 
