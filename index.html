@@ -38,6 +38,7 @@
                     <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#lab8">Lab 8: Stunts!</a></li>
                     <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#lab9">Lab 9: Mapping</a></li>
                     <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#lab10">Lab 10: Grid Localization using Bayes Filter (Simulation)</a></li>
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#lab11">Lab 11: Localization on the real robot</a></li>
                 </ul>
             </div>
         </nav>
@@ -1431,7 +1432,91 @@
                             <iframe width="600vw" height="450vw" src="https://youtube.com/embed/2IFmm7yRSVk" title="Trajectory Record" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                         </div>
                     </div>
-                    
+
+
+
+                    <hr class="m-0"/>
+                    <!-- Lab 11 -->
+                    <section class="resume-section" id="lab11">
+                        <div class="resume-section-content">
+                            <h2 class="mb-5"> Lab 11: Localization on the real robot</h2>
+                            <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                                <div class="flex-grow-1">
+                                    <h3 class="mb-0">Introduction</h3>
+                                    <p>
+                                        In this lab, localization using the Bayes filter will be implemented on the actual robot. The update step will rely solely on full 360-degree scans with the ToF sensor, as the motion of these particular robots is typically so noisy that the prediction step is not helpful. The purpose of the lab is to appreciate the difference between simulated and real-world systems.   
+                                    </p>
+                                </div>
+                                <div class="flex-shrink-0"><span class="text-primary">24th, Feb 2024 - 1st May 2024</span></div>
+                            </div>
+        
+                            <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                                <div class="flex-grow-1">
+                                    <h3 class="mb-0">Grid Localization using Bayes Filter (Simulation)</h3>
+                                    <p>
+                                        To ensure that the necessary Bayes filter functions are implemented correctly, the functions are provided and tested by running the simulation, as shown in the screenshot below. This also verifies that my implementations from the previous lab were accurate.
+                                    </p>
+                                    <img src="Imgs_lab11/run_sim11.png" alt="simulator plottor" style="width: 40vw; height: 30vw;">
+                                </div>
+                            </div>
+                            <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                                <div class="flex-grow-1">
+                                    <h3 class="mb-0">Grid Localization using Bayes Filter (Real)</h3>
+                                    <p>
+                                        To use the update step in the Bayes filter to determine the robot's location, the TOF sensor needs to measure distances, and this data must be sent to the laptop via Bluetooth. To achieve this, I controlled the robot to rotate between 0 degrees and 340 degrees (inclusive), making 17 rotations in total. I recorded the distance data 18 times and transmitted it to the laptop, as demonstrated in the approach below.
+                                    </p>
+                                    <p style="display: block; white-space: pre-wrap; overflow: auto; max-height: 400px;">
+                                        def perform_observation_loop(self, rot_vel=120):
+                                        """Perform the observation loop behavior on the real robot, where the robot does  
+                                        a 360 degree turn in place while collecting equidistant (in the angular space) sensor
+                                        readings, with the first sensor reading taken at the robot's current heading. 
+                                        The number of sensor readings depends on "observations_count"(=18) defined in world.yaml.
+                                        
+                                        Keyword arguments:
+                                            rot_vel -- (Optional) Angular Velocity for loop (degrees/second)
+                                                        Do not remove this parameter from the function definition, even if you don't use it.
+                                        Returns:
+                                            sensor_ranges   -- A column numpy array of the range values (meters)
+                                            sensor_bearings -- A column numpy array of the bearings at which the sensor readings were taken (degrees)
+                                                               The bearing values are not used in the Localization module, so you may return a empty numpy array
+                                        """
+                                        
+                                        # global data
+                                        sensor_ranges = np.zeros((18,1))
+                                        # sensor_ranges = [[0.365],[0.411],[0.515],[0.839],[2.227],[1.299],[1.285],[2.642],[2.968],[1.565],[1.311],[0.671],[0.454],[0.364],[0.362],[0.412],[0.535],[0.44 ]]
+                                        sensor_bearings = np.zeros(18) # not used so it does not matter
+                                    
+                                        ble.send_command(CMD.START, "18.0|13.3|1.3|20")
+                                        print("Car starts rotating and measuring distance")
+                                        
+                                        ble.send_command(CMD.Send_data, "")
+                                        while(len(data) < 18):
+                                            asyncio.run(asyncio.sleep(3))
+                                        print("18 measurements data received!")
+                                        print(data)
+                                        
+                                        for i in range(18):
+                                            distance = (float((data[i].split("|")[1].split(": ")[1])))/1000
+                                            sensor_ranges[i][0] = distance
+                                        print(sensor_ranges)
+                                        print("Complete")
+                                        return sensor_ranges, sensor_bearings
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                                <div class="flex-grow-1">
+                                    <h3 class="mb-0">Results</h3>
+                                    <p>
+                                        Here is a photo showing the output of the Bayes Filter when running these methods in the simulator. The red path indicates the odometry, the green path represents the real car trajectory, and the blue path refers to the predicted trajectory.
+                                    </p>
+                                    <img src="Imgs_lab10/Trajectory_plotter.png" alt="simulate trajectory graphs" style="width: 40vw; height: 35vw;">
+                                    <p>
+                                        The video below demonstrates how the car moves along the green trajectory path. The red path, representing the odometry, is inaccurate and not utilized in our lab. The blue path shows the predicted locations and the path between each movement. As observed, the Bayes filter generally remains close to the robot's position, although there are instances where they are relatively far away from each other; however, adjustments are made quickly. As the robot begins to make larger, continuous movements throughout the run, the filter increasingly gets close the robot’s path. Nevertheless, near the end a quick turn causes the filter to deviate from the course.
+                                    </p>
+                                    <iframe width="600vw" height="450vw" src="https://youtube.com/embed/2IFmm7yRSVk" title="Trajectory Record" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                                </div>
+                            </div>
 
             </section>
 
