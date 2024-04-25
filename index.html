@@ -1515,15 +1515,31 @@
                                 <div class="flex-grow-1">
                                     <h3 class="mb-0">Marked Poses</h3>
                                     <img src="Imgs_lab11/map.jpg" alt="the global x-y frame" style="width: 40vw; height: 30vw;">
-                                    <h4 class="mb-0">(0 ft, 3 ft)</h4>
+                                    <h4 class="mb-0">(5 ft, 3 ft)</h4>
                                     <p>
-                                        The localization for the waypoint at (0, 3)—which corresponds to the 0th tile on the global x-axis and the 3rd tile on the global y-axis—is displayed in the plot below, with the origin represented by the position of the robot car in the image. The global x-y coordinate frame is illustrated above.
+                                        The localization for the true waypoint at (5, 3) shown as green dot which corresponds to the 5th tile on the global x-axis and the 3rd tile on the global y-axis is displayed in the plot below, with the origin represented by the position of the robot car in the image. The global x-y coordinate frame is illustrated above.
                                     </p>
                                     <br>
                                     <p>
-                                        
+                                        This point was the least accurate in terms of location estimates which is the blue dot produced by the Bayes filter update step. This inaccuracy arose because the robot was unable to obtain sufficient unique readings; the surrounding area has relatively large empty spaces and no unique layout around it which can be seen that the layout around both (5, 3) and (5, -3) is similar, making it difficult to determine its actual location accurately. Despite this, the distance between the actual location and the estimated one is still considered acceptable.
+                                    </p>
+                                    <img src="Imgs_lab11/5ft_3ft.png" alt="5ft, 3ft point" style="width: 40vw; height: 30vw;">
+                                    <p>
+                                        Additionally, as depicted in the plot, there are two green dots. The dot on the left represents the center of the car, not the front where the TOF sensor is actually located. The green dot on the right side accurately marks the location of the TOF sensor. Thus, all the green dots in the screenshots below indicate the locations of both the car's center and the TOF sensor. The front of the car is 73mm away from the center.
+                                    </p>
+
+                                    <h4 class="mb-0">(0 ft, 3 ft)</h4>
+                                    <p>
+                                        The points (0, 3) is better localized, as shown in the screenshot below. It can be seen that the y-axis location is accurately estimated, while the x-axis locations is less accurately predicted.
                                     </p>
                                     <img src="Imgs_lab11/0ft-3ft.png" alt="0ft, 3ft point" style="width: 40vw; height: 30vw;">
+
+                                    <h4 class="mb-0">(-3 ft, -2 ft), (5 ft, -3 ft)</h4>
+                                    <p>
+                                        The points (-3, -2) and (5 ft, -3 ft) are better localized, as shown in the screenshot below. It can be seen that the y-axis location is accurately estimated, while the x-axis locations is less accurately predicted.
+                                    </p>
+                                    <img src="Imgs_lab11/0ft-3ft.png" alt="0ft, 3ft point" style="width: 40vw; height: 30vw;">
+
                                 </div>
                             </div>
 
