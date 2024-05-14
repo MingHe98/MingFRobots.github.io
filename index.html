@@ -1601,6 +1601,75 @@
                                     return int(distance), int(angle_degrees)
                             </p>
                             <p>
+                                Both movement and rotation occur by sending the PID controller parameters, distance, and rotation angles to the robot. The function named rotate in the Arduino IDE accepts an input that specifies the angle the robot needs to rotate from its initial position toward the target point. After moving, it then reverses by turning to the negative value of the angle, returning to its initial position for the next movement.
+                            </p>
+                            <p style="display: block; white-space: pre-wrap; overflow: auto; max-height: 400px;">
+                                void rotate(int setpoint_IMU){
+                                    angle = 0;
+                                    car_rotating = 1;
+                                    lastTime_IMU = (float)millis();
+                                    init_time = (float)millis();
+                                    integral_IMU = 0;
+                                    lastError_IMU = setpoint_IMU - angle;
+                                    while(car_rotating){
+                                      if (myICM.dataReady()) {
+                                        myICM.getAGMT(); // Update the sensor data
+                                        gyroZ = myICM.gyrZ()-avg_angle_noise; // Assuming gyroZ gives rotation rate in degrees/s     
+                                  
+                                        curr_time_IMU = (float)millis();
+                                        // PID calculations
+                                        dt = (curr_time_IMU - lastTime_IMU) / 1000.0; // Delta time in seconds
+                                        lastTime_IMU = curr_time_IMU; // Update last time
+                                        angle += (gyroZ * dt); // Angle estimation
+                                        error_angle = setpoint_IMU - angle; // Calculate error
+                                  
+                                        integral_IMU += error_angle * dt; // Calculate integral
+                                        // Integral wind-up
+                                        if (integral_IMU > 1200.0){
+                                          integral_IMU = 1200.0;
+                                        }
+                                        else if (integral_IMU < -1200.0){
+                                          integral_IMU = -1200.0;
+                                        }
+                                  
+                                        derivative_IMU = (error_angle - lastError_IMU) / dt; // Calculate derivative
+                                  
+                                        P_calc = Kp_IMU * error_angle;
+                                        I_calc = Ki_IMU * integral_IMU;
+                                        D_calc = Kd_IMU * derivative_IMU;
+                                  
+                                  
+                                        pidOutput_IMU = P_calc + I_calc + D_calc; // Calculate PID output
+                                        lastError_IMU = error_angle; // Update last error for next cycle
+                                  
+                                        if (abs(error_angle) < 0.3 || (float)millis() - init_time > 30000) {
+                                          stop_car();
+                                          overall_angle += angle;
+                                          // Logging data
+                                          if (itr_IMU < 3000) {
+                                              data_buffer_IMU[itr_IMU][0] = overall_angle;
+                                              itr_IMU++;
+                                          }
+                                  
+                                          car_rotating = 0;
+                                        }
+                                        else {
+                                          if ((int)pidOutput_IMU > 0){
+                                            pwmSignal_IMU = constrain((int)pidOutput_IMU, 35, 245); // Ensure PWM is within valid range
+                                            record_PWM_IMU = pwmSignal_IMU;
+                                            left_turn(pwmSignal_IMU);
+                                          }
+                                          else {
+                                            pwmSignal_IMU = constrain(-(int)pidOutput_IMU, 35, 245); // Ensure PWM is within valid range
+                                            record_PWM_IMU = -pwmSignal_IMU;
+                                            right_turn(pwmSignal_IMU);
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                            </p>
+                            <p>
                                 In the attached video, I manually tuned the distance that the robot car should travel. Since one floor tile is approximately 304 mm, I calculated the distance between the first two points to be about 860 mm. I found that when the distance was tuned to 862 mm, the car could reach the second point with relative accuracy.
                             </p>
                             <iframe width="600vw" height="450vw" src="https://youtube.com/embed/__mo_7E4ges" title="open loop for the first two points" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
