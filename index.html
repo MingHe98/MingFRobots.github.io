@@ -1680,6 +1680,10 @@
                                 In the video below, the robot operates with open loop and timed control. I manually set a timer for how long the car should run straight. I started by running the car for 500 ms, then 1 s, 2 s, and finally 2.5 s to determine how long it takes for the car to traverse an entire floor tile. The video below demonstrates the car running for a tuned time setting and reaching the second point.
                             </p>
                             <iframe width="600vw" height="450vw" src="https://youtube.com/embed/-J_4n5uXWY4" title="open loop with timed control for the first two points" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <p>
+                                However, using either open loop control to run the car for a specifically tuned distance, or open loop with timed control, proved to be time-consuming and buggy for me. As the video below demonstrates, when the car slips due to dirt on the floor, it continues to run as programmed, regardless of the errors. This hardcoded behavior leads to significant inaccuracies in its performance.
+                            </p>
+                            <iframe width="600vw" height="450vw" src="https://youtu.be/R2nrdYcyxzM" title="open loop with timed control for the first two points" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                             
                         </div>
                     </div>
