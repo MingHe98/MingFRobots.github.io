@@ -39,6 +39,7 @@
                     <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#lab9">Lab 9</a></li>
                     <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#lab10">Lab 10</a></li>
                     <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#lab11">Lab 11</a></li>
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#lab12">Lab 12</a></li>
                 </ul>
             </div>
         </nav>
@@ -1557,6 +1558,132 @@
                                     </p>
                                 </div>
                             </div>
+            </section>
+
+            <hr class="m-0"/>
+            <!-- Lab 12 -->
+            <section class="resume-section" id="lab12">
+                <div class="resume-section-content">
+                    <h2 class="mb-5"> LAB12: Path Planning and Execution</h2>
+                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                        <div class="flex-grow-1">
+                            <h3 class="mb-0">Introduction</h3>
+                            <p>
+                                The robot car now has feedback loop control, which was implemented in Labs 5-7. It can map its environment, a feature developed in Lab 9, and is also capable of localizing itself within the map, as established in Lab 11. At this point, I would like the robot to navigate through a set of waypoints in the maze. I have tried multiple approaches to achieve this goal.   
+                            </p>
+                        </div>
+                        <div class="flex-shrink-0"><span class="text-primary">1st, May 2024 - 15th May 2024</span></div>
+                    </div>
+                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                        <div class="flex-grow-1">
+                            <h3 class="mb-0">PID control for orientation and open-loop control on movement</h3>
+                            <p>
+                                From the experiments in Lab 8 and Lab 11, it is evident that my orientation control is effective, allowing the robot to rotate to a specific angle both accurately and quickly. Thus, I began this lab by using the implemented PID orientation control in conjunction with open-loop control for straight movement.    
+                            </p>
+                            <p>
+                                To enable the car to move from one point to another, I used a Python function named calculate_distance_and_angle. This function calculates both the displacement and the angle the car needs to rotate from its initial position. It takes four inputs: the current position's (x, y) coordinates and the next position's (x, y) coordinates.
+                            </p>
+                            <p style="display: block; white-space: pre-wrap; overflow: auto; max-height: 400px;">
+                                def calculate_distance_and_angle(current_belief_x, current_belief_y, goal_x, goal_y):
+                                    # Calculate the differences in the coordinates
+                                    dx = goal_x - current_belief_x
+                                    dy = goal_y - current_belief_y
+                                    
+                                    # Calculate the distance using the Euclidean distance formula
+                                    distance = math.sqrt(dx**2 + dy**2)
+                                    
+                                    # Calculate the angle using atan2 (returns the angle in radians)
+                                    angle_radians = math.atan2(dy, dx)
+                                    
+                                    # Convert radians to degrees
+                                    angle_degrees = math.degrees(angle_radians)
+                                    
+                                    return int(distance), int(angle_degrees)
+                            </p>
+                            <p>
+                                In the attached video, I manually tuned the distance that the robot car should travel. Since one floor tile is approximately 304 mm, I calculated the distance between the first two points to be about 860 mm. I found that when the distance was tuned to 862 mm, the car could reach the second point with relative accuracy.
+                            </p>
+                            <iframe width="600vw" height="450vw" src="https://youtube.com/embed/__mo_7E4ges" title="open loop for the first two points" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <p>
+                                In the video below, the robot operates with open loop and timed control. I manually set a timer for how long the car should run straight. I started by running the car for 500 ms, then 1 s, 2 s, and finally 2.5 s to determine how long it takes for the car to traverse an entire floor tile. The video below demonstrates the car running for a tuned time setting and reaching the second point.
+                            </p>
+                            <iframe width="600vw" height="450vw" src="https://youtube.com/embed/-J_4n5uXWY4" title="open loop with timed control for the first two points" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            
+                        </div>
+                    </div>
+
+
+                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                        <div class="flex-grow-1">
+                            <h3 class="mb-0">Successes</h3>
+                            <h4 class="mb-0">Success 1</h4>
+                            <iframe width="600vw" height="450vw" src="https://youtube.com/embed/ylssTc5pOmk" title="sucess 1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <p>
+                                This is the first successful attempt, but as shown in the video, the car did not execute a rapid 180-degree turn. This suggests to me that the proportional term of the PID controller is not sufficiently larger than the derivative term, which is necessary for initiating and completing a fast turn.
+                            </p>
+                            <p>
+                                The distance is calculated by combining the TOF sensor measurements with the Kalman filter predictions implemented in the previous lab. The analysis plot below shows that, as the PWM duty cycle and its corresponding angle change, the car attempts to self-adjust its angle, a process that takes approximately 2 seconds.
+                            </p>
+                            <img src="Imgs_lab8/sucess_1.png" alt="all data from first sucess" style="width: 40vw; height: 30vw;">
+                            <img src="Imgs_lab8/succss1.png" alt="detailed data from first success" style="width: 40vw; height: 30vw;">
+                            <p>
+                                Based on the analysis, the distance detection was what I expected. Thus, I only increased the propotional term in PID controller to make the turn complete faster. 
+                            </p>
+                            <h4 class="mb-0">Success 2</h4>
+                            <iframe width="600vw" height="450vw" src="https://youtube.com/embed/ajmYNKHNpwk" title="sucess 1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            
+                            <h4 class="mb-0">Success 3</h4>
+                            <iframe width="600vw" height="450vw" src="https://youtube.com/embed/USe1OcBBr8k" title="sucess 1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <p>
+                                After the PID control was adjusted, the car could eventually complete the turn in less than half a second. The accompanying screenshot demonstrates that by using the wall as a bumping force and then accelerating, the car is able to reach the target angle more quickly, and the error also decreases at a faster rate. This effect is particularly noticeable in the change observed between 11 and 11.1 seconds.
+                            </p>
+                            <img src="Imgs_lab8/bumping.png" alt="bumping on the wall" style="width: 40vw; height: 30vw;">
+                        </div>
+                    </div>
+
+                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                        <div class="flex-grow-1">
+                            <h3 class="mb-0">Slow Motions</h3>
+                            <h4 class="mb-0">Slow Motion 1</h4>
+                            <iframe width="600vw" height="450vw" src="https://youtube.com/embed/rMs6n6d021Q" title="sucess 1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <p>
+                                As indicated by the first slow-motion video, the car successfully initiated a 180-degree turn within the span of 3 floor tiles. Personally, I enjoy bumper cars in real life, where utilizing external forces always plays a significant role in car racing. Therefore, I adjusted the distance at which the car begins its turn initiation for another test, as shown below.
+                            </p>
+                            <iframe width="600vw" height="450vw" src="https://youtube.com/embed/BRz-a1t_yVs" title="sucess 1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                    </div>
+
+                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                        <div class="flex-grow-1">
+                            <h3 class="mb-0">The bloopers</h3>
+                            <p>
+                                Regarding the bloopers, when the PID controller was not optimally tuned, the car exhibited some interesting behaviors. For instance, when the integral term was not large enough to self-adjust, the car would end up on the black mat, mimicking a 'turn and park' maneuver.
+                            </p>
+                            <h4 class="mb-0">Turn and Park</h4>
+                            <iframe width="600vw" height="450vw" src="https://youtube.com/embed/RjFw9wuYkEI" title="sucess 1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <h4 class="mb-0">Dizzy and Lost</h4>
+                            <p>
+                                The video below presents a blooper where, due to the proportional term being relatively larger, the car appeared lost and dizzy.
+                            </p>
+                            <iframe width="600vw" height="450vw" src="https://youtube.com/embed/2SXL01ka5DI" title="sucess 1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                    </div>
+
+                    <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
+                        <div class="flex-grow-1">
+                            <h3 class="mb-0">Task 1 (Not Required)</h3>                         
+                            <p>
+                                Moreover, I find Task 1, focusing on position control, to be a really interesting challenge as well. Had I been afforded more time, I would have completed it. Nevertheless, I did dedicate some effort to this task. Initially, I managed to have it approach the wall, and then swiftly reverse its direction of movement, as demonstrated in the video below.
+                            </p>
+                            <iframe width="600vw" height="450vw" src="https://youtube.com/embed/tAHmfjKjPag" title="failed 1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                
+                            <p>
+                                Of course, there were instances when it did flip, though not in the manner I had anticipated.
+                            </p>
+                            <iframe width="600vw" height="450vw" src="https://youtube.com/embed/1LVoeACgGaY" title="failed 2" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+                        </div>
+                    </div>
 
             </section>
 
