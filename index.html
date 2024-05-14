@@ -1691,32 +1691,122 @@
                         </div>
                     </div>
 
-
                     <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
                         <div class="flex-grow-1">
-                            <h3 class="mb-0">Successes</h3>
-                            <h4 class="mb-0">Success 1</h4>
-                            <iframe width="600vw" height="450vw" src="https://youtube.com/embed/ylssTc5pOmk" title="sucess 1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <h3 class="mb-0">PID controll on movement as well as orientation</h3>
                             <p>
-                                This is the first successful attempt, but as shown in the video, the car did not execute a rapid 180-degree turn. This suggests to me that the proportional term of the PID controller is not sufficiently larger than the derivative term, which is necessary for initiating and completing a fast turn.
+                                Based on the details mentioned above, I decided to introduce PID movement control to complete this lab. I implemented PID control code, and the corresponding function is attached below. This function accepts an input of the calculated displacement between two points. The error is defined as the difference between the distance the car has traveled and the calculated displacement.
+                            </p>
+                            <p style="display: block; white-space: pre-wrap; overflow: auto; max-height: 400px;">
+                                void go_straight(int dist_move){
+                                    int starting_time = (int)millis();
+                                    int initial_dis = 0;
+                                    int error_correction = 0;
+                                    Serial.print("need dis: ");
+                                    Serial.println(dist_move);
+                                  
+                                    while (!distanceSensor2.checkForDataReady())
+                                    {
+                                      delay(1);
+                                    }
+                                    distance_2 = distanceSensor2.getDistance(); //Get the result of the measurement from the sensor
+                                    distanceSensor2.clearInterrupt();
+                                  
+                                    lastTime_TOF = (float)millis();
+                                  
+                                    Serial.println(distance_2);
+                                    initial_dis = distance_2;
+                                    Serial.print("Initial dis: ");
+                                    Serial.println(initial_dis);
+                                  
+                                    error_dist = initial_dis - dist_move;
+                                    error_correction = error_dist;
+                                    lastError_TOF = error_dist;
+                                    //run_fast(46);
+                                    while (((int)millis() - starting_time) < 10000){
+                                      if(distanceSensor2.checkForDataReady()){
+                                        TOF_time_2 = (float)millis();
+                                        distance_2 = distanceSensor2.getDistance(); //Get the result of the measurement from the sensor
+                                        distanceSensor2.clearInterrupt();
+                                  
+                                        Serial.print("New reading: ");
+                                        Serial.println(distance_2);
+                                  
+                                        error_dist = distance_2 - error_correction;
+                                  
+                                        Serial.print("Error correction: ");
+                                        Serial.print(error_correction);
+                                        Serial.print(" | Error distance: ");
+                                        Serial.print(error_dist);
+                                        Serial.print(" | Error distance: ");
+                                        Serial.print(distance_2 - error_correction);
+                                  
+                                        Serial.print("Kp_TOF: ");
+                                        Serial.println(Kp_TOF);
+                                  
+                                        P_calc_TOF = Kp_TOF * error_dist;
+                                        Serial.print("P: ");
+                                        Serial.print(P_calc_TOF);
+                                  
+                                        curr_time_TOF = (float)millis();
+                                        dt_TOF = (curr_time_TOF - lastTime_TOF) / 1000.0; // Delta time in seconds
+                                        lastTime_TOF = curr_time_TOF; // Update last time
+                                  
+                                        integral_TOF += error_dist * dt_TOF; // Calculate integral
+                                        // Integral wind-up
+                                        if (integral_TOF > 600.0){
+                                          integral_TOF = 600.0;
+                                        }
+                                        else if (integral_TOF < -600.0){
+                                          integral_TOF = -600.0;
+                                        }
+                                  
+                                        if (integral_TOF * error_dist < 0){
+                                          integral_TOF = 0;
+                                        }
+                                  
+                                        I_calc_TOF = Ki_TOF * integral_TOF;
+                                        Serial.print(" | I: ");
+                                        Serial.print(I_calc_TOF);
+                                        derivative_TOF = (error_dist - lastError_TOF) / dt_TOF; // Calculate derivative
+                                  
+                                        D_calc_TOF = Kd_TOF * derivative_TOF;
+                                        Serial.print(" | D: ");
+                                        Serial.print(D_calc_TOF);
+                                  
+                                        pidOutput_TOF = P_calc_TOF + I_calc_TOF + D_calc_TOF; // Calculate PID output
+                                        Serial.print(" | pidOutput_TOF: ");
+                                        Serial.print(pidOutput_TOF);
+                                        lastError_TOF = error_dist; // Update last error for next cycle
+                                  
+                                        if ((abs(error_dist) < 2)) {
+                                          Serial.println("get there");
+                                          stop_car();
+                                          break;
+                                        }
+                                        else {
+                                          if ((int)pidOutput_TOF > 0){
+                                            pwmSignal_TOF = constrain((int)pidOutput_TOF, 36, 50); // Ensure PWM is within valid range
+                                            run_fast(pwmSignal_TOF);
+                                          }
+                                          else {
+                                            pwmSignal_TOF = constrain(-(int)pidOutput_TOF, 36, 50); // Ensure PWM is within valid range
+                                            run_back(pwmSignal_TOF);
+                                          }
+                                          Serial.print(" | PWM: ");
+                                          Serial.println(pwmSignal_TOF);
+                                        }
+                                      }
+                                    }
+                                  }
                             </p>
                             <p>
-                                The distance is calculated by combining the TOF sensor measurements with the Kalman filter predictions implemented in the previous lab. The analysis plot below shows that, as the PWM duty cycle and its corresponding angle change, the car attempts to self-adjust its angle, a process that takes approximately 2 seconds.
+                                The video below demonstrates that the car can accurately traverse a floor tile as instructed.
                             </p>
-                            <img src="Imgs_lab8/sucess_1.png" alt="all data from first sucess" style="width: 40vw; height: 30vw;">
-                            <img src="Imgs_lab8/succss1.png" alt="detailed data from first success" style="width: 40vw; height: 30vw;">
+                            <iframe width="600vw" height="450vw" src="https://youtube.com/embed/0n3rGZNF3SQ" title="open loop with timed control for the first two points" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                             <p>
-                                Based on the analysis, the distance detection was what I expected. Thus, I only increased the propotional term in PID controller to make the turn complete faster. 
+                                In addition, I noticed that when I set all motor input PWM values to 0, the wheels still run, which could lead to errors. Therefore, I set the PWM values to 255 to lock the wheels and ensure the robot stops when required.
                             </p>
-                            <h4 class="mb-0">Success 2</h4>
-                            <iframe width="600vw" height="450vw" src="https://youtube.com/embed/ajmYNKHNpwk" title="sucess 1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                            
-                            <h4 class="mb-0">Success 3</h4>
-                            <iframe width="600vw" height="450vw" src="https://youtube.com/embed/USe1OcBBr8k" title="sucess 1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                            <p>
-                                After the PID control was adjusted, the car could eventually complete the turn in less than half a second. The accompanying screenshot demonstrates that by using the wall as a bumping force and then accelerating, the car is able to reach the target angle more quickly, and the error also decreases at a faster rate. This effect is particularly noticeable in the change observed between 11 and 11.1 seconds.
-                            </p>
-                            <img src="Imgs_lab8/bumping.png" alt="bumping on the wall" style="width: 40vw; height: 30vw;">
                         </div>
                     </div>
 
