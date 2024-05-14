@@ -1670,6 +1670,9 @@
                                   }
                             </p>
                             <p>
+                                Regarding the displacement, my algorithm works as follows: after the car rotates, the robot records the initial distance measurement. It then subtracts the displacement, as calculated and provided by the Python function calculate_distance_and_angle. This calculation determines the 'away-from-the-wall' distance, which is the target distance for the car to maintain from the wall when it stops. Subsequently, the program compares the real-time measurement to the 'away-from-the-wall' distance. Whenever the real-time measurement is smaller than the 'away-from-the-wall' distance, the car should stop. It then rotates by the negative value of the angle to prepare for the next movement.
+                            </p>
+                            <p>
                                 In the attached video, I manually tuned the distance that the robot car should travel. Since one floor tile is approximately 304 mm, I calculated the distance between the first two points to be about 860 mm. I found that when the distance was tuned to 862 mm, the car could reach the second point with relative accuracy.
                             </p>
                             <iframe width="600vw" height="450vw" src="https://youtube.com/embed/__mo_7E4ges" title="open loop for the first two points" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
