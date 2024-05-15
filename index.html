@@ -1821,9 +1821,12 @@
                         <div class="flex-grow-1">
                             <h3 class="mb-0">Navigation through the map</h3>
                             <p>
-                                When I began having the robot navigate through the entire map, which consists of a series of points, the relevant screenshot is shown below.
+                                The entire map consists of a series of points which are linked togetehr to be the trajectory where the robot should follow and navigate, the relevant screenshot is shown below.
                             </p>
                             <img src="Imgs_lab12/maze.png" alt="trajectory on the maze" style="width: 40vw; height: 38vw;">
+                            <p>
+                                The localization was implemented in Lab 11 through the function named perform_observation_loop(self, rot_vel=120). This function controls the robot to rotate 360 degrees, collect 18 distance measurements, and asynchronously send them back to the laptop for further analysis.
+                            </p>
                             <p>
                                 The car runs quite erratically between the first two points in the trajectory. This is because when the car rotates from the first point toward the second, the front TOF sensor measures the distance to a diagonally placed wall, which is the furthest distance it needs to read in the entire trajectory. Consequently, the two videos below demonstrate that it is not reliable for the car to consistently stop at the second point.
                             </p>
