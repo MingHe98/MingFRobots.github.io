@@ -1829,21 +1829,47 @@
                             </p>
                             <iframe width="600vw" height="450vw" src="https://youtube.com/embed/InDK2iYiI38" title="open loop with timed control for the first two points" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                             <iframe width="600vw" height="450vw" src="https://youtube.com/embed/uzvAEZggLy0" title="open loop with timed control for the first two points" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <p>
+                                Therefore, I subsequently skipped the first point during testing. As the video below demonstrates, the car was able to consistently navigate through a predefined series of points in the maze, succeeding in multiple trials.
+                            </p>
+                            <iframe width="600vw" height="450vw" src="https://youtu.be/Qm5bcQgBNlU" title="open loop with timed control for the first two points" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <iframe width="600vw" height="450vw" src="https://youtu.be/5z16KAgpc8c" title="open loop with timed control for the first two points" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <iframe width="600vw" height="450vw" src="https://youtu.be/NrG_GIqDxTA" title="open loop with timed control for the first two points" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <p>
+                                In every video, the error appears to be a maximum of one tile away, with the third attempt showing even better accuracy. Next, I decided to introduce localization to further improve accuracy as the robot navigates through the map.
+                            </p>
                         </div>
                     </div>
 
                     <div class="d-flex flex-column flex-md-row justify-content-between mb-5">
                         <div class="flex-grow-1">
-                            <h3 class="mb-0">The bloopers</h3>
+                            <h3 class="mb-0">Navigation and localization</h3>
                             <p>
-                                Regarding the bloopers, when the PID controller was not optimally tuned, the car exhibited some interesting behaviors. For instance, when the integral term was not large enough to self-adjust, the car would end up on the black mat, mimicking a 'turn and park' maneuver.
+                                Initially, I had the car navigate from the first to the fourth point along the defined trajectory. The ambient environment at the fourth point is relatively more complex, which I assumed would yield more accurate updated belief data. Consequently, after reaching the fourth point, the robot continued along the trajectory based on this updated data. However, challenges arose due to the limited number of measurements (only 18) and occasional inaccuracies in the car's 360-degree rotation or errors introduced by the car's movement. These factors sometimes caused the updated data, which estimates the car's location, to be inaccurate. When the car's guessed location is incorrect but the next target location is predefined, both the displacement and the angle required for the car to move and rotate from the guessed location to the known next location can be significantly off, as demonstrated in the video below.
                             </p>
-                            <h4 class="mb-0">Turn and Park</h4>
+                            <iframe width="600vw" height="450vw" src="https://youtu.be/njWM810p02Y" title="sucess 1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <p>
+                                Next, I had the car navigate the entire maze, following a predefined series of points along the trajectory. At the second to last point, I performed a localization to evaluate its accuracy, since I believed the environment at this point was suitable for the car to accurately determine its location.
+                            </p>
+                            <iframe width="600vw" height="450vw" src="https://youtu.be/uF41jvr9YtY" title="sucess 1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <p>
+                                The result indicates that the error is only one tile away, as seen at the end of the video where the blue dot appears. This level of localization accuracy is considered acceptable.
+                            </p>
+                            <h4 class="mb-0">Success 1 (skipped one point in the trajectory)</h4>
+                            <p>
+                                After testing the localization at each point, I discovered that using the updated localization data from the fifth to the seventh point enhances the reliability and likelihood of the car successfully navigating the entire maze. For the remaining points, I controlled the car to follow the pre-defined trajectory directly.
+                            </p>
+                            <iframe width="600vw" height="450vw" src="https://youtu.be/nDFtYC6zlEk" title="sucess 1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <p>
+                                The trajectory plotted for ground truth and updated belief points is acceptable, considering there are only 18 measurement data points and the unavoidable errors on the robot. Additionally, it's worth noting that the updated belief is relatively accurate. For example, as the video shows, when the car is at the right bottom and right top corners, the blue dot appears in the correct location.
+                            </p>
+                            <img src="Imgs_lab12/GT_Belief_Trajectory.png" alt="trajectory plot for gt and belief" style="width: 40vw; height: 30vw;">
+                            <h4 class="mb-0">Success 2 (Complete trajectory - video was not quality)</h4>
+                            <iframe width="600vw" height="450vw" src="https://youtu.be/bXI-Y07knfQ" title="sucess 1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            
                             <iframe width="600vw" height="450vw" src="https://youtube.com/embed/RjFw9wuYkEI" title="sucess 1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                            <h4 class="mb-0">Dizzy and Lost</h4>
-                            <p>
-                                The video below presents a blooper where, due to the proportional term being relatively larger, the car appeared lost and dizzy.
-                            </p>
+                            
+                            <h4 class="mb-0">Success 3 (Complete trajectory)</h4>
                             <iframe width="600vw" height="450vw" src="https://youtube.com/embed/2SXL01ka5DI" title="sucess 1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                         </div>
                     </div>
