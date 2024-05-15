@@ -1824,6 +1824,11 @@
                                 When I began having the robot navigate through the entire map, which consists of a series of points, the relevant screenshot is shown below.
                             </p>
                             <img src="Imgs_lab12/maze.png" alt="trajectory on the maze" style="width: 40vw; height: 38vw;">
+                            <p>
+                                The car runs quite erratically between the first two points in the trajectory. This is because when the car rotates from the first point toward the second, the front TOF sensor measures the distance to a diagonally placed wall, which is the furthest distance it needs to read in the entire trajectory. Consequently, the two videos below demonstrate that it is not reliable for the car to consistently stop at the second point.
+                            </p>
+                            <iframe width="600vw" height="450vw" src="https://youtube.com/embed/InDK2iYiI38" title="open loop with timed control for the first two points" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <iframe width="600vw" height="450vw" src="https://youtube.com/embed/uzvAEZggLy0" title="open loop with timed control for the first two points" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                         </div>
                     </div>
 
