@@ -1808,10 +1808,12 @@
                                 In addition, I noticed that when I set all motor input PWM values to 0, the wheels still run, which could lead to errors. Therefore, I set the PWM values to 255 to lock the wheels and ensure the robot stops when required.
                             </p>
                             <p>
+                                One technical issue was that the front TOF sensor needed occasional angle corrections to prevent it from leaning toward the floor instead of remaining perfectly horizontal toward the front wall. Apart from this technical error, I encountered other challenges. An unobvious error was identified by monitoring the real-time measurements and PID contributions to the PWM values. I initially implemented the algorithm assuming that the initial measurement would be larger than the calculated displacement between two points. However, as demonstrated in the video above, when the car moves off track, such as stopping near the box in the middle, then the next initial measurement is less than the distance required for the next movement. This results in a consistently positive error, causing the PID system to erroneously continue moving the car forward.
+                            </p>
+                            <p>
                                 The video below shows that, instead of programming the robot to send data back for analysis, I decided to connect the laptop directly to the robot. This setup allows me to monitor the real-time PID contributions to the PWM values and the measurements from TOF devices.
                             </p>
                             <iframe width="600vw" height="450vw" src="https://youtu.be/embed/-U8ZsPt94dk" title="open loop with timed control for the first two points" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-            
                         </div>
                     </div>
 
