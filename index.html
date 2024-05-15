@@ -1683,11 +1683,11 @@
                             <p>
                                 However, using either open loop control to run the car for a specifically tuned distance, or open loop with timed control, proved to be time-consuming and buggy for me. As the video below demonstrates, when the car slips due to dirt on the floor, it continues to run as programmed, regardless of the errors. This hardcoded behavior leads to significant inaccuracies in its performance.
                             </p>
-                            <iframe width="600vw" height="450vw" src="https://youtu.be/R2nrdYcyxzM" title="open loop with timed control for the first two points" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <iframe width="600vw" height="450vw" src="https://youtube.com/embed/R2nrdYcyxzM" title="open loop with timed control for the first two points" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                             <p>
                                 As demonstrated between 41 and 47 seconds in the video below, the error becomes quite obvious when the manually tuned timed control is in use. Additionally, it appears that these errors accumulate over time, leading to increased unpredictability.
                             </p>
-                            <iframe width="600vw" height="450vw" src="https://youtu.be/dSaTl9TGuDg" title="open loop with timed control for the first two points" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <iframe width="600vw" height="450vw" src="https://youtube.com/embed/dSaTl9TGuDg" title="open loop with timed control for the first two points" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                         </div>
                     </div>
 
@@ -1813,7 +1813,7 @@
                             <p>
                                 The video below shows that, instead of programming the robot to send data back for analysis, I decided to connect the laptop directly to the robot. This setup allows me to monitor the real-time PID contributions to the PWM values and the measurements from TOF devices.
                             </p>
-                            <iframe width="600vw" height="450vw" src="https://youtu.be/-U8ZsPt94dk" title="open loop with timed control for the first two points" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <iframe width="600vw" height="450vw" src="https://youtube.com/embed/-U8ZsPt94dk" title="open loop with timed control for the first two points" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                         </div>
                     </div>
 
@@ -1835,9 +1835,9 @@
                             <p>
                                 Therefore, I subsequently skipped the first point during testing. As the video below demonstrates, the car was able to consistently navigate through a predefined series of points in the maze, succeeding in multiple trials.
                             </p>
-                            <iframe width="600vw" height="450vw" src="https://youtu.be/Qm5bcQgBNlU" title="open loop with timed control for the first two points" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                            <iframe width="600vw" height="450vw" src="https://youtu.be/5z16KAgpc8c" title="open loop with timed control for the first two points" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                            <iframe width="600vw" height="450vw" src="https://youtu.be/NrG_GIqDxTA" title="open loop with timed control for the first two points" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <iframe width="600vw" height="450vw" src="https://youtube.com/embed/Qm5bcQgBNlU" title="open loop with timed control for the first two points" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <iframe width="600vw" height="450vw" src="https://youtube.com/embed/5z16KAgpc8c" title="open loop with timed control for the first two points" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <iframe width="600vw" height="450vw" src="https://youtube.com/embed/NrG_GIqDxTA" title="open loop with timed control for the first two points" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                             <p>
                                 In every video, the error appears to be a maximum of one tile away, with the third attempt showing even better accuracy. Next, I decided to introduce localization to further improve accuracy as the robot navigates through the map.
                             </p>
@@ -1850,11 +1850,11 @@
                             <p>
                                 Initially, I had the car navigate from the first to the fourth point along the defined trajectory. The ambient environment at the fourth point is relatively more complex, which I assumed would yield more accurate updated belief data. Consequently, after reaching the fourth point, the robot continued along the trajectory based on this updated data. However, challenges arose due to the limited number of measurements (only 18) and occasional inaccuracies in the car's 360-degree rotation or errors introduced by the car's movement. These factors sometimes caused the updated data, which estimates the car's location, to be inaccurate. When the car's guessed location is incorrect but the next target location is predefined, both the displacement and the angle required for the car to move and rotate from the guessed location to the known next location can be significantly off, as demonstrated in the video below.
                             </p>
-                            <iframe width="600vw" height="450vw" src="https://youtu.be/njWM810p02Y" title="sucess 1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <iframe width="600vw" height="450vw" src="https://youtube.com/embed/njWM810p02Y" title="sucess 1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                             <p>
                                 Next, I had the car navigate the entire maze, following a predefined series of points along the trajectory. At the second to last point, I performed a localization to evaluate its accuracy, since I believed the environment at this point was suitable for the car to accurately determine its location.
                             </p>
-                            <iframe width="600vw" height="450vw" src="https://youtu.be/uF41jvr9YtY" title="sucess 1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <iframe width="600vw" height="450vw" src="https://youtube.com/embed/uF41jvr9YtY" title="sucess 1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                             <p>
                                 The result indicates that the error is only one tile away, as seen at the end of the video where the blue dot appears. This level of localization accuracy is considered acceptable.
                             </p>
@@ -1862,16 +1862,16 @@
                             <p>
                                 After testing the localization at each point, I discovered that using the updated localization data from the fifth to the seventh point enhances the reliability and likelihood of the car successfully navigating the entire maze. For the remaining points, I controlled the car to follow the pre-defined trajectory directly.
                             </p>
-                            <iframe width="600vw" height="450vw" src="https://youtu.be/nDFtYC6zlEk" title="sucess 1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <iframe width="600vw" height="450vw" src="https://youtube.com/embed/nDFtYC6zlEk" title="sucess 1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                             <p>
                                 The trajectory plotted for ground truth and updated belief points is acceptable, considering there are only 18 measurement data points and the unavoidable errors on the robot. Additionally, it's worth noting that the updated belief is relatively accurate. For example, as the video shows, when the car is at the right bottom and right top corners, the blue dot appears in the correct location.
                             </p>
                             <img src="Imgs_lab12/GT_Belief_Trajectory.png" alt="trajectory plot for gt and belief" style="width: 40vw; height: 30vw;">
                             <h4 class="mb-0">Success 2 (Complete trajectory - video was not quality)</h4>
-                            <iframe width="600vw" height="450vw" src="https://youtu.be/bXI-Y07knfQ" title="sucess 1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <iframe width="600vw" height="450vw" src="https://youtube.com/embed/bXI-Y07knfQ" title="sucess 1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                 
                             <h4 class="mb-0">Success 3 (Complete trajectory)</h4>
-                            <iframe width="600vw" height="450vw" src="https://youtube.com/embed/2SXL01ka5DI" title="sucess 1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            <iframe width="600vw" height="450vw" src="https://youtube.com/embed/3orv296saPk" title="sucess 1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                             <img src="Imgs_lab12/GT_belief_trajectory_3.png" alt="trajectory plot for gt and belief" style="width: 40vw; height: 30vw;">
                             <p>
                                 This plot, which includes the floor tiles, effectively demonstrates the accuracy of the system in relation to the tiles.
